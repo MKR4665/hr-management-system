@@ -67,6 +67,17 @@ export default function EmployeeDetailsPage() {
     return found ? found.status : 'Not Generated';
   };
 
+  const getDocLastDate = (type) => {
+    const found = documents.find(d => d.type === type);
+    return found ? new Date(found.createdAt).toLocaleString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }) : null;
+  };
+
   const missingDocs = useMemo(() => {
     const loggedTypes = documents.map(d => d.type);
     return availableTemplates.filter(t => !loggedTypes.includes(t.id));
@@ -318,12 +329,19 @@ export default function EmployeeDetailsPage() {
                             <div>
                               <div className="flex items-center gap-2">
                                 <h4 className="font-bold text-slate-900 group-hover:text-brand-700 transition-colors">{item.label}</h4>
-                                <span className={cn(
-                                  "px-1.5 py-0.5 rounded text-[8px] font-bold uppercase border",
-                                  status !== 'Not Generated' ? "bg-brand-50 border-brand-100 text-brand-600" : "bg-slate-50 border-slate-100 text-slate-400"
-                                )}>
-                                  {status}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                  <span className={cn(
+                                    "px-1.5 py-0.5 rounded text-[8px] font-bold uppercase border",
+                                    status !== 'Not Generated' ? "bg-brand-50 border-brand-100 text-brand-600" : "bg-slate-50 border-slate-100 text-slate-400"
+                                  )}>
+                                    {status}
+                                  </span>
+                                  {getDocLastDate(item.id) && (
+                                    <span className="text-[10px] text-slate-400 font-medium">
+                                      Last sync: {getDocLastDate(item.id)}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                               <p className="text-xs text-slate-500 leading-relaxed">{item.sub}</p>
                             </div>
@@ -343,10 +361,19 @@ export default function EmployeeDetailsPage() {
                               variant="ghost" 
                               size="sm" 
                               className="h-9 px-3 rounded-lg text-slate-600 hover:bg-slate-100 gap-2 font-bold text-[10px] uppercase"
-                              onClick={() => status === 'Not Generated' ? handleRegenerate(item.id) : handleRegenerate(item.id)}
+                              onClick={() => handleDocAction(item.id, 'download')}
+                            >
+                              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                              Download
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="h-9 px-3 rounded-lg text-slate-400 hover:bg-slate-100 gap-2 font-bold text-[10px] uppercase"
+                              onClick={() => handleRegenerate(item.id)}
                             >
                               <svg className={cn("h-4 w-4", docLoading && "animate-spin")} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                              {status === 'Not Generated' ? 'Generate' : 'Regenerate'}
+                              {status === 'Not Generated' ? 'Generate' : 'Sync'}
                             </Button>
                           </div>
                         </div>
