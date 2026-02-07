@@ -10,3 +10,31 @@ body {
   @apply bg-brand-50 text-slate-900;
   font-family: "Neue Haas Grotesk Display", "Suisse Intl", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
+
+/* Custom Thin Scrollbar */
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Slightly wider for better visibility */
+  height: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* slate-300 */
+  border-radius: 10px;
+  border: 1px solid transparent; /* Padding effect */
+  background-clip: content-box;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; /* slate-400 */
+  background-clip: content-box;
+}
+
+/* Firefox */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}

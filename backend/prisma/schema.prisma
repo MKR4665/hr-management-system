@@ -23,6 +23,37 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   refreshTokens RefreshToken[]
+  employee      Employee?
+}
+
+model Employee {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String   @unique
+  phone       String?
+  department  String
+  jobTitle    String
+  status      String   @default("Active")
+  hireDate    DateTime @default(now())
+  userId      String?  @unique
+  user        User?    @relation(fields: [userId], references: [id])
+  documents   Document[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  type        String   // Offer Letter, NDA, Joining Letter, etc.
+  status      String   @default("Generated") // Generated, Sent, Signed
+  fileUrl     String?  // If stored in cloud storage
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([employeeId])
 }
 
 model RefreshToken {

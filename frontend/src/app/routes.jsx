@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from '../presentation/pages/LoginPage';
 import DashboardPage from '../presentation/pages/DashboardPage';
 import EmployeesPage from '../presentation/pages/EmployeesPage';
+import EmployeeDetailsPage from '../presentation/pages/EmployeeDetailsPage';
 import PayslipsPage from '../presentation/pages/PayslipsPage';
 import RecruitmentPage from '../presentation/pages/RecruitmentPage';
 import AttendancePage from '../presentation/pages/AttendancePage';
@@ -16,6 +17,7 @@ export default function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/employees" element={<EmployeesPage />} />
+      <Route path="/employees/:id" element={<EmployeeDetailsPage />} />
       <Route path="/payslips" element={<PayslipsPage />} />
       <Route path="/recruitment" element={<RecruitmentPage />} />
       <Route path="/attendance" element={<AttendancePage />} />

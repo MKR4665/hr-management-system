@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { cn } from '../../shared/lib/utils';
 
@@ -13,6 +13,12 @@ const menuItems = [
   { label: 'Benefits', path: '/benefits', icon: 'shield' },
   { label: 'Training', path: '/training', icon: 'graduation' },
   { label: 'Reports', path: '/reports', icon: 'chart' }
+];
+
+const shortcutItems = [
+  { label: 'Dashboard', path: '/dashboard' },
+  { label: 'Employees', path: '/employees' },
+  { label: 'Recruitment', path: '/recruitment' }
 ];
 
 function MenuIcon({ name, className }) {
@@ -100,14 +106,12 @@ export default function DashboardLayout({ title, subtitle, actions, children }) 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const location = useLocation();
 
-  // Close mobile sidebar on route change
   useEffect(() => {
     setIsSidebarOpen(false);
   }, [location.pathname]);
 
   return (
     <div className="flex min-h-screen bg-slate-50/50">
-      {/* Mobile Sidebar Overlay */}
       <div
         className={cn(
           'fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm transition-opacity lg:hidden',
@@ -116,7 +120,6 @@ export default function DashboardLayout({ title, subtitle, actions, children }) 
         onClick={() => setIsSidebarOpen(false)}
       />
 
-      {/* Sidebar */}
       <aside
         className={cn(
           'fixed inset-y-0 left-0 z-50 flex flex-col bg-white border-r border-slate-200 transition-all duration-300 ease-in-out lg:static lg:z-auto',
@@ -124,7 +127,6 @@ export default function DashboardLayout({ title, subtitle, actions, children }) 
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
-        {/* Sidebar Header */}
         <div className="flex h-16 items-center justify-between px-6 border-b border-slate-100">
           <div className={cn('flex items-center gap-3 overflow-hidden transition-all', isSidebarCollapsed && 'lg:justify-center lg:px-0')}>
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-600 text-white shadow-lg shadow-brand-200">
@@ -144,8 +146,7 @@ export default function DashboardLayout({ title, subtitle, actions, children }) 
           </button>
         </div>
 
-        {/* Sidebar Content */}
-        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-8">
+        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-8 thin-scrollbar">
           <nav className="space-y-1">
             {menuItems.map((item) => (
               <NavLink
@@ -176,21 +177,8 @@ export default function DashboardLayout({ title, subtitle, actions, children }) 
               </NavLink>
             ))}
           </nav>
-
-          {!isSidebarCollapsed && (
-            <div className="px-2">
-              <div className="rounded-2xl bg-gradient-to-br from-brand-600 to-brand-500 p-4 text-white shadow-xl shadow-brand-100">
-                <p className="text-xs font-semibold text-brand-100 uppercase tracking-wider">Need help?</p>
-                <p className="mt-1 text-sm font-medium leading-relaxed">Check our documentation for advanced features.</p>
-                <button className="mt-3 w-full rounded-lg bg-white/20 py-2 text-xs font-semibold hover:bg-white/30 transition-colors">
-                  Open Docs
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
-        {/* Sidebar Footer */}
         <div className="p-4 border-t border-slate-100">
           <button
             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
@@ -209,11 +197,10 @@ export default function DashboardLayout({ title, subtitle, actions, children }) 
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0">
         {/* Top Header */}
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-8 sticky top-0 z-30">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <button
               onClick={() => setIsSidebarOpen(true)}
               className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg"
@@ -222,13 +209,24 @@ export default function DashboardLayout({ title, subtitle, actions, children }) 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <div className="hidden sm:flex items-center gap-2 text-sm font-medium text-slate-500">
-              <span>Home</span>
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
-              <span className="text-slate-900 capitalize">{location.pathname.replace('/', '')}</span>
-            </div>
+            
+            {/* Shortcut Navigation */}
+            <nav className="hidden md:flex items-center gap-1">
+              {shortcutItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.path}
+                  className={cn(
+                    "px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors",
+                    location.pathname === item.path 
+                      ? "text-brand-700 bg-brand-50" 
+                      : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4">
@@ -254,13 +252,24 @@ export default function DashboardLayout({ title, subtitle, actions, children }) 
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="space-y-1">
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">{title}</h1>
-              {subtitle && <p className="text-slate-500 text-sm sm:text-base">{subtitle}</p>}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 thin-scrollbar">
+          <div className="space-y-4">
+            {/* Breadcrumb moved here */}
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+              <Link to="/dashboard" className="hover:text-brand-600 transition-colors">Home</Link>
+              <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              </svg>
+              <span className="text-slate-600">{location.pathname.replace('/', '') || 'Dashboard'}</span>
             </div>
-            {actions && <div className="flex flex-wrap gap-3">{actions}</div>}
+
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="space-y-1">
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">{title}</h1>
+                {subtitle && <p className="text-slate-500 text-sm sm:text-base">{subtitle}</p>}
+              </div>
+              {actions && <div className="flex flex-wrap gap-3">{actions}</div>}
+            </div>
           </div>
 
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
