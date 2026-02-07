@@ -1,25 +1,26 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Button } from '../components/ui/button';
+import { cn } from '../../shared/lib/utils';
 
 const menuItems = [
   { label: 'Dashboard', path: '/dashboard', icon: 'grid' },
-  { label: 'Employee management', path: '/employees', icon: 'users' },
-  { label: 'Payslip management', path: '/payslips', icon: 'receipt' },
-  { label: 'Recruitment pipeline', path: '/recruitment', icon: 'briefcase' },
-  { label: 'Attendance & leave', path: '/attendance', icon: 'calendar' },
-  { label: 'Performance reviews', path: '/performance', icon: 'spark' },
-  { label: 'Benefits & compliance', path: '/benefits', icon: 'shield' },
-  { label: 'Training & development', path: '/training', icon: 'graduation' },
-  { label: 'Reports & analytics', path: '/reports', icon: 'chart' }
+  { label: 'Employees', path: '/employees', icon: 'users' },
+  { label: 'Payslips', path: '/payslips', icon: 'receipt' },
+  { label: 'Recruitment', path: '/recruitment', icon: 'briefcase' },
+  { label: 'Attendance', path: '/attendance', icon: 'calendar' },
+  { label: 'Performance', path: '/performance', icon: 'spark' },
+  { label: 'Benefits', path: '/benefits', icon: 'shield' },
+  { label: 'Training', path: '/training', icon: 'graduation' },
+  { label: 'Reports', path: '/reports', icon: 'chart' }
 ];
 
-function MenuIcon({ name }) {
-  const shared = 'h-4 w-4';
+function MenuIcon({ name, className }) {
+  const shared = cn('h-5 w-5', className);
   switch (name) {
     case 'users':
       return (
-        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="1.8">
+        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M16 19c0-2.2-2-4-4-4s-4 1.8-4 4" />
           <circle cx="12" cy="8" r="3" />
           <path d="M20 19c0-1.6-1-3-2.5-3.6" />
@@ -28,7 +29,7 @@ function MenuIcon({ name }) {
       );
     case 'receipt':
       return (
-        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="1.8">
+        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5-2 1.5z" />
           <path d="M9 8h6" />
           <path d="M9 12h6" />
@@ -36,7 +37,7 @@ function MenuIcon({ name }) {
       );
     case 'briefcase':
       return (
-        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="1.8">
+        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M7 7h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z" />
           <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
           <path d="M5 12h14" />
@@ -44,7 +45,7 @@ function MenuIcon({ name }) {
       );
     case 'calendar':
       return (
-        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="1.8">
+        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="3" y="5" width="18" height="16" rx="2" />
           <path d="M3 10h18" />
           <path d="M8 3v4" />
@@ -53,21 +54,21 @@ function MenuIcon({ name }) {
       );
     case 'spark':
       return (
-        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="1.8">
+        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M12 3l1.8 4.8L18 9l-4.2 1.2L12 15l-1.8-4.8L6 9l4.2-1.2L12 3z" />
           <path d="M19 14l.9 2.3L22 17l-2.1.7L19 20l-.9-2.3L16 17l2.1-.7L19 14z" />
         </svg>
       );
     case 'shield':
       return (
-        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="1.8">
+        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z" />
           <path d="M9.5 12l1.8 1.8 3.7-3.7" />
         </svg>
       );
     case 'graduation':
       return (
-        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="1.8">
+        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M3 8l9-4 9 4-9 4-9-4z" />
           <path d="M7 12v4c0 1.7 2.2 3 5 3s5-1.3 5-3v-4" />
           <path d="M21 10v5" />
@@ -75,7 +76,7 @@ function MenuIcon({ name }) {
       );
     case 'chart':
       return (
-        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="1.8">
+        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M4 20V10" />
           <path d="M10 20V4" />
           <path d="M16 20v-6" />
@@ -84,7 +85,7 @@ function MenuIcon({ name }) {
       );
     default:
       return (
-        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="1.8">
+        <svg viewBox="0 0 24 24" className={shared} fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="3" y="3" width="8" height="8" rx="2" />
           <rect x="13" y="3" width="8" height="8" rx="2" />
           <rect x="3" y="13" width="8" height="8" rx="2" />
@@ -97,217 +98,176 @@ function MenuIcon({ name }) {
 export default function DashboardLayout({ title, subtitle, actions, children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const location = useLocation();
+
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(106,77,255,0.18),_transparent_60%)]">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 lg:flex-row lg:items-start">
-        <div
-          className={`fixed inset-0 z-40 bg-slate-900/30 backdrop-blur-sm transition-opacity lg:hidden ${
-            isSidebarOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
-          }`}
-          onClick={() => setIsSidebarOpen(false)}
-          role="presentation"
-        />
+    <div className="flex min-h-screen bg-slate-50/50">
+      {/* Mobile Sidebar Overlay */}
+      <div
+        className={cn(
+          'fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm transition-opacity lg:hidden',
+          isSidebarOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+        )}
+        onClick={() => setIsSidebarOpen(false)}
+      />
 
-        <aside
-          className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col gap-6 overflow-y-auto border-r border-brand-100 bg-white/90 px-4 py-6 shadow-xl backdrop-blur transition-transform lg:static lg:z-auto lg:translate-x-0 lg:border-0 lg:bg-transparent lg:py-0 lg:shadow-none lg:overflow-visible lg:transition-[width,padding] lg:duration-300 ${
-            isSidebarCollapsed ? 'lg:w-20 lg:px-2' : 'lg:w-64 lg:px-0'
-          } ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        >
-          <div className="flex items-center justify-between lg:hidden">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-brand-700">HRM</p>
-            <button
-              type="button"
-              onClick={() => setIsSidebarOpen(false)}
-              className="rounded-lg border border-brand-200 bg-white p-2 text-slate-600"
-              aria-label="Close menu"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          'fixed inset-y-0 left-0 z-50 flex flex-col bg-white border-r border-slate-200 transition-all duration-300 ease-in-out lg:static lg:z-auto',
+          isSidebarCollapsed ? 'w-20' : 'w-72',
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        )}
+      >
+        {/* Sidebar Header */}
+        <div className="flex h-16 items-center justify-between px-6 border-b border-slate-100">
+          <div className={cn('flex items-center gap-3 overflow-hidden transition-all', isSidebarCollapsed && 'lg:justify-center lg:px-0')}>
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-600 text-white shadow-lg shadow-brand-200">
+              <span className="font-bold text-lg">H</span>
+            </div>
+            {!isSidebarCollapsed && (
+              <span className="font-bold text-xl tracking-tight text-slate-900">HRM Hub</span>
+            )}
+          </div>
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Sidebar Content */}
+        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-8">
+          <nav className="space-y-1">
+            {menuItems.map((item) => (
+              <NavLink
+                key={item.label}
+                to={item.path}
+                className={({ isActive }) =>
+                  cn(
+                    'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
+                    isActive
+                      ? 'bg-brand-50 text-brand-700 shadow-sm shadow-brand-100/50'
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  )
+                }
               >
-                <path d="M6 6l12 12" />
-                <path d="M18 6l-12 12" />
+                <MenuIcon
+                  name={item.icon}
+                  className={cn(
+                    'shrink-0 transition-colors',
+                    location.pathname === item.path ? 'text-brand-600' : 'text-slate-400 group-hover:text-slate-600'
+                  )}
+                />
+                {!isSidebarCollapsed && <span>{item.label}</span>}
+                {isSidebarCollapsed && (
+                  <div className="absolute left-16 z-50 hidden group-hover:block px-2 py-1 bg-slate-900 text-white text-xs rounded-md whitespace-nowrap">
+                    {item.label}
+                  </div>
+                )}
+              </NavLink>
+            ))}
+          </nav>
+
+          {!isSidebarCollapsed && (
+            <div className="px-2">
+              <div className="rounded-2xl bg-gradient-to-br from-brand-600 to-brand-500 p-4 text-white shadow-xl shadow-brand-100">
+                <p className="text-xs font-semibold text-brand-100 uppercase tracking-wider">Need help?</p>
+                <p className="mt-1 text-sm font-medium leading-relaxed">Check our documentation for advanced features.</p>
+                <button className="mt-3 w-full rounded-lg bg-white/20 py-2 text-xs font-semibold hover:bg-white/30 transition-colors">
+                  Open Docs
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Sidebar Footer */}
+        <div className="p-4 border-t border-slate-100">
+          <button
+            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            className="hidden lg:flex w-full items-center gap-3 px-3 py-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all"
+          >
+            <svg
+              className={cn('h-5 w-5 transition-transform duration-300', isSidebarCollapsed && 'rotate-180')}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+            </svg>
+            {!isSidebarCollapsed && <span className="text-sm font-medium">Collapse</span>}
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col min-w-0">
+        {/* Top Header */}
+        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-8 sticky top-0 z-30">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-          </div>
-          <div className="rounded-2xl border border-brand-100 bg-white/70 p-6 shadow-sm backdrop-blur">
-            <div className={`flex items-start ${isSidebarCollapsed ? 'lg:justify-center' : 'lg:justify-between'}`}>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-brand-700">HRM</p>
-              <button
-                type="button"
-                onClick={() => setIsSidebarCollapsed((prev) => !prev)}
-                className="hidden rounded-lg border border-brand-200 bg-white p-2 text-slate-600 transition hover:bg-brand-50 lg:inline-flex"
-                aria-label={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                >
-                  {isSidebarCollapsed ? (
-                    <>
-                      <rect x="4" y="5" width="14" height="14" rx="2" />
-                      <path d="M8 5v14" />
-                      <path d="M18 12h2.5" />
-                      <path d="M16.5 9l3 3-3 3" />
-                    </>
-                  ) : (
-                    <>
-                      <rect x="6" y="5" width="14" height="14" rx="2" />
-                      <path d="M10 5v14" />
-                      <path d="M5.5 12H3" />
-                      <path d="M7 9l-3 3 3 3" />
-                    </>
-                  )}
-                </svg>
-              </button>
-            </div>
-            <div className={`${isSidebarCollapsed ? 'hidden lg:block lg:text-center' : ''}`}>
-              <p className="mt-3 text-lg font-semibold text-slate-900">Admin hub</p>
-              <p className="text-sm text-slate-500">Manage people operations</p>
+            <div className="hidden sm:flex items-center gap-2 text-sm font-medium text-slate-500">
+              <span>Home</span>
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              </svg>
+              <span className="text-slate-900 capitalize">{location.pathname.replace('/', '')}</span>
             </div>
           </div>
-          <nav className="rounded-2xl border border-brand-100 bg-white/70 p-3 shadow-sm backdrop-blur">
-            <p className={`px-3 pb-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400 ${isSidebarCollapsed ? 'lg:text-center' : ''}`}>
-              Menu
-            </p>
-            <ul className="space-y-1 text-sm">
-              {menuItems.map((item) => (
-                <li key={item.label}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      `group relative flex w-full items-center gap-3 rounded-lg px-3 py-2 transition ${
-                        isActive
-                          ? 'bg-brand-600 text-white shadow-sm'
-                          : 'text-slate-700 hover:bg-brand-50'
-                      }`
-                    }
-                    onClick={() => setIsSidebarOpen(false)}
-                    title={item.label}
-                  >
-                    <MenuIcon name={item.icon} />
-                    <span className={`${isSidebarCollapsed ? 'lg:hidden' : ''}`}>{item.label}</span>
-                    <span
-                      className={`pointer-events-none absolute left-full top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-lg border border-brand-100 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-lg ${
-                        isSidebarCollapsed ? 'lg:group-hover:block' : 'lg:hidden'
-                      }`}
-                    >
-                      {item.label}
-                    </span>
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <div className="rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-600 to-brand-500 p-5 text-white shadow-sm">
-            <p className={`text-sm font-semibold uppercase tracking-[0.3em] text-white/70 ${isSidebarCollapsed ? 'hidden lg:block lg:text-center' : ''}`}>
-              Quick action
-            </p>
-            <p className={`mt-2 text-lg font-semibold ${isSidebarCollapsed ? 'hidden lg:block lg:text-center' : ''}`}>
-              Run payroll
-            </p>
-            <p className={`text-sm text-white/80 ${isSidebarCollapsed ? 'hidden lg:block lg:text-center' : ''}`}>
-              Generate payslips in minutes.
-            </p>
-            <Button className="mt-4 w-full bg-white text-brand-700 hover:bg-brand-50">
-              {isSidebarCollapsed ? 'Go' : 'Start payroll'}
-            </Button>
-          </div>
-        </aside>
 
-        <div className="flex-1 space-y-6">
-          <div className="sticky top-4 z-30 flex min-h-16 flex-wrap items-center justify-between gap-4 rounded-2xl border border-brand-100 bg-white/70 px-6 py-5 shadow-sm backdrop-blur">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600 text-sm font-semibold text-white shadow-sm">
-                AH
+          <div className="flex items-center gap-2 sm:gap-4">
+            <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+            <button className="relative p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border-2 border-white"></span>
+            </button>
+            <div className="h-8 w-px bg-slate-200 mx-1"></div>
+            <button className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-slate-50 transition-colors">
+              <div className="h-8 w-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xs shadow-inner">
+                JD
               </div>
-              <div className="space-y-0.5">
-                <p className="text-sm font-semibold text-slate-900">Admin hub</p>
-                <p className="text-xs text-slate-500">People operations center</p>
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-lg border border-brand-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-brand-50"
-              >
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="M12 3l2.2 5.2L20 9l-4.3 3.5L17 19l-5-3-5 3 1.3-6.5L4 9l5.8-.8L12 3z" />
-                </svg>
-                Quick links
-              </button>
-              <button
-                type="button"
-                className="inline-flex items-center justify-center rounded-lg border border-brand-200 bg-white p-2 text-slate-600 transition hover:bg-brand-50"
-                aria-label="Notifications"
-              >
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6" />
-                  <path d="M9.5 20a2.5 2.5 0 0 0 5 0" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                className="inline-flex items-center justify-center rounded-lg border border-brand-200 bg-white p-2 text-slate-600 transition hover:bg-brand-50"
-                aria-label="Settings"
-              >
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <circle cx="12" cy="12" r="3.2" />
-                  <path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a2 2 0 0 1-4 0v-.1a1 1 0 0 0-.6-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 0 1-2.8-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4a2 2 0 0 1 0-4h.1a1 1 0 0 0 .9-.6 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1 1 0 0 0 1.1.2 1 1 0 0 0 .6-.9V4a2 2 0 0 1 4 0v.1a1 1 0 0 0 .6.9 1 1 0 0 0 1.1-.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1 1 0 0 0-.2 1.1 1 1 0 0 0 .9.6H20a2 2 0 0 1 0 4h-.1a1 1 0 0 0-.9.6z" />
-                </svg>
-              </button>
-              <div className="flex items-center justify-center rounded-lg border border-brand-200 bg-white p-2">
-                <img
-                  src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='100%25' height='100%25' rx='32' fill='%23e6e2ff'/><circle cx='32' cy='26' r='12' fill='%236a4dff'/><rect x='14' y='40' width='36' height='18' rx='9' fill='%236a4dff'/></svg>"
-                  alt="User profile"
-                  className="h-4 w-4 rounded-full object-cover"
-                />
-              </div>
-            </div>
+              <span className="hidden md:block text-sm font-semibold text-slate-700">John Doe</span>
+            </button>
           </div>
-          <header className="flex flex-col gap-4 rounded-2xl border border-brand-100 bg-white/70 p-6 shadow-sm backdrop-blur lg:flex-row lg:items-center lg:justify-between lg:gap-6">
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-brand-700">
-                Workforce overview
-              </p>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setIsSidebarOpen(true)}
-                  className="inline-flex items-center justify-center rounded-lg border border-brand-200 bg-white/80 p-2 text-brand-700 shadow-sm backdrop-blur transition hover:bg-brand-50 lg:hidden"
-                  aria-label="Open menu"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                  >
-                    <path d="M4 7h16" />
-                    <path d="M4 12h16" />
-                    <path d="M4 17h16" />
-                  </svg>
-                </button>
-                <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl">
-                  {title}
-                </h1>
-              </div>
-              <p className="text-sm text-slate-500">{subtitle}</p>
+        </header>
+
+        {/* Page Content */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-1">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">{title}</h1>
+              {subtitle && <p className="text-slate-500 text-sm sm:text-base">{subtitle}</p>}
             </div>
             {actions && <div className="flex flex-wrap gap-3">{actions}</div>}
-          </header>
+          </div>
 
-          {children}
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {children}
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
