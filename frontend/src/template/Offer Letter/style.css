@@ -1,0 +1,109 @@
+:root {
+    --primary: #003366;
+    --border: #e0e0e0;
+    --text: #222;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #e0e0e0;
+    font-size: 18px;
+    counter-reset: page;
+}
+
+@page {
+    size: A4;
+    margin: 15mm;
+}
+
+.container {
+    width: 210mm;
+    height: 297mm;
+    margin: 30px auto;
+    padding: 70px 50px;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    background: var(--primary);
+    color: #fff;
+    padding: 25px 30px;
+}
+.logo{
+    background-color: white;
+    border-radius: 50%;
+    height: 120px;
+    width: 120px;
+}
+.logo img{
+    height: 120px;
+    width: 120px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.header p {
+    margin: 4px 0;
+    font-size: 13px;
+}
+.name {
+   color: #003366;
+   text-align: center;
+   border-bottom: 4px solid #003366;
+   padding-bottom: 10px;
+}
+h3{
+    color: #003366;
+    border-left: 4px solid #003366;
+    padding-left: 10px;
+    margin-bottom: 20px;
+    
+}
+.container1{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(236, 230, 230);
+    padding-bottom: 30px;
+}
+.QR-code img{
+    height: 120px;
+    width: 120px;
+}
+section p{
+    text-align: justify;
+}
+ul li {
+    margin: 9px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: rgb(242, 238, 238);
+}
+
+table th,
+table td {
+    border: 1px solid var(--border);
+    padding: 10px;
+}
+
+table th {
+    background: #f0f4f8;
+}
+
+.signatures {
+   display: flex;
+   justify-content: space-between;
+   padding-top: 20px;
+   border-top: 1px solid rgb(232, 222, 222);
+}

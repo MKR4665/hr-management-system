@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payslip - {{month}} {{year}}</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.4; color: #222; margin: 0; padding: 0; font-size: 11px; }
+        .payslip { width: 100%; padding: 30px; box-sizing: border-box; background: #fff; border: 1px solid #eee; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
+        .company-name { font-size: 18px; font-weight: bold; color: #003366; }
+        .title { text-align: center; font-size: 14px; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; background: #f0f4f8; padding: 5px; }
+        .info-grid { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .info-grid p { margin: 3px 0; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
+        th { background: #f0f4f8; }
+        .right { text-align: right; }
+        .total-row { font-weight: bold; background: #f9f9f9; }
+        .net-pay { font-size: 14px; font-weight: bold; border: 2px solid #003366; padding: 10px; text-align: center; margin: 20px 0; }
+        footer { margin-top: 30px; font-size: 9px; color: #666; border-top: 1px solid #eee; padding-top: 10px; display: flex; justify-content: space-between; }
+    </style>
+</head>
+<body>
+    <div class="payslip">
+        <div class="header">
+            <div class="company-name">Mindmanthan Software Solutions</div>
+        </div>
+
+        <div class="title">Payslip for the Month of {{month}} {{year}}</div>
+
+        <div class="info-grid">
+            <div>
+                <p><b>Employee Name:</b> {{fullName}}</p>
+                <p><b>Designation:</b> {{jobTitle}}</p>
+                <p><b>Department:</b> {{department}}</p>
+                <p><b>Paid Days:</b> 30</p>
+            </div>
+            <div>
+                <p><b>Employee ID:</b> {{id}}</p>
+                <p><b>Date of Joining:</b> {{hireDate}}</p>
+                <p><b>Work Location:</b> {{workLocation}}</p>
+            </div>
+        </div>
+
+        <table>
+            <tr>
+                <th>EARNINGS</th>
+                <th class="right">AMOUNT (₹)</th>
+                <th>DEDUCTIONS</th>
+                <th class="right">AMOUNT (₹)</th>
+            </tr>
+            <tr>
+                <td>Basic Salary</td>
+                <td class="right">{{basicSalaryFormatted}}</td>
+                <td>Provident Fund</td>
+                <td class="right">0.00</td>
+            </tr>
+            <tr>
+                <td>HRA</td>
+                <td class="right">{{hraFormatted}}</td>
+                <td>Professional Tax</td>
+                <td class="right">0.00</td>
+            </tr>
+            <tr>
+                <td>Conveyance Allowance</td>
+                <td class="right">{{conveyanceAllowanceFormatted}}</td>
+                <td>TDS/Income Tax</td>
+                <td class="right">0.00</td>
+            </tr>
+            <tr>
+                <td>Special Allowance</td>
+                <td class="right">{{specialAllowanceFormatted}}</td>
+                <td>Other Deductions</td>
+                <td class="right">0.00</td>
+            </tr>
+            <tr class="total-row">
+                <td>Gross Earnings</td>
+                <td class="right">{{grossSalaryFormatted}}</td>
+                <td>Total Deductions</td>
+                <td class="right">0.00</td>
+            </tr>
+        </table>
+
+        <div class="net-pay">
+            Total Net Payable: ₹ {{grossSalaryFormatted}}
+        </div>
+
+        <footer>
+            <div>
+                <p>A90, Noida, UP 201301</p>
+                <p>Email: hr@mindmanthansoftwaresolutions.com</p>
+            </div>
+            <div style="text-align: right;">
+                <p>Generated on: {{timestamp}}</p>
+                <p>This is a system generated payslip.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

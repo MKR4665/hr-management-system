@@ -1,11 +1,104 @@
-<div style="font-family: Arial, sans-serif; padding: 40px; color: #333;">
-  <h1 style="color: #6a4dff; text-align: center;">Experience Certificate</h1>
-  <p>Date: {{date}}</p>
-  <p>To Whom It May Concern,</p>
-  <p>This is to certify that <strong>{{firstName}} {{lastName}}</strong> served as <strong>{{jobTitle}}</strong> at HRM HUB from {{hireDate}} to {{date}}.</p>
-  <p>We found them to be hardworking and dedicated. We wish them success in their future endeavors.</p>
-  <div style="margin-top: 60px;">
-    <p>Sincerely,</p>
-    <p><strong>HR Manager</strong><br/>HRM HUB Team</p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Experience Letter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #222;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #003366;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #003366;
+            margin: 0;
+            font-size: 24px;
+        }
+        h2 {
+            text-align: center;
+            text-transform: uppercase;
+            color: #003366;
+            margin-bottom: 40px;
+        }
+        section {
+            text-align: justify;
+        }
+        h3 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .signatures {
+           display: flex;
+           justify-content: space-between;
+           margin-top: 100px;
+        }
+        .company-info {
+            margin-top: 50px;
+            font-size: 11px;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Mindmanthan Software Solutions</h1>
+        </header>
+        
+        <h2>Experience Letter</h2>
+
+        <section>
+            <h3><u>To Whomsoever It May Concern</u></h3>
+            <p>This is to certify that <strong>{{fullName}}</strong>, Employee ID <strong>{{id}}</strong>, was employed with <strong>MindManthan Software Solutions</strong> as <strong>{{jobTitle}}</strong> from <strong>{{hireDate}}</strong> to <strong>{{date}}</strong>.</p>
+            
+            <p>During his/her tenure with our organization, the employee was responsible for assigned duties and responsibilities and demonstrated professional conduct, dedication, and commitment towards work. He/She contributed positively to the team and carried out responsibilities as per company standards.</p>
+            
+            <p>His/Her conduct and performance during the employment period were found to be satisfactory.</p>
+            
+            <p>We wish him/her success in future career endeavors.</p>
+
+            <div class="signatures">
+                <div>
+                    <p>_____________________</p>
+                    <p><strong>Employee Signature</strong></p>
+                </div>
+                
+                <div style="text-align: right;">
+                    <p>_____________________</p>
+                    <p><strong>Managing Director</strong></p>
+                    <p>Mindmanthan Software Solutions</p>
+                </div>
+            </div>
+
+            <div class="company-info">
+                <div>
+                    <p>Email: hr@mindmanthansoftwaresolutions.com</p>
+                    <p>Phone: +91 9277267732</p>
+                </div>
+                <div style="text-align: right;">
+                    <p>Address: A90, A Block, Sector 4 Noida, Uttar Pradesh 201301</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

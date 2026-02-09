@@ -14,6 +14,9 @@ const availableTemplates = [
   { id: 'OFFER_LETTER', label: 'Offer Letter', sub: 'Pre-employment offer of job and terms.' },
   { id: 'APPOINTMENT_LETTER', label: 'Appointment Letter', sub: 'Official employment offer and terms.' },
   { id: 'JOINING_LETTER', label: 'Joining Letter', sub: 'Employee report for duty acknowledgment.' },
+  { id: 'EMP_ID_ALLOTMENT', label: 'Employee ID Allotment', sub: 'Formal allotment of internal Employee ID.' },
+  { id: 'COMPANY_POLICY_ACK', label: 'Policy Acknowledgement', sub: 'Employee acceptance of company policies.' },
+  { id: 'PAYSLIP', label: 'Monthly Payslip', sub: 'Official monthly salary breakdown.' },
   { id: 'MOU', label: 'MOU', sub: 'Memorandum of understanding for collaboration.' },
   { id: 'NDA', label: 'Non-Disclosure Agreement', sub: 'Legal confidentiality terms.' },
   { id: 'INTERNSHIP_COMPLETION', label: 'Internship Completion', sub: 'Certificate for internship success.' },
@@ -34,8 +37,14 @@ export default function EmployeeDetailsPage() {
   const [activeTab, setActiveTab] = useState('personal'); 
   
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [activeEditTab, setActiveEditTab] = useState('personal');
+  const [isRejectionModalOpen, setIsRejectionModalOpen] = useState(false);
+  const [rejectionData, setRejectionData] = useState({ id: '', reason: '' });
   const [docLoading, setDocLoading] = useState(false);
   const [searchTemplate, setSearchTemplate] = useState('');
+
+  const [formData, setFormData] = useState({});
 
   const [selectedDocs, setSelectedDocs] = useState([]);
   const [emailForm, setEmailForm] = useState({
@@ -60,6 +69,107 @@ export default function EmployeeDetailsPage() {
       setLoading(false);
     }
   };
+
+  const handleUpdateStatus = async (docId, status, reason = null) => {
+    try {
+      setDocLoading(true);
+      await documentApi.updateStatus(docId, { status, reason });
+      toast(`Document ${status.toLowerCase()} successfully.`);
+      setIsRejectionModalOpen(false);
+      fetchData();
+    } catch (err) {
+      toast('Status update failed.', 'error');
+    } finally {
+      setDocLoading(false);
+    }
+  };
+
+  const handlePrint = (url) => {
+    const printWindow = window.open(url, '_blank');
+    if (printWindow) {
+      printWindow.onload = () => {
+        printWindow.print();
+      };
+    }
+  };
+
+  const handleOpenEdit = () => {
+    setActiveEditTab('personal');
+    setFormData({
+      firstName: employee.firstName,
+      lastName: employee.lastName,
+      email: employee.email,
+      phone: employee.phone || '',
+      profilePicture: '',
+      experienceCert: '',
+      idProof: '',
+      educationCert: '',
+      password: '',
+      department: employee.department,
+      jobTitle: employee.jobTitle,
+      status: employee.status,
+      hireDate: employee.hireDate ? new Date(employee.hireDate).toISOString().split('T')[0] : '',
+      jobGrade: employee.jobGrade || '',
+      employmentType: employee.employmentType || '',
+      reportingManager: employee.reportingManager || '',
+      workLocation: employee.workLocation || '',
+      basicSalary: employee.basicSalary || 0,
+      hra: employee.hra || 0,
+      specialAllowance: employee.specialAllowance || 0,
+      conveyanceAllowance: employee.conveyanceAllowance || 0,
+      grossSalary: employee.grossSalary || 0,
+      performanceBonus: employee.performanceBonus || 0,
+      noticePeriod: employee.noticePeriod || 90
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const { updateEmployee } = await import('../../domain/usecases/employees/employeeUsecases');
+      const dataToSend = { ...formData };
+      if (!dataToSend.password) delete dataToSend.password;
+
+      await updateEmployee(id, dataToSend);
+      toast('Profile updated successfully.');
+      setIsEditModalOpen(false);
+      fetchData();
+    } catch (err) {
+      toast(err.message, 'error');
+    }
+  };
+
+  const handleFileChange = (e, field) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, [field]: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const getImageUrl = (path) => {
+    if (!path) return null;
+    if (path.startsWith('data:')) return path;
+    const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    return `${baseUrl}${path}`;
+  };
+
+  const EditTabButton = ({ id, label }) => (
+    <button
+      type="button"
+      onClick={() => setActiveEditTab(id)}
+      className={cn(
+        "px-4 py-2 text-xs font-bold border-b-2 transition-all whitespace-nowrap",
+        activeEditTab === id ? "border-brand-600 text-brand-600" : "border-transparent text-slate-400 hover:text-slate-600"
+      )}
+    >
+      {label}
+    </button>
+  );
 
   // Helper to check if a document is already generated
   const getDocStatus = (type) => {
@@ -184,9 +294,13 @@ export default function EmployeeDetailsPage() {
           <div className="px-8 py-8">
             <div className="flex flex-col md:flex-row md:items-center gap-6">
               <div className="h-28 w-28 rounded-full bg-white/10 p-1.5 shadow-2xl mx-auto md:mx-0 ring-4 ring-white/20 backdrop-blur-sm">
-                <div className="h-full w-full rounded-full bg-white flex items-center justify-center text-brand-700 text-3xl font-black shadow-inner">
-                  {employee.firstName[0]}{employee.lastName[0]}
-                </div>
+                {employee.profilePicturePath ? (
+                   <img src={getImageUrl(employee.profilePicturePath)} alt="" className="h-full w-full rounded-full object-cover shadow-inner border-2 border-white" />
+                ) : (
+                  <div className="h-full w-full rounded-full bg-white flex items-center justify-center text-brand-700 text-3xl font-black shadow-inner">
+                    {employee.firstName[0]}{employee.lastName[0]}
+                  </div>
+                )}
               </div>
               <div className="flex-1 text-center md:text-left space-y-1">
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
@@ -211,7 +325,11 @@ export default function EmployeeDetailsPage() {
                 </div>
               </div>
               <div className="flex flex-row justify-center md:justify-end gap-2 pt-4 md:pt-0">
-                <Button variant="outline" className="border-white/40 text-white hover:bg-white hover:text-brand-700 bg-transparent border-2 font-bold px-4 h-10 text-xs transition-all">
+                <Button 
+                  variant="outline" 
+                  className="border-white/40 text-white hover:bg-white hover:text-brand-700 bg-transparent border-2 font-bold px-4 h-10 text-xs transition-all"
+                  onClick={handleOpenEdit}
+                >
                   Edit Profile
                 </Button>
                 <Button 
@@ -246,6 +364,15 @@ export default function EmployeeDetailsPage() {
           >
             Document Vault
           </button>
+          <button 
+            onClick={() => setActiveTab('verification')}
+            className={cn(
+              "px-6 py-3 text-sm font-bold border-b-2 transition-all whitespace-nowrap",
+              activeTab === 'verification' ? "border-brand-600 text-brand-600" : "border-transparent text-slate-400 hover:text-slate-600"
+            )}
+          >
+            Verification Center
+          </button>
         </div>
 
         {/* TAB CONTENT */}
@@ -258,17 +385,33 @@ export default function EmployeeDetailsPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Department</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.department}</p></div>
                     <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Job Title</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.jobTitle}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Job Grade</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.jobGrade || 'N/A'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Employment Type</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.employmentType || 'N/A'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Reporting Manager</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.reportingManager || 'N/A'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Work Location</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.workLocation || 'N/A'}</p></div>
                     <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Hire Date</Label><p className="text-sm font-semibold text-slate-900 mt-1">{new Date(employee.hireDate).toLocaleDateString()}</p></div>
                     <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Phone</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.phone || 'N/A'}</p></div>
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card className="border-none shadow-sm">
+                <CardHeader><CardTitle className="text-lg">Compensation Details</CardTitle></CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Basic Salary</Label><p className="text-sm font-semibold text-slate-900 mt-1">₹ {employee.basicSalary?.toLocaleString('en-IN') || '0'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Gross Salary</Label><p className="text-sm font-semibold text-slate-900 mt-1">₹ {employee.grossSalary?.toLocaleString('en-IN') || '0'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">HRA</Label><p className="text-sm font-semibold text-slate-900 mt-1">₹ {employee.hra?.toLocaleString('en-IN') || '0'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Notice Period</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.noticePeriod || '90'} Days</p></div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="border-none shadow-sm md:col-span-2">
                 <CardHeader><CardTitle className="text-lg">Recent Document Activity</CardTitle></CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {documents.slice(0, 5).map(doc => (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {documents.slice(0, 6).map(doc => (
                       <div key={doc.id} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
                         <div>
                           <p className="text-sm font-bold text-slate-700">{doc.type.replace(/_/g, ' ')}</p>
@@ -277,7 +420,74 @@ export default function EmployeeDetailsPage() {
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-600 uppercase">{doc.status}</span>
                       </div>
                     ))}
-                    {documents.length === 0 && <p className="text-sm text-slate-400 text-center py-8">No recent activity.</p>}
+                    {documents.length === 0 && <p className="text-sm text-slate-400 text-center py-8 w-full col-span-2">No recent activity.</p>}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          ) : activeTab === 'verification' ? (
+            <div className="space-y-6 animate-in fade-in duration-300">
+              <Card className="border-none shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-lg">Uploaded Documents Verification</CardTitle>
+                  <CardDescription>Review and validate documents uploaded by the employee.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {documents.filter(d => d.category === 'UPLOADED').length === 0 ? (
+                      <p className="text-center py-12 text-slate-400 font-medium">No uploaded documents found for verification.</p>
+                    ) : (
+                      documents.filter(d => d.category === 'UPLOADED').map(doc => (
+                        <div key={doc.id} className="p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-brand-100 transition-all">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div className="flex items-center gap-4">
+                              <div className={cn(
+                                "h-12 w-12 rounded-xl flex items-center justify-center text-white shadow-lg",
+                                doc.status === 'Approved' ? "bg-emerald-500" : doc.status === 'Rejected' ? "bg-rose-500" : "bg-amber-500"
+                              )}>
+                                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                              </div>
+                              <div>
+                                <h4 className="font-bold text-slate-900">{doc.type.replace(/_/g, ' ')}</h4>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <span className={cn(
+                                    "px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider",
+                                    doc.status === 'Approved' ? "bg-emerald-50 text-emerald-600" : 
+                                    doc.status === 'Rejected' ? "bg-rose-50 text-rose-600" : "bg-amber-50 text-amber-600"
+                                  )}>
+                                    {doc.status}
+                                  </span>
+                                  {doc.rejectionReason && (
+                                    <span className="text-[10px] text-rose-500 font-medium italic">Reason: {doc.rejectionReason}</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div className="flex flex-wrap items-center gap-2">
+                              <Button variant="outline" size="sm" className="h-8 text-[10px] font-bold uppercase gap-1" onClick={() => window.open(getImageUrl(doc.fileUrl), '_blank')}>
+                                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c3.163 0 5.927 1.42 7.746 3.646m1.796 3.354C20.268 16.057 16.477 19 12 19c-3.163 0-5.927-1.42-7.746-3.646" /></svg>
+                                View
+                              </Button>
+                              <Button variant="outline" size="sm" className="h-8 text-[10px] font-bold uppercase gap-1" onClick={() => handlePrint(getImageUrl(doc.fileUrl))}>
+                                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                                Print
+                              </Button>
+                              {doc.status === 'Pending' && (
+                                <>
+                                  <Button className="h-8 bg-emerald-600 hover:bg-emerald-700 text-[10px] font-bold uppercase" onClick={() => handleUpdateStatus(doc.id, 'Approved')}>
+                                    Approve
+                                  </Button>
+                                  <Button variant="destructive" className="h-8 text-[10px] font-bold uppercase" onClick={() => { setRejectionData({ id: doc.id, reason: '' }); setIsRejectionModalOpen(true); }}>
+                                    Reject
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -449,6 +659,200 @@ export default function EmployeeDetailsPage() {
                 </Button>
               </div>
             </div>
+          </Card>
+        </div>
+      )}
+
+      {/* Rejection Reason Modal */}
+      {isRejectionModalOpen && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md" onClick={() => setIsRejectionModalOpen(false)} />
+          <Card className="relative w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200">
+            <CardHeader>
+              <CardTitle className="text-rose-600">Reject Document</CardTitle>
+              <CardDescription>Please provide a reason for rejecting this document. The employee will see this message.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="rejectionReason">Rejection Reason</Label>
+                <textarea 
+                  id="rejectionReason"
+                  className="w-full min-h-[120px] rounded-xl border-2 border-slate-100 p-3 text-sm focus:border-brand-500 outline-none transition-all"
+                  placeholder="e.g. Document is blurry, Expired ID, etc."
+                  value={rejectionData.reason}
+                  onChange={(e) => setRejectionData({ ...rejectionData, reason: e.target.value })}
+                />
+              </div>
+              <div className="flex justify-end gap-3">
+                <Button variant="outline" onClick={() => setIsRejectionModalOpen(false)}>Cancel</Button>
+                <Button 
+                  className="bg-rose-600 hover:bg-rose-700 min-w-[100px]" 
+                  disabled={!rejectionData.reason.trim() || docLoading}
+                  onClick={() => handleUpdateStatus(rejectionData.id, 'Rejected', rejectionData.reason)}
+                >
+                  {docLoading ? 'Processing...' : 'Confirm Rejection'}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Edit Profile Modal */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setIsEditModalOpen(false)} />
+          <Card className="relative w-full max-w-2xl shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
+            <CardHeader className="border-b pb-4">
+              <CardTitle>Edit Employee Profile</CardTitle>
+              <div className="flex gap-2 overflow-x-auto thin-scrollbar pt-2">
+                <EditTabButton id="personal" label="Personal" />
+                <EditTabButton id="compensation" label="Compensation" />
+                <EditTabButton id="credentials" label="Credentials" />
+                <EditTabButton id="documents" label="Documents" />
+              </div>
+            </CardHeader>
+            <CardContent className="flex-1 overflow-y-auto p-6">
+              <form onSubmit={handleUpdate} id="edit-employee-form" className="space-y-6">
+                
+                {activeEditTab === 'personal' && (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <div className="flex items-center gap-4 pb-4 border-b">
+                      <div className="relative">
+                        {formData.profilePicture || employee.profilePicturePath ? (
+                          <img src={getImageUrl(formData.profilePicture || employee.profilePicturePath)} alt="Preview" className="h-20 w-20 rounded-full object-cover border-2 border-brand-200" />
+                        ) : (
+                          <div className="h-20 w-20 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 border-2 border-dashed border-slate-300">
+                            <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                          </div>
+                        )}
+                        <label htmlFor="edit-photo-upload" className="absolute -bottom-1 -right-1 h-8 w-8 bg-brand-600 rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer hover:bg-brand-700 transition-colors">
+                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                          <input id="edit-photo-upload" type="file" className="hidden" accept="image/*" onChange={(e) => handleFileChange(e, 'profilePicture')} />
+                        </label>
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-900">Profile Picture</h4>
+                        <p className="text-xs text-slate-500">Update the employee's profile photo.</p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">First Name</Label>
+                        <Input id="firstName" required value={formData.firstName} onChange={(e) => setFormData({...formData, firstName: e.target.value})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Last Name</Label>
+                        <Input id="lastName" required value={formData.lastName} onChange={(e) => setFormData({...formData, lastName: e.target.value})} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email Address</Label>
+                        <Input id="email" type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Phone</Label>
+                        <Input id="phone" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="department">Department</Label>
+                        <Input id="department" required value={formData.department} onChange={(e) => setFormData({...formData, department: e.target.value})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="jobTitle">Job Title</Label>
+                        <Input id="jobTitle" required value={formData.jobTitle} onChange={(e) => setFormData({...formData, jobTitle: e.target.value})} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="reportingManager">Reporting Manager</Label>
+                        <Input id="reportingManager" value={formData.reportingManager} onChange={(e) => setFormData({...formData, reportingManager: e.target.value})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="workLocation">Work Location</Label>
+                        <Input id="workLocation" value={formData.workLocation} onChange={(e) => setFormData({...formData, workLocation: e.target.value})} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="hireDate">Date of Joining</Label>
+                        <Input id="hireDate" type="date" value={formData.hireDate} onChange={(e) => setFormData({...formData, hireDate: e.target.value})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="noticePeriod">Notice Period (Days)</Label>
+                        <Input id="noticePeriod" type="number" value={formData.noticePeriod} onChange={(e) => setFormData({...formData, noticePeriod: parseInt(e.target.value) || 0})} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeEditTab === 'compensation' && (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <h4 className="text-sm font-bold text-slate-700 border-b pb-2">Salary Breakdown (Monthly)</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="basicSalary">Basic Salary</Label>
+                        <Input id="basicSalary" type="number" value={formData.basicSalary} onChange={(e) => setFormData({...formData, basicSalary: parseFloat(e.target.value) || 0})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="hra">HRA</Label>
+                        <Input id="hra" type="number" value={formData.hra} onChange={(e) => setFormData({...formData, hra: parseFloat(e.target.value) || 0})} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 border-t pt-4">
+                      <div className="space-y-2">
+                        <Label className="text-brand-600 font-black">Gross Total Salary</Label>
+                        <Input id="grossSalary" className="border-brand-200 bg-brand-50/30" type="number" value={formData.grossSalary} onChange={(e) => setFormData({...formData, grossSalary: parseFloat(e.target.value) || 0})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="performanceBonus">Annual Bonus %</Label>
+                        <Input id="performanceBonus" type="number" value={formData.performanceBonus} onChange={(e) => setFormData({...formData, performanceBonus: parseFloat(e.target.value) || 0})} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeEditTab === 'credentials' && (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <h4 className="text-sm font-bold text-slate-700 border-b pb-2">Employee Portal Access</h4>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-password">Reset Password</Label>
+                      <Input id="edit-password" type="password" placeholder="Leave blank to keep current" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} />
+                    </div>
+                  </div>
+                )}
+
+                {activeEditTab === 'documents' && (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <h4 className="text-sm font-bold text-slate-700 border-b pb-2">Verifications & Certificates</h4>
+                    <div className="space-y-4">
+                      <div className="p-4 border rounded-xl bg-slate-50/50">
+                        <Label className="block mb-2">ID Proof (Aadhar/Passport/PAN)</Label>
+                        <Input type="file" className="bg-white" onChange={(e) => handleFileChange(e, 'idProof')} />
+                        {employee.idProofPath && <p className="text-[10px] text-emerald-600 mt-1 font-bold">✓ File already uploaded</p>}
+                      </div>
+                      <div className="p-4 border rounded-xl bg-slate-50/50">
+                        <Label className="block mb-2">Educational Certificates</Label>
+                        <Input type="file" className="bg-white" onChange={(e) => handleFileChange(e, 'educationCert')} />
+                        {employee.educationCertPath && <p className="text-[10px] text-emerald-600 mt-1 font-bold">✓ File already uploaded</p>}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+              </form>
+            </CardContent>
+            <CardHeader className="border-t p-6 flex flex-row items-center justify-between">
+              <div className="flex gap-3 ml-auto">
+                <Button type="button" variant="outline" onClick={() => setIsEditModalOpen(false)}>Cancel</Button>
+                <Button form="edit-employee-form" type="submit" className="bg-brand-600 hover:bg-brand-700 min-w-[120px]">
+                  Save Profile
+                </Button>
+              </div>
+            </CardHeader>
           </Card>
         </div>
       )}

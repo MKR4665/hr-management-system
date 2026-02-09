@@ -1,11 +1,87 @@
-<div style="font-family: Arial, sans-serif; padding: 40px; color: #333;">
-  <h1 style="color: #6a4dff; text-align: center;">Appointment Letter</h1>
-  <p>Date: {{date}}</p>
-  <p>Dear {{firstName}} {{lastName}},</p>
-  <p>We are pleased to appoint you as <strong>{{jobTitle}}</strong> at HRM HUB. Your appointment is effective from {{hireDate}}.</p>
-  <p>Please find the attached terms of your appointment for your review and signature.</p>
-  <div style="margin-top: 60px;">
-    <p>Sincerely,</p>
-    <p><strong>HR Department</strong><br/>HRM HUB Team</p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment Letter</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.5; color: #222; margin: 0; padding: 0; font-size: 13px; }
+        .page { width: 100%; padding: 40px; box-sizing: border-box; background: #fff; }
+        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
+        .header-section { display: flex; justify-content: space-between; align-items: center; }
+        h1 { color: #003366; margin: 0; font-size: 20px; }
+        .appoint { text-align: center; color: #003366; text-transform: uppercase; margin: 10px 0; }
+        .company-detail { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .company-info p { margin: 2px 0; font-size: 10px; color: #666; }
+        .section-title { background: #003366; color: #fff; padding: 5px 10px; font-weight: bold; margin: 15px 0 10px 0; }
+        ul { padding-left: 20px; }
+        ul li { margin-bottom: 5px; }
+        .signatures { display: flex; justify-content: space-between; margin-top: 40px; }
+        .page-break { page-break-after: always; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-section">
+                <h1>Mindmanthan Software Solutions</h1>
+            </div>
+            <h3 class="appoint"><u>Appointment Letter</u></h3>
+        </header>
+
+        <section>
+            <div class="company-detail">
+                <div>
+                    <p><strong>Date:</strong> {{date}}</p>
+                    <p>To,<br><strong>{{fullName}}</strong></p>
+                    <p><strong>Subject:</strong> Appointment Letter</p>
+                    <p>Dear <strong>{{firstName}}</strong>,</p>
+                </div>
+                <div class="company-info">
+                    <p>A90, A Block, Sector 4 Noida, UP 201301</p>
+                    <p>Email: Info@mindmanthansoftwaresolutions.com</p>
+                    <p>Phone: +91 9277267732</p>
+                </div>
+            </div>
+
+            <p>We are pleased to appoint you as <strong>{{jobTitle}}</strong> at <strong>Mindmanthan Software Solutions</strong>, effective from <strong>{{hireDate}}</strong>.</p>
+
+            <div class="section-title">Appointment Details</div>
+            <ul>
+                <li><strong>Designation:</strong> {{jobTitle}}</li>
+                <li><strong>Department:</strong> {{department}}</li>
+                <li><strong>Date of Joining:</strong> {{hireDate}}</li>
+                <li><strong>Work Location:</strong> {{workLocation}}</li>
+                <li><strong>Employment Type:</strong> {{employmentType}}</li>
+                <li><strong>Probation Period:</strong> 6 Months</li>
+            </ul>
+
+            <div class="section-title">Terms & Conditions</div>
+            <ul>
+                <li><strong>Salary & Payment Terms:</strong> At the time of joining, 15 days' salary will be kept on hold as a retention amount. Released on proper exit.</li>
+                <li><strong>Notice Period:</strong> After confirmation, either party must serve a 45 days' notice period.</li>
+            </ul>
+        </section>
+        <div class="page-break"></div>
+        <section>
+            <ul>
+                <li><strong>Confidentiality:</strong> Employee must maintain strict confidentiality of company data.</li>
+                <li><strong>Termination:</strong> Company reserves the right to terminate without notice for misconduct.</li>
+            </ul>
+
+            <p>I, <strong>{{fullName}}</strong>, hereby accept the appointment and agree to abide by the terms and conditions mentioned above.</p>
+
+            <div class="signatures">
+                <div>
+                    <p>_____________________</p>
+                    <p><strong>Employee Signature</strong></p>
+                </div>
+                <div style="text-align: right;">
+                    <p>_____________________</p>
+                    <p><strong>Managing Director</strong></p>
+                    <p>Mindmanthan Software Solutions</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

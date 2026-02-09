@@ -1,10 +1,73 @@
-<div style="font-family: Arial, sans-serif; padding: 40px; color: #333;">
-  <h1 style="color: #6a4dff; text-align: center;">Notice Period Acknowledgment</h1>
-  <p>Date: {{date}}</p>
-  <p>Dear {{firstName}},</p>
-  <p>We acknowledge receipt of your resignation dated {{date}}. As per your contract, your notice period begins today and your final working day will be communicated shortly.</p>
-  <div style="margin-top: 60px;">
-    <p>Sincerely,</p>
-    <p><strong>HR Department</strong></p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notice Period Acknowledgement</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.4; color: #222; margin: 0; padding: 0; font-size: 13px; }
+        .page { width: 100%; padding: 40px; box-sizing: border-box; background: #fff; }
+        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
+        h1 { color: #003366; margin: 0; font-size: 20px; }
+        .title { text-align: center; color: #003366; text-transform: uppercase; margin: 10px 0; }
+        .info-grid { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        ul { padding-left: 20px; }
+        ul li { margin-bottom: 5px; }
+        .signatures { display: flex; justify-content: space-between; margin-top: 50px; }
+        .company-info { margin-top: 50px; font-size: 10px; color: #666; border-top: 1px solid #eee; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Mindmanthan Software Solutions</h1>
+            <h3 class="title"><u>Notice Period Acknowledgement Letter</u></h3>
+        </header>
+
+        <section>
+            <div class="info-grid">
+                <div>
+                    <p>Date: {{date}}</p>
+                    <p>To,<br><strong>{{fullName}}</strong></p>
+                </div>
+                <div>
+                    <p>Employee ID: {{id}}</p>
+                    <p>Designation: {{jobTitle}}</p>
+                    <p>Department: {{department}}</p>
+                </div>
+            </div>
+
+            <p>Subject: Acknowledgement of Notice Period</p>
+            <p><strong>Dear {{firstName}},</strong></p>
+            <p>This is to formally acknowledge the receipt of your resignation/separation request dated <strong>{{date}}</strong>. As per the terms of your employment with <strong>MindManthan Software Solutions</strong>, you are required to serve a notice period of <strong>{{noticePeriod}} days</strong>.</p>
+            
+            <p>During the notice period, you are expected to:</p>
+            <ul>
+                <li>Perform your duties with full responsibility and professionalism.</li>
+                <li>Complete proper knowledge transfer (KT).</li>
+                <li>Hand over all assigned tasks, projects, and responsibilities.</li>
+                <li>Return all company assets, credentials, and access.</li>
+            </ul>
+            
+            <p>Final settlement and relieving documents shall be processed only after successful completion of the full notice period and clearance of all dues.</p>
+        </section>
+
+        <footer>
+            <div class="signatures">
+                <div>
+                    <p>_____________________</p>
+                    <p><strong>Kartik Khare</strong></p>
+                    <p>Managing Director (MD)</p>
+                </div>
+                <div style="text-align: right;">
+                    <p>_____________________</p>
+                    <p><strong>Prabhat Paswan</strong></p>
+                    <p>Chief Executive Officer (CEO)</p>
+                </div>
+            </div>
+            <div class="company-info">
+                <p>A90, Noida, UP 201301 | Info@mindmanthansoftwaresolutions.com</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

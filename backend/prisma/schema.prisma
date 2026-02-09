@@ -36,6 +36,28 @@ model Employee {
   jobTitle    String
   status      String   @default("Active")
   hireDate    DateTime @default(now())
+  
+  // File Paths (Storing paths, not raw data)
+  profilePicturePath   String?  @db.Text
+  experienceCertPath   String?  @db.Text
+  idProofPath          String?  @db.Text
+  educationCertPath    String?  @db.Text
+
+  // New fields for document generation
+  jobGrade          String?
+  employmentType    String?   @default("Permanent / Full-Time")
+  reportingManager  String?
+  workLocation      String?   @default("Onsite")
+  
+  // Compensation
+  basicSalary         Float?
+  hra                 Float?
+  specialAllowance    Float?
+  conveyanceAllowance Float?
+  grossSalary         Float?
+  performanceBonus    Float?    // Percentage
+  noticePeriod        Int?      // Days
+
   userId      String?  @unique
   user        User?    @relation(fields: [userId], references: [id])
   documents   Document[]
@@ -45,9 +67,16 @@ model Employee {
 
 model Document {
   id          String   @id @default(cuid())
-  type        String   // Offer Letter, NDA, Joining Letter, etc.
-  status      String   @default("Generated") // Generated, Sent, Signed
-  fileUrl     String?  // If stored in cloud storage
+  type        String   // Offer Letter, ID Proof, Education Cert, etc.
+  category    String   @default("GENERATED") // GENERATED or UPLOADED
+  status      String   @default("Generated") // Generated, Sent, Signed, Pending, Approved, Rejected
+  fileUrl     String?  @db.Text
+  rejectionReason String? @db.Text
+  
+  // Metadata for periodic documents
+  month       String?
+  year        Int?
+
   employeeId  String
   employee    Employee @relation(fields: [employeeId], references: [id])
   createdAt   DateTime @default(now())

@@ -1,10 +1,71 @@
-<div style="font-family: Arial, sans-serif; padding: 40px; color: #333;">
-  <h1 style="color: #6a4dff; text-align: center;">Promotion Letter</h1>
-  <p>Date: {{date}}</p>
-  <p>Congratulations <strong>{{firstName}}</strong>,</p>
-  <p>Based on your outstanding performance and commitment, we are pleased to promote you to the position of <strong>{{jobTitle}}</strong>.</p>
-  <div style="margin-top: 60px;">
-    <p>Sincerely,</p>
-    <p><strong>Leadership Team</strong><br/>HRM HUB</p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Promotion Letter</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.4; color: #222; margin: 0; padding: 0; font-size: 13px; }
+        .page { width: 100%; padding: 40px; box-sizing: border-box; background: #fff; }
+        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
+        h1 { color: #003366; margin: 0; font-size: 20px; }
+        .title { text-align: center; color: #003366; text-transform: uppercase; margin: 10px 0; }
+        .emp-info { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .designation-box { background: #f0f4f8; border: 1px solid #003366; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .signatures { display: flex; justify-content: space-between; margin-top: 50px; }
+        .company-info { margin-top: 50px; font-size: 10px; color: #666; border-top: 1px solid #eee; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Mindmanthan Software Solutions</h1>
+            <h3 class="title"><u>Promotion Letter</u></h3>
+        </header>
+
+        <section>
+            <div class="emp-info">
+                <div>
+                    <p>Date: {{date}}</p>
+                    <p>To,<br><strong>{{fullName}}</strong></p>
+                </div>
+                <div>
+                    <p>Employee ID: {{id}}</p>
+                    <p>Current Designation: {{jobTitle}}</p>
+                    <p>Department: {{department}}</p>
+                </div>
+            </div>
+
+            <p><strong>Dear {{firstName}},</strong></p>
+            <p>We are pleased to inform you that, in recognition of your consistent performance, dedication, and valuable contribution, the management of <strong>MindManthan Software Solutions</strong> has decided to promote you.</p>
+            
+            <p>With effect from <strong>{{date}}</strong>, you are hereby promoted to the position of:</p>
+            
+            <div class="designation-box">
+                <p><strong>New Designation:</strong> {{jobTitle}} (Senior)</p>
+                <p><strong>Department:</strong> {{department}}</p>
+                <p><strong>Reporting To:</strong> {{reportingManager}}</p>
+            </div>
+
+            <p>Your revised roles and responsibilities will be communicated separately. We congratulate you on your promotion and look forward to your continued contribution to the growth and success of MindManthan Software Solutions.</p>
+        </section>
+
+        <footer>
+            <div class="signatures">
+                <div>
+                    <p>_____________________</p>
+                    <p><strong>Kartik Khare</strong></p>
+                    <p>Managing Director (MD)</p>
+                </div>
+                <div style="text-align: right;">
+                    <p>_____________________</p>
+                    <p><strong>Prabhat Paswan</strong></p>
+                    <p>Chief Executive Officer (CEO)</p>
+                </div>
+            </div>
+            <div class="company-info">
+                <p>A90, Noida, UP 201301 | Info@mindmanthansoftwaresolutions.com</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

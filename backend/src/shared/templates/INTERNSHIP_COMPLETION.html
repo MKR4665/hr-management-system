@@ -1,13 +1,53 @@
-<div style="font-family: Arial, sans-serif; padding: 40px; color: #333; text-align: center;">
-  <h1 style="color: #6a4dff; font-size: 32px;">Internship Completion Certificate</h1>
-  <p style="font-size: 18px; margin-top: 40px;">This is to certify that</p>
-  <h2 style="font-size: 24px; color: #333;">{{firstName}} {{lastName}}</h2>
-  <p style="font-size: 18px;">has successfully completed their internship at HRM HUB.</p>
-  <p>Department: {{department}}</p>
-  <p>Duration: {{hireDate}} to {{date}}</p>
-  <div style="margin-top: 80px; display: flex; justify-content: center;">
-    <div style="width: 200px; border-top: 2px solid #6a4dff; padding-top: 10px;">
-      <p>Managing Director</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Internship Certificate</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #222; margin: 0; padding: 0; }
+        .container { width: 100%; padding: 50px; box-sizing: border-box; text-align: center; border: 10px solid #003366; }
+        .header img { height: 80px; }
+        h1 { color: #003366; font-size: 32px; margin: 20px 0; }
+        .certificate-title { font-size: 24px; text-transform: uppercase; border-bottom: 2px solid #003366; display: inline-block; padding-bottom: 5px; margin-bottom: 30px; }
+        .recipient { font-size: 28px; font-weight: bold; color: #003366; margin: 20px 0; }
+        .content { font-size: 16px; margin: 30px auto; max-width: 800px; text-align: justify; }
+        .signatures { display: flex; justify-content: space-between; margin-top: 60px; padding: 0 40px; }
+        .footer-info { margin-top: 40px; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mindmanthan Software Solutions</h1>
+        </div>
+        
+        <div class="certificate-title">Internship Completion Certificate</div>
+        
+        <p>This is to certify that</p>
+        <div class="recipient">{{fullName}}</div>
+        <p>Employee ID: {{id}}</p>
+
+        <div class="content">
+            <p>has successfully completed his/her internship with <strong>MindManthan Software Solutions</strong> as a <strong>{{jobTitle}}</strong> from <strong>{{hireDate}}</strong> to <strong>{{date}}</strong>. During the internship period, he/she demonstrated sincerity, discipline, and a strong willingness to learn. He/she actively worked on assigned tasks and projects, and his/her conduct and performance were found to be satisfactory throughout the training period.</p>
+            <p>We appreciate his/her efforts and wish him/her every success in future academic and professional endeavors.</p>
+        </div>
+
+        <div class="signatures">
+            <div style="text-align: left;">
+                <p>_____________________</p>
+                <p><strong>Kartik Khare</strong></p>
+                <p>Managing Director (MD)</p>
+            </div>
+            <div style="text-align: right;">
+                <p>_____________________</p>
+                <p><strong>Prabhat Paswan</strong></p>
+                <p>Chief Executive Officer (CEO)</p>
+            </div>
+        </div>
+
+        <div class="footer-info">
+            <p>Date: {{date}} | Noida, Uttar Pradesh</p>
+        </div>
     </div>
-  </div>
-</div>
+</body>
+</html>

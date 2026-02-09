@@ -1,14 +1,224 @@
-<div style="font-family: Arial, sans-serif; padding: 40px; color: #333;">
-  <div style="text-align: center; margin-bottom: 40px;">
-    <h1 style="color: #6a4dff; margin: 0;">HRM HUB</h1>
-    <p style="color: #666; font-size: 14px;">Official Offer of Employment</p>
-  </div>
-  <p>Date: {{date}}</p>
-  <p>Dear <strong>{{firstName}} {{lastName}}</strong>,</p>
-  <p>We are pleased to offer you the position of <strong>{{jobTitle}}</strong> at HRM HUB. Your expertise and passion are exactly what we are looking for.</p>
-  <p>This offer is subject to the terms and conditions discussed during the interview process.</p>
-  <div style="margin-top: 60px;">
-    <p>Sincerely,</p>
-    <p><strong>HR Department</strong><br/>HRM HUB Team</p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Offer Letter</title>
+    <style>
+        :root {
+            --primary: #003366;
+            --border: #e0e0e0;
+            --text: #222;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            color: var(--text);
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+        }
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        .container {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            background: var(--primary);
+            color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .company-info h1 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .company-info p {
+            margin: 2px 0;
+            font-size: 11px;
+        }
+        .name {
+           color: #003366;
+           text-align: center;
+           border-bottom: 2px solid #003366;
+           padding-bottom: 5px;
+           margin-top: 0;
+        }
+        h3 {
+            color: #003366;
+            border-left: 4px solid #003366;
+            padding-left: 10px;
+            margin: 15px 0 10px 0;
+            font-size: 16px;
+        }
+        .details-grid {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .details-grid p {
+            margin: 3px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: #fcfcfc;
+        }
+        table th, table td {
+            border: 1px solid var(--border);
+            padding: 8px;
+            text-align: left;
+        }
+        table th {
+            background: #f0f4f8;
+        }
+        .signatures {
+           display: flex;
+           justify-content: space-between;
+           margin-top: 30px;
+           padding-top: 20px;
+           border-top: 1px solid #eee;
+        }
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="company-info">
+                <h1>Mindmanthan Software Solutions</h1>
+                <p>A90, A Block, Sector 4 Noida, Uttar Pradesh 201301</p>
+                <p>Email: Info@mindmanthansoftwaresolutions.com</p>
+                <p>Phone: +91 9277267732 | +91 7011502461</p>
+            </div>
+        </header>
+
+        <h2 class="name">Strictly Private & Confidential Offer of Employment</h2>
+        
+        <div class="details-grid">
+            <div>
+                <p><strong>PREPARED FOR:</strong> {{fullName}}</p>
+                <p><strong>POSITION:</strong> {{jobTitle}}</p>
+                <p><strong>DATE OF ISSUE:</strong> {{date}}</p>
+                <p><strong>DOCUMENT ID:</strong> MM/HR/{{year}}/{{id}}</p>
+            </div>
+        </div>
+
+        <section>
+            <h3>Welcome & Role Mission</h3>
+            <p>Dear {{firstName}},</p>
+            <p>Welcome to the churning of ideas.</p>
+            <p>On behalf of Mindmanthan, we are delighted to formally extend this offer of employment for the position of <strong>{{jobTitle}}</strong>. We were thoroughly impressed by your background, expertise, and the potential value you bring to our organization.</p>
+        </section>
+
+        <section>
+            <h3>Employment Details</h3>
+            <table>
+                <tr>
+                    <td><strong>Job Title:</strong></td>
+                    <td>{{jobTitle}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Job Grade:</strong></td>
+                    <td>{{jobGrade}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Department:</strong></td>
+                    <td>{{department}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Employment Type:</strong></td>
+                    <td>{{employmentType}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Reporting Manager:</strong></td>
+                    <td>{{reportingManager}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Work Location:</strong></td>
+                    <td>{{workLocation}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Date of Joining:</strong></td>
+                    <td>{{hireDate}}</td>
+                </tr>
+            </table>
+        </section>
+
+        <div class="page-break"></div>
+
+        <section>
+            <h3>Compensation</h3>
+            <p>Your total compensation package is designed to reward high performance and commitment.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Salary Component</th>
+                        <th>Monthly (INR)</th>
+                        <th>Annual (INR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Basic Salary</td>
+                        <td>{{basicSalaryFormatted}}</td>
+                        <td>{{basicSalaryFormatted}} x 12</td>
+                    </tr>
+                    <tr>
+                        <td>House Rent Allowance (HRA)</td>
+                        <td>{{hraFormatted}}</td>
+                        <td>{{hraFormatted}} x 12</td>
+                    </tr>
+                    <tr>
+                        <td>Special Allowance</td>
+                        <td>{{specialAllowanceFormatted}}</td>
+                        <td>{{specialAllowanceFormatted}} x 12</td>
+                    </tr>
+                    <tr>
+                        <td>Conveyance Allowance</td>
+                        <td>{{conveyanceAllowanceFormatted}}</td>
+                        <td>{{conveyanceAllowanceFormatted}} x 12</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gross Salary</strong></td>
+                        <td><strong>{{grossSalaryFormatted}}</strong></td>
+                        <td><strong>{{annualGrossSalaryFormatted}}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3>Variable Pay & KPIs</h3>
+            <p><strong>Performance Bonus:</strong> You are eligible for an annual performance-linked incentive of up to {{performanceBonus}}% of your Gross Salary.</p>
+            <p><strong>Notice Period:</strong> Following confirmation, either party may terminate the employment by providing {{noticePeriod}} days written notice.</p>
+        </section>
+
+        <footer>
+            <div class="signatures">
+                <div>
+                    <p>_________________________</p>
+                    <p><strong>{{fullName}}</strong></p>
+                    <p>Candidate Signature</p>
+                </div>
+                <div>
+                    <p>_________________________</p>
+                    <p><strong>Authorized Signatory</strong></p>
+                    <p>Mindmanthan Software Solutions</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

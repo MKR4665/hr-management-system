@@ -1,9 +1,64 @@
-<div style="font-family: Arial, sans-serif; padding: 40px; color: #333;">
-  <h1 style="color: #6a4dff; text-align: center;">Joining Report</h1>
-  <p>Date: {{date}}</p>
-  <p>To: HR Department, HRM HUB</p>
-  <p>I, <strong>{{firstName}} {{lastName}}</strong>, am reporting for duty today, {{date}}, as <strong>{{jobTitle}}</strong> in the <strong>{{department}}</strong> department.</p>
-  <div style="margin-top: 60px; border-top: 1px solid #ccc; width: 200px; padding-top: 10px;">
-    <p>Employee Signature</p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Joining Letter</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.4; color: #222; margin: 0; padding: 0; font-size: 13px; }
+        .page { width: 100%; padding: 40px; box-sizing: border-box; background: #fff; }
+        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
+        h1 { color: #003366; margin: 0; font-size: 20px; }
+        .title { text-align: center; color: #003366; text-transform: uppercase; margin: 10px 0; }
+        .emp-info { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .signatures { display: flex; justify-content: space-between; margin-top: 50px; }
+        .company-info { margin-top: 50px; font-size: 10px; color: #666; border-top: 1px solid #eee; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Mindmanthan Software Solutions</h1>
+            <h3 class="title"><u>Joining Letter</u></h3>
+        </header>
+
+        <section>
+            <div class="emp-info">
+                <div>
+                    <p>Date: {{date}}</p>
+                    <p>To,<br><strong>The HR Manager</strong><br>Mindmanthan Software Solutions</p>
+                </div>
+                <div>
+                    <p>From: <strong>{{fullName}}</strong></p>
+                    <p>Designation: {{jobTitle}}</p>
+                </div>
+            </div>
+
+            <p><strong>Subject: Letter of Joining</strong></p>
+            <p>Dear Sir/Madam,</p>
+            <p>I am pleased to report for duty today, <strong>{{hireDate}}</strong>, as <strong>{{jobTitle}}</strong> at <strong>Mindmanthan Software Solutions</strong>, in accordance with the Appointment Letter dated <strong>{{date}}</strong>.</p>
+            
+            <p>I hereby accept all the terms and conditions mentioned in my appointment letter and company policies. I assure you of my best services and dedication towards the organization.</p>
+            
+            <p>I have submitted all the necessary documents for your records.</p>
+        </section>
+
+        <footer>
+            <div class="signatures">
+                <div>
+                    <p>_____________________</p>
+                    <p><strong>{{fullName}}</strong></p>
+                    <p>Employee Signature</p>
+                </div>
+                <div style="text-align: right;">
+                    <p>_____________________</p>
+                    <p><strong>HR Department</strong></p>
+                    <p>Received By</p>
+                </div>
+            </div>
+            <div class="company-info">
+                <p>A90, Noida, UP 201301 | Info@mindmanthansoftwaresolutions.com</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

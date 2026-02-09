@@ -1,9 +1,70 @@
-<div style="font-family: Arial, sans-serif; padding: 40px; color: #333;">
-  <h1 style="color: #6a4dff; text-align: center;">Non-Disclosure Agreement</h1>
-  <p>Date: {{date}}</p>
-  <p>This agreement ensures confidentiality between HRM HUB and <strong>{{firstName}} {{lastName}}</strong>.</p>
-  <p>The employee agrees not to disclose proprietary information or trade secrets during or after their employment.</p>
-  <div style="margin-top: 60px; border-top: 1px solid #ccc; width: 200px; padding-top: 10px;">
-    <p>Employee Signature</p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NDA & Data Security</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.4; color: #222; margin: 0; padding: 0; font-size: 12px; }
+        .page { width: 100%; padding: 30px; box-sizing: border-box; background: #fff; }
+        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; text-align: center; }
+        h1 { color: #003366; margin: 0; font-size: 18px; }
+        h2 { color: #003366; text-transform: uppercase; font-size: 14px; margin: 10px 0; }
+        .emp-info { margin-bottom: 20px; }
+        .list-item { padding-left: 20px; }
+        .list-item li { margin-bottom: 8px; text-align: justify; }
+        .signatures { display: flex; justify-content: space-between; margin-top: 30px; }
+        .company-info { margin-top: 30px; font-size: 10px; color: #666; border-top: 1px solid #eee; padding-top: 10px; display: flex; justify-content: space-between; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Mindmanthan Software Solutions</h1>
+            <h2><u>IT & Data Security Acceptance Letter (NDA)</u></h2>
+        </header>
+
+        <section>
+            <p>Date: {{date}}</p>
+            <div class="emp-info">
+                <p><strong>Employee Name:</strong> {{fullName}}</p>
+                <p><strong>Employee ID:</strong> {{id}}</p>
+                <p><strong>Designation:</strong> {{jobTitle}}</p>
+            </div>
+
+            <p>I, <strong>{{fullName}}</strong>, hereby acknowledge and agree to abide by the IT & Data Security Policies of <strong>MindManthan Software Solutions</strong> during and after my employment.</p>
+
+            <ul class="list-item">
+                <li><strong>Confidential Information:</strong> All company-related information including but not limited to source code, software architecture, internal tools, databases, and client data are strictly confidential.</li>
+                <li><strong>System & Access:</strong> I shall use company-provided systems and credentials only for official purposes.</li>
+                <li><strong>Data Protection:</strong> I will not copy, leak, or misuse any company data without written authorization.</li>
+                <li><strong>Intellectual Property:</strong> Any work created during my employment remains the sole property of MindManthan Software Solutions.</li>
+                <li><strong>Violation:</strong> Any violation may result in disciplinary action or legal proceedings.</li>
+            </ul>
+
+            <p>I confirm that I have read and voluntarily accept all the above terms.</p>
+
+            <div class="signatures">
+                <div>
+                    <p>_____________________</p>
+                    <p><strong>Employee Signature</strong></p>
+                </div>
+                <div style="text-align: right;">
+                    <p>_____________________</p>
+                    <p><strong>Managing Director</strong></p>
+                    <p>Mindmanthan Software Solutions</p>
+                </div>
+            </div>
+
+            <div class="company-info">
+                <div>
+                    <p>Email: hr@mindmanthansoftwaresolutions.com</p>
+                    <p>Phone: +91 9277267732</p>
+                </div>
+                <div style="text-align: right;">
+                    <p>Address: A90, Noida, UP 201301</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

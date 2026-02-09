@@ -2,8 +2,8 @@ const documentUsecases = require('../../domain/usecases/documents/documentUsecas
 
 const generateAndDownload = async (req, res, next) => {
   try {
-    const { employeeId, type } = req.body;
-    const { html } = await documentUsecases.generateDocument(employeeId, type);
+    const { employeeId, type, month, year } = req.body;
+    const { html } = await documentUsecases.generateDocument(employeeId, type, { month, year });
     const pdfBuffer = await documentUsecases.getPdfBuffer(html);
 
     res.setHeader('Content-Type', 'application/pdf');
@@ -16,12 +16,14 @@ const generateAndDownload = async (req, res, next) => {
 
 const sendBulkEmail = async (req, res, next) => {
   try {
-    const { employeeId, types, subject, message } = req.body;
+    const { employeeId, types, subject, message, month, year } = req.body;
     const result = await documentUsecases.sendMultipleDocuments({
       employeeId,
       types,
       subject,
-      message
+      message,
+      month,
+      year
     });
     res.json(result);
   } catch (err) {
@@ -31,8 +33,8 @@ const sendBulkEmail = async (req, res, next) => {
 
 const bulkGenerate = async (req, res, next) => {
   try {
-    const { employeeId, types } = req.body;
-    const result = await documentUsecases.generateMultipleDocuments({ employeeId, types });
+    const { employeeId, types, month, year } = req.body;
+    const result = await documentUsecases.generateMultipleDocuments({ employeeId, types, month, year });
     res.json(result);
   } catch (err) {
     next(err);
@@ -48,9 +50,32 @@ const getByEmployee = async (req, res, next) => {
   }
 };
 
+const updateStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status, reason } = req.body;
+    const result = await documentUsecases.updateDocumentStatus(id, status, reason);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getMonthlyStatus = async (req, res, next) => {
+  try {
+    const { month, year } = req.query;
+    const result = await documentUsecases.getMonthlyStatus(month, year);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   generateAndDownload,
   sendBulkEmail,
   bulkGenerate,
-  getByEmployee
+  getByEmployee,
+  updateStatus,
+  getMonthlyStatus
 };

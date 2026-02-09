@@ -1,0 +1,11 @@
+Git Commands it is use in vs code terminal.
+
+1 git init,
+
+2 git add .
+
+3 git commit -m "first work",
+
+4 git remote add origin url,
+
+5 git push -u origin main

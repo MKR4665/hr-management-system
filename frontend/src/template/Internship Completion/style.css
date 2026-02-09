@@ -1,0 +1,226 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+    counter-reset: page;
+}
+@page {
+    size: A4;
+    margin: 15mm;
+}
+
+.Wrraper {
+    width: 210mm;
+    height: 297mm;
+    margin: 30px auto;
+    background: #fff;
+    padding: 70px 50px;
+    box-sizing: border-box;
+    border-top: 4px solid #003366;
+    border-bottom: 4px solid #003366;
+    border-left: 4px solid #003366;
+    border-right: 4px solid#003366;
+    overflow: hidden;
+}
+
+.logo2 {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.div2 h1 {
+    text-align: center;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+}
+
+.div2 h2 {
+    text-align: center;
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 40px;
+}
+
+.presented {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.name {
+    text-align: center;
+    font-size: 40px;
+    font-family: 'Great Vibes' cursive;
+    margin: 20px 0;
+}
+
+.content {
+    text-align: center;
+    font-size: 16px;
+    width: 70%;
+    margin: 0 auto 60px;
+    line-height: 1.6;
+    margin-bottom: 70px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 70px;
+}
+
+.line {
+    width: 200px;
+    border-top: 1px solid #333;
+    text-align: center;
+    padding-top: 8px;
+    font-size: 14px;
+}
+
+.Company {
+    text-align: center;
+}
+
+.Company img {
+    width: 120px;
+    height: 120px;
+}
+
+
+.container {
+    width: 210mm;
+    height: 297mm;
+    margin: 30px auto;
+    background: #fff;
+    padding: 40px 50px;
+    box-sizing: border-box;
+    border-top: 4px solid #003366;
+    border-bottom: 4px solid #003366;
+    border-left: 4px solid #003366;
+    border-right: 4px solid#003366;
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header img {
+    width: 150px;
+    height: 150px;
+}
+
+h1,
+h2 {
+    color: #003366;
+}
+
+.certificate {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.certificate1 {
+    text-align: justify;
+}
+
+.certificate2 {
+    text-align: left;
+}
+
+.signatures {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.QR-Code {
+    display: flex;
+    justify-content: center;
+}
+
+.QR-Code img {
+    width: 120px;
+    height: 120px;
+}
+
+
+.wrapper2{
+     width: 210mm;
+    height: 297mm;
+    margin: 30px auto;
+    background: #fff;
+    padding: 40px 50px;
+    box-sizing: border-box;
+    border-top: 4px solid #003366;
+    border-bottom: 4px solid #003366;
+    border-left: 4px solid #003366;
+    border-right: 4px solid#003366;
+    overflow: hidden;
+
+}
+.header1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.header1 img {
+    width: 150px;
+    height: 150px;
+}
+
+h1,
+h2 {
+    color: #003366;
+}
+.content1{
+    text-align: center;
+    /* font-size: 16px; */
+    width: 70%;
+    margin: 0 auto 60px;
+    line-height: 1.6;
+    margin-bottom: 70px;
+}
+#appreciate{
+    text-align: center;
+}
+.regards{
+    text-align: left;
+    font-size: 16px;
+    margin: 0 auto 150px;
+    line-height: 1.6;
+}
+.regards1{
+    font-size: 16px;
+    width: 100%;
+    display: flex;
+    justify-content:space-between;
+    margin-bottom: 70px;
+}
+.footer-class{
+   display: flex;
+   justify-content: space-between;
+   padding-top: 30%;
+}
+.footer-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.footer-logo img {
+    width: 150px;
+    height: 150px;
+    opacity: 0.3;
+}

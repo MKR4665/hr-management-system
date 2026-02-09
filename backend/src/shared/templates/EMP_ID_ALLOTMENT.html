@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee ID Allotment</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.4; color: #222; margin: 0; padding: 0; font-size: 13px; }
+        .page { width: 100%; padding: 40px; box-sizing: border-box; background: #fff; }
+        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
+        h1 { color: #003366; margin: 0; font-size: 20px; }
+        .title { text-align: center; color: #003366; text-transform: uppercase; margin: 10px 0; }
+        .emp-info { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .details-box { display: flex; justify-content: space-between; background: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin: 20px 0; }
+        .signatures { display: flex; justify-content: space-between; margin-top: 50px; }
+        .company-info { margin-top: 50px; font-size: 10px; color: #666; border-top: 1px solid #eee; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Mindmanthan Software Solutions</h1>
+            <h3 class="title"><u>Employee ID Allotment Letter</u></h3>
+        </header>
+
+        <section>
+            <div class="emp-info">
+                <div>
+                    <p>Date: {{date}}</p>
+                    <p>To,<br><strong>{{fullName}}</strong></p>
+                </div>
+                <div>
+                    <p>Employee ID: {{id}}</p>
+                    <p>Designation: {{jobTitle}}</p>
+                    <p>Department: {{department}}</p>
+                </div>
+            </div>
+
+            <p><strong>Dear {{firstName}},</strong></p>
+            <p>This is to inform you that you have been successfully onboarded with MindManthan Software Solutions. Accordingly, an Employee Identification Number (Employee ID) has been allotted to you as per company records.</p>
+            
+            <p><strong>Employee Details</strong></p>
+            <div class="details-box">
+                <div>
+                    <p>Employee Name: {{fullName}}</p>
+                    <p>Employee ID: {{id}}</p>
+                </div>
+                <div>
+                    <p>Designation: {{jobTitle}}</p>
+                    <p>Date of Joining: {{hireDate}}</p>
+                </div>
+            </div>
+
+            <p><strong>Your Employee ID will be used for all official purposes including:</strong></p>
+            <ul>
+                <li>Attendance & internal systems</li>
+                <li>Salary & payroll processing</li>
+                <li>Access to company tools, platforms, and resources</li>
+                <li>Official communication and records</li>
+            </ul>
+        </section>
+
+        <footer>
+            <div class="signatures">
+                <div>
+                    <p>_____________________</p>
+                    <p><strong>Kartik Khare</strong></p>
+                    <p>Managing Director (MD)</p>
+                </div>
+                <div style="text-align: right;">
+                    <p>_____________________</p>
+                    <p><strong>Prabhat Paswan</strong></p>
+                    <p>Chief Executive Officer (CEO)</p>
+                </div>
+            </div>
+            <div class="company-info">
+                <p>A90, Noida, UP 201301 | Info@mindmanthansoftwaresolutions.com</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

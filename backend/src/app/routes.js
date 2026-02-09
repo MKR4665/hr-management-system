@@ -28,5 +28,7 @@ router.post('/documents/generate', requireAuth(), documentController.generateAnd
 router.post('/documents/bulk-generate', requireAuth(), documentController.bulkGenerate);
 router.post('/documents/send-email', requireAuth(), documentController.sendBulkEmail);
 router.get('/documents/employee/:employeeId', requireAuth(), documentController.getByEmployee);
+router.get('/documents/monthly-status', requireAuth(), documentController.getMonthlyStatus);
+router.put('/documents/:id/status', requireAuth(), documentController.updateStatus);
 
 module.exports = router;

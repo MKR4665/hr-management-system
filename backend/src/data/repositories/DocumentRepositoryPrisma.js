@@ -2,7 +2,12 @@ const { prisma } = require('../models/prismaClient');
 
 class DocumentRepositoryPrisma {
   async create(data) {
-    return prisma.document.create({ data });
+    return prisma.document.create({ 
+      data: {
+        ...data,
+        category: data.category || 'GENERATED'
+      } 
+    });
   }
 
   async findByEmployeeId(employeeId) {
@@ -19,10 +24,13 @@ class DocumentRepositoryPrisma {
     });
   }
 
-  async updateStatus(id, status) {
+  async updateStatus(id, status, rejectionReason = null) {
     return prisma.document.update({
       where: { id },
-      data: { status }
+      data: { 
+        status,
+        rejectionReason: status === 'Rejected' ? rejectionReason : null
+      }
     });
   }
 }

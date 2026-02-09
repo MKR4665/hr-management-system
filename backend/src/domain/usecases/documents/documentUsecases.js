@@ -28,14 +28,14 @@ const getPdfBuffer = async (html) => {
   });
 };
 
-const sendMultipleDocuments = async ({ employeeId, types, subject, message }) => {
+const sendMultipleDocuments = async ({ employeeId, types, subject, message, month, year }) => {
   const employee = await employeeRepo.findById(employeeId);
   if (!employee) throw new Error('Employee not found');
 
   const attachments = [];
   
   for (const type of types) {
-    const html = compileTemplate(type, employee);
+    const { html } = await generateDocument(employeeId, type, { month, year });
     const pdfBuffer = await getPdfBuffer(html);
     
     attachments.push({
@@ -47,7 +47,10 @@ const sendMultipleDocuments = async ({ employeeId, types, subject, message }) =>
     await documentRepo.create({
       type,
       employeeId,
-      status: 'Sent'
+      status: 'Sent',
+      category: 'GENERATED',
+      month,
+      year
     });
   }
 
@@ -59,12 +62,17 @@ const sendMultipleDocuments = async ({ employeeId, types, subject, message }) =>
     attachments
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error('CRITICAL: Email Sending Failed:', err);
+    throw new Error(`Email failed: ${err.message}`);
+  }
   
   return { success: true, message: 'Email sent with multiple documents' };
 };
 
-const generateMultipleDocuments = async ({ employeeId, types }) => {
+const generateMultipleDocuments = async ({ employeeId, types, month, year }) => {
   const employee = await employeeRepo.findById(employeeId);
   if (!employee) throw new Error('Employee not found');
 
@@ -73,22 +81,65 @@ const generateMultipleDocuments = async ({ employeeId, types }) => {
     const doc = await documentRepo.create({
       type,
       employeeId,
-      status: 'Generated'
+      status: 'Generated',
+      category: 'GENERATED',
+      month,
+      year
     });
     results.push(doc);
   }
   return results;
 };
 
+const createDocumentRecord = async (employeeId, type, fileUrl, metadata = {}) => {
+  return documentRepo.create({
+    type,
+    employeeId,
+    fileUrl,
+    category: 'UPLOADED',
+    status: 'Pending',
+    ...metadata
+  });
+};
+
+const updateDocumentStatus = async (id, status, reason = null) => {
+  return documentRepo.updateStatus(id, status, reason);
+};
+
+const generateDocument = async (employeeId, type, metadata = {}) => {
+  const employee = await employeeRepo.findById(employeeId);
+  if (!employee) throw new Error('Employee not found');
+  
+  const html = compileTemplate(type, { 
+    ...employee, 
+    ...metadata 
+  });
+  return { html };
+};
+
+const getEmployeeDocuments = (id) => documentRepo.findByEmployeeId(id);
+
+const getMonthlyStatus = async (month, year) => {
+  return prisma.document.findMany({
+    where: {
+      type: 'PAYSLIP',
+      month,
+      year: parseInt(year),
+      status: 'Sent'
+    },
+    select: {
+      employeeId: true,
+      createdAt: true
+    }
+  });
+};
+
 module.exports = {
   sendMultipleDocuments,
   generateMultipleDocuments,
   getPdfBuffer,
-  generateDocument: async (employeeId, type) => {
-    const employee = await employeeRepo.findById(employeeId);
-    if (!employee) throw new Error('Employee not found');
-    const html = compileTemplate(type, employee);
-    return { html };
-  },
-  getEmployeeDocuments: (id) => documentRepo.findByEmployeeId(id)
+  createDocumentRecord,
+  updateDocumentStatus,
+  generateDocument,
+  getEmployeeDocuments
 };
