@@ -29,10 +29,21 @@ const compileTemplate = async (type, data) => {
       logoUrl = `data:image/${ext};base64,${logoBase64}`;
     }
   }
+
+  // Fetch Employee QR Code
+  let qrUrl = '';
+  if (data.qrCodePath) {
+    const qrFile = path.join(process.cwd(), data.qrCodePath);
+    if (fs.existsSync(qrFile)) {
+      const qrBase64 = fs.readFileSync(qrFile, 'base64');
+      qrUrl = `data:image/png;base64,${qrBase64}`;
+    }
+  }
   
   return template({
     ...data,
     companyLogo: logoUrl,
+    employeeQR: qrUrl,
     fullName: `${data.firstName} ${data.lastName}`,
     date: now.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
     month: now.toLocaleString('default', { month: 'long' }),

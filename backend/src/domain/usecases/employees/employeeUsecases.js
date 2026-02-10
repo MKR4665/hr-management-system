@@ -3,6 +3,8 @@ const { UserRepositoryPrisma } = require('../../../data/repositories/UserReposit
 const documentUsecases = require('../documents/documentUsecases');
 const { saveBase64File } = require('../../../shared/helpers/fileStorage');
 const { hashPassword } = require('../../../shared/helpers/hash');
+const { generateEmployeeQRCode } = require('../../../shared/helpers/qrCode');
+const { prisma } = require('../../../data/models/prismaClient');
 
 const employeeRepo = new EmployeeRepositoryPrisma();
 const userRepo = new UserRepositoryPrisma();
@@ -57,6 +59,16 @@ const createEmployee = async (data) => {
   }
   
   const employee = await employeeRepo.create({ ...finalData, userId });
+
+  // Generate QR Code
+  try {
+    const config = await prisma.companyConfig.findFirst();
+    const qrCodePath = await generateEmployeeQRCode(employee, config);
+    await employeeRepo.update(employee.id, { qrCodePath });
+    employee.qrCodePath = qrCodePath; // Update local object for response
+  } catch (error) {
+    console.error('Failed to generate QR code:', error);
+  }
 
   // Create Document Records for Uploads
   if (uploads.idProofPath) await documentUsecases.createDocumentRecord(employee.id, 'ID_PROOF', uploads.idProofPath);

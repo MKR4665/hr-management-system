@@ -420,6 +420,7 @@ export default function EmployeeDetailsPage() {
                     <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Primary Phone</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.phone || 'N/A'}</p></div>
                     <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Alt. Phone</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.alternativePhone || 'N/A'}</p></div>
                     <div className="col-span-2"><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Permanent Address</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.address || 'N/A'}</p></div>
+                    
                     <div className="col-span-2">
                       <Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Qualifications</Label>
                       <div className="mt-2 space-y-2">

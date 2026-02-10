@@ -45,6 +45,7 @@ model Employee {
   experienceCertPath   String?  @db.Text
   idProofPath          String?  @db.Text
   educationCertPath    String?  @db.Text
+  qrCodePath           String?  @db.Text
 
   // New fields for document generation
   jobGrade          String?

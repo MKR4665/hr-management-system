@@ -11,12 +11,14 @@ import BenefitsPage from '../presentation/pages/BenefitsPage';
 import TrainingPage from '../presentation/pages/TrainingPage';
 import ReportsPage from '../presentation/pages/ReportsPage';
 import UploadLogoPage from '../presentation/pages/UploadLogoPage';
+import VerificationPage from '../presentation/pages/VerificationPage';
 import SectionPlaceholderPage from '../presentation/pages/SectionPlaceholderPage';
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/verify/:id" element={<VerificationPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/employees" element={<EmployeesPage />} />
       <Route path="/employees/:id" element={<EmployeeDetailsPage />} />

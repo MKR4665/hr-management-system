@@ -1,4 +1,5 @@
 const masterUsecases = require('../../domain/usecases/master/masterUsecases');
+const { prisma } = require('../../data/models/prismaClient');
 
 const getCompanyConfig = async (req, res, next) => {
   try {
@@ -110,6 +111,43 @@ const deleteCity = async (req, res, next) => {
   }
 };
 
+const verifyEmployee = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const employee = await prisma.employee.findUnique({
+      where: { id },
+      include: { 
+        user: { select: { role: true } }
+      }
+    });
+
+    if (!employee) {
+      return res.status(404).json({ error: 'Invalid document or record' });
+    }
+
+    // Mask sensitive information
+    const mask = (str, visible = 1) => {
+      if (!str) return 'N/A';
+      return str[0] + '*'.repeat(str.length - (visible + 1)) + str.slice(-visible);
+    };
+
+    const maskedData = {
+      isValid: true,
+      firstName: mask(employee.firstName),
+      lastName: mask(employee.lastName),
+      department: employee.department,
+      jobTitle: employee.jobTitle,
+      status: employee.status,
+      hireDate: employee.hireDate,
+      verificationId: employee.id.slice(-8).toUpperCase()
+    };
+
+    res.json(maskedData);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getCompanyConfig,
   updateLogo,
@@ -122,5 +160,6 @@ module.exports = {
   deleteState,
   createCity,
   getCitiesByState,
-  deleteCity
+  deleteCity,
+  verifyEmployee
 };

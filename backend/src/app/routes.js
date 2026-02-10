@@ -13,6 +13,9 @@ const router = Router();
 
 router.get('/health', (req, res) => res.json({ status: 'ok' }));
 
+// Public verification route
+router.get('/public/verify/:id', masterController.verifyEmployee);
+
 router.post('/auth/register', validate(registerSchema), authController.register);
 router.post('/auth/login', validate(loginSchema), authController.login);
 router.post('/auth/refresh', validate(refreshSchema), authController.refresh);

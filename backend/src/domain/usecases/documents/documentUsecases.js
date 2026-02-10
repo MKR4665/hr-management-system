@@ -3,7 +3,9 @@ const nodemailer = require('nodemailer');
 const { DocumentRepositoryPrisma } = require('../../../data/repositories/DocumentRepositoryPrisma');
 const { EmployeeRepositoryPrisma } = require('../../../data/repositories/EmployeeRepositoryPrisma');
 const { compileTemplate } = require('../../../shared/helpers/documentTemplates');
+const { generateEmployeeQRCode } = require('../../../shared/helpers/qrCode');
 const { env } = require('../../../config/env');
+const { prisma } = require('../../../data/models/prismaClient');
 
 const documentRepo = new DocumentRepositoryPrisma();
 const employeeRepo = new EmployeeRepositoryPrisma();
@@ -107,9 +109,21 @@ const updateDocumentStatus = async (id, status, reason = null) => {
 };
 
 const generateDocument = async (employeeId, type, metadata = {}) => {
-  const employee = await employeeRepo.findById(employeeId);
+  let employee = await employeeRepo.findById(employeeId);
   if (!employee) throw new Error('Employee not found');
   
+  // ALWAYS generate/refresh QR code before document creation to ensure it is latest
+  try {
+    const qrCodePath = await generateEmployeeQRCode(employee);
+    // If it was never saved or name changed, update it
+    if (employee.qrCodePath !== qrCodePath) {
+      await employeeRepo.update(employee.id, { qrCodePath });
+      employee.qrCodePath = qrCodePath;
+    }
+  } catch (err) {
+    console.error('Failed to regenerate QR code during document generation:', err);
+  }
+
   const html = await compileTemplate(type, { 
     ...employee, 
     ...metadata 
