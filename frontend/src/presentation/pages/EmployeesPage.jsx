@@ -24,6 +24,9 @@ export default function EmployeesPage() {
     lastName: '',
     email: '',
     phone: '',
+    alternativePhone: '',
+    address: '',
+    dateOfBirth: '',
     profilePicture: '',
     experienceCert: '',
     idProof: '',
@@ -37,6 +40,11 @@ export default function EmployeesPage() {
     employmentType: 'Permanent / Full-Time',
     reportingManager: '',
     workLocation: 'Onsite',
+    qualifications: [{ degree: '', institution: '', year: '' }],
+    bankName: '',
+    accountNumber: '',
+    ifscCode: '',
+    branchName: '',
     basicSalary: 0,
     hra: 0,
     specialAllowance: 0,
@@ -62,6 +70,24 @@ export default function EmployeesPage() {
     }
   };
 
+  const addQualification = () => {
+    setFormData({
+      ...formData,
+      qualifications: [...formData.qualifications, { degree: '', institution: '', year: '' }]
+    });
+  };
+
+  const removeQualification = (index) => {
+    const updated = formData.qualifications.filter((_, i) => i !== index);
+    setFormData({ ...formData, qualifications: updated.length ? updated : [{ degree: '', institution: '', year: '' }] });
+  };
+
+  const updateQualification = (index, field, value) => {
+    const updated = [...formData.qualifications];
+    updated[index][field] = value;
+    setFormData({ ...formData, qualifications: updated });
+  };
+
   const handleFileChange = (e, field) => {
     const file = e.target.files[0];
     if (file) {
@@ -82,6 +108,9 @@ export default function EmployeesPage() {
         lastName: employee.lastName,
         email: employee.email,
         phone: employee.phone || '',
+        alternativePhone: employee.alternativePhone || '',
+        address: employee.address || '',
+        dateOfBirth: employee.dateOfBirth ? new Date(employee.dateOfBirth).toISOString().split('T')[0] : '',
         profilePicture: '',
         experienceCert: '',
         idProof: '',
@@ -95,6 +124,11 @@ export default function EmployeesPage() {
         employmentType: employee.employmentType || 'Permanent / Full-Time',
         reportingManager: employee.reportingManager || '',
         workLocation: employee.workLocation || 'Onsite',
+        qualifications: employee.qualifications || [{ degree: '', institution: '', year: '' }],
+        bankName: employee.bankName || '',
+        accountNumber: employee.accountNumber || '',
+        ifscCode: employee.ifscCode || '',
+        branchName: employee.branchName || '',
         basicSalary: employee.basicSalary || 0,
         hra: employee.hra || 0,
         specialAllowance: employee.specialAllowance || 0,
@@ -110,6 +144,9 @@ export default function EmployeesPage() {
         lastName: '',
         email: '',
         phone: '',
+        alternativePhone: '',
+        address: '',
+        dateOfBirth: '',
         profilePicture: '',
         experienceCert: '',
         idProof: '',
@@ -123,6 +160,11 @@ export default function EmployeesPage() {
         employmentType: 'Permanent / Full-Time',
         reportingManager: '',
         workLocation: 'Onsite',
+        qualifications: [{ degree: '', institution: '', year: '' }],
+        bankName: '',
+        accountNumber: '',
+        ifscCode: '',
+        branchName: '',
         basicSalary: 0,
         hra: 0,
         specialAllowance: 0,
@@ -158,6 +200,16 @@ export default function EmployeesPage() {
       fetchEmployees();
     } catch (err) {
       toast(err.message, 'error');
+    }
+  };
+
+  const handleStatusChange = async (employeeId, newStatus) => {
+    try {
+      await updateEmployee(employeeId, { status: newStatus });
+      toast(`Status updated to ${newStatus}.`);
+      fetchEmployees();
+    } catch (err) {
+      toast('Failed to update status.', 'error');
     }
   };
 
@@ -262,12 +314,19 @@ export default function EmployeesPage() {
                         <p className="text-xs text-slate-500">{emp.department}</p>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={cn(
-                          "inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider",
-                          emp.status === 'Active' ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
-                        )}>
-                          {emp.status}
-                        </span>
+                        <select
+                          value={emp.status}
+                          onChange={(e) => handleStatusChange(emp.id, e.target.value)}
+                          className={cn(
+                            "inline-flex items-center px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider border-none outline-none cursor-pointer transition-colors",
+                            emp.status === 'Active' 
+                              ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" 
+                              : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                          )}
+                        >
+                          <option value="Active">Active</option>
+                          <option value="Inactive">Inactive</option>
+                        </select>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-1">
@@ -325,6 +384,8 @@ export default function EmployeesPage() {
               <CardTitle>{editingEmployee ? 'Edit Employee' : 'Add New Employee'}</CardTitle>
               <div className="flex gap-2 overflow-x-auto thin-scrollbar pt-2">
                 <TabButton id="personal" label="Personal" />
+                <TabButton id="qualification" label="Qualification" />
+                <TabButton id="bank" label="Bank Details" />
                 <TabButton id="compensation" label="Compensation" />
                 <TabButton id="credentials" label="Credentials" />
                 <TabButton id="documents" label="Documents" />
@@ -364,15 +425,32 @@ export default function EmployeesPage() {
                         <Input id="lastName" required value={formData.lastName} onChange={(e) => setFormData({...formData, lastName: e.target.value})} />
                       </div>
                     </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Work Email</Label>
+                      <Input id="email" type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+                    </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="email">Work Email</Label>
-                        <Input id="email" type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="phone">Phone Number</Label>
+                        <Label htmlFor="phone">Primary Mobile Number</Label>
                         <Input id="phone" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
                       </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="alternativePhone">Alternative Mobile Number</Label>
+                        <Input id="alternativePhone" value={formData.alternativePhone} onChange={(e) => setFormData({...formData, alternativePhone: e.target.value})} />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="dateOfBirth">Date of Birth</Label>
+                      <Input id="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={(e) => setFormData({...formData, dateOfBirth: e.target.value})} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="address">Permanent Address</Label>
+                      <textarea 
+                        id="address"
+                        className="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:cursor-not-allowed disabled:opacity-50"
+                        value={formData.address}
+                        onChange={(e) => setFormData({...formData, address: e.target.value})}
+                      />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
@@ -402,6 +480,88 @@ export default function EmployeesPage() {
                       <div className="space-y-2">
                         <Label htmlFor="noticePeriod">Notice Period (Days)</Label>
                         <Input id="noticePeriod" type="number" value={formData.noticePeriod} onChange={(e) => setFormData({...formData, noticePeriod: parseInt(e.target.value) || 0})} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'qualification' && (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <div className="flex items-center justify-between border-b pb-2">
+                      <h4 className="text-sm font-bold text-slate-700">Academic Qualifications</h4>
+                      <Button type="button" size="sm" variant="outline" className="h-7 text-[10px] font-bold border-brand-200 text-brand-600 hover:bg-brand-50" onClick={addQualification}>
+                        + Add More
+                      </Button>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      {formData.qualifications.map((q, index) => (
+                        <div key={index} className="p-4 rounded-xl border border-slate-100 bg-slate-50/30 space-y-4 relative group">
+                          {formData.qualifications.length > 1 && (
+                            <button 
+                              type="button" 
+                              onClick={() => removeQualification(index)}
+                              className="absolute top-2 right-2 text-slate-300 hover:text-red-500 transition-colors"
+                            >
+                              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                          )}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label className="text-[10px] font-bold uppercase text-slate-500">Degree / Certificate</Label>
+                              <Input 
+                                placeholder="e.g. B.Tech Computer Science" 
+                                value={q.degree} 
+                                onChange={(e) => updateQualification(index, 'degree', e.target.value)}
+                                required
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-[10px] font-bold uppercase text-slate-500">Institution / University</Label>
+                              <Input 
+                                placeholder="e.g. MIT University" 
+                                value={q.institution} 
+                                onChange={(e) => updateQualification(index, 'institution', e.target.value)}
+                                required
+                              />
+                            </div>
+                          </div>
+                          <div className="w-1/3 space-y-2">
+                            <Label className="text-[10px] font-bold uppercase text-slate-500">Passing Year</Label>
+                            <Input 
+                              type="text" 
+                              placeholder="e.g. 2022" 
+                              value={q.year} 
+                              onChange={(e) => updateQualification(index, 'year', e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'bank' && (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <h4 className="text-sm font-bold text-slate-700 border-b pb-2">Bank Account Details</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="bankName">Bank Name</Label>
+                        <Input id="bankName" value={formData.bankName} onChange={(e) => setFormData({...formData, bankName: e.target.value})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="accountNumber">Account Number</Label>
+                        <Input id="accountNumber" value={formData.accountNumber} onChange={(e) => setFormData({...formData, accountNumber: e.target.value})} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="ifscCode">IFSC Code</Label>
+                        <Input id="ifscCode" value={formData.ifscCode} onChange={(e) => setFormData({...formData, ifscCode: e.target.value})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="branchName">Branch Name</Label>
+                        <Input id="branchName" value={formData.branchName} onChange={(e) => setFormData({...formData, branchName: e.target.value})} />
                       </div>
                     </div>
                   </div>

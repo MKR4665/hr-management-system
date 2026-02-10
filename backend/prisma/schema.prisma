@@ -32,6 +32,9 @@ model Employee {
   lastName    String
   email       String   @unique
   phone       String?
+  alternativePhone String?
+  address     String?  @db.Text
+  dateOfBirth DateTime?
   department  String
   jobTitle    String
   status      String   @default("Active")
@@ -49,6 +52,15 @@ model Employee {
   reportingManager  String?
   workLocation      String?   @default("Onsite")
   
+  // Qualification
+  qualifications    Json?
+
+  // Bank Details
+  bankName          String?
+  accountNumber     String?
+  ifscCode          String?
+  branchName        String?
+  
   // Compensation
   basicSalary         Float?
   hra                 Float?
@@ -61,8 +73,27 @@ model Employee {
   userId      String?  @unique
   user        User?    @relation(fields: [userId], references: [id])
   documents   Document[]
+  attendance  Attendance[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Attendance {
+  id          String   @id @default(cuid())
+  employeeId  String
+  date        DateTime @db.Date
+  checkIn     DateTime?
+  checkOut    DateTime?
+  status      String   @default("Present") // Present, Absent, Half Day, Leave, Late
+  note        String?  @db.Text
+  
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([employeeId, date])
+  @@index([employeeId])
+  @@index([date])
 }
 
 model Document {

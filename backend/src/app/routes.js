@@ -2,6 +2,7 @@ const { Router } = require('express');
 const authController = require('../presentation/controllers/authController');
 const employeeController = require('../presentation/controllers/employeeController');
 const documentController = require('../presentation/controllers/documentController');
+const attendanceController = require('../presentation/controllers/attendanceController');
 const { validate } = require('../presentation/validators/validate');
 const { registerSchema, loginSchema, refreshSchema } = require('../presentation/validators/authValidators');
 const { createEmployeeSchema, updateEmployeeSchema } = require('../presentation/validators/employeeValidators');
@@ -30,5 +31,11 @@ router.post('/documents/send-email', requireAuth(), documentController.sendBulkE
 router.get('/documents/employee/:employeeId', requireAuth(), documentController.getByEmployee);
 router.get('/documents/monthly-status', requireAuth(), documentController.getMonthlyStatus);
 router.put('/documents/:id/status', requireAuth(), documentController.updateStatus);
+
+// Attendance routes
+router.post('/attendance', requireAuth(), attendanceController.recordAttendance);
+router.post('/attendance/bulk', requireAuth(), attendanceController.bulkRecord);
+router.get('/attendance', requireAuth(), attendanceController.getByDateRange);
+router.get('/attendance/employee/:employeeId', requireAuth(), attendanceController.getEmployeeMonthly);
 
 module.exports = router;

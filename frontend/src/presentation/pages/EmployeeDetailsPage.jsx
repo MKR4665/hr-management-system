@@ -70,6 +70,24 @@ export default function EmployeeDetailsPage() {
     }
   };
 
+  const addQualification = () => {
+    setFormData({
+      ...formData,
+      qualifications: [...(formData.qualifications || []), { degree: '', institution: '', year: '' }]
+    });
+  };
+
+  const removeQualification = (index) => {
+    const updated = formData.qualifications.filter((_, i) => i !== index);
+    setFormData({ ...formData, qualifications: updated.length ? updated : [{ degree: '', institution: '', year: '' }] });
+  };
+
+  const updateQualification = (index, field, value) => {
+    const updated = [...formData.qualifications];
+    updated[index][field] = value;
+    setFormData({ ...formData, qualifications: updated });
+  };
+
   const handleUpdateStatus = async (docId, status, reason = null) => {
     try {
       setDocLoading(true);
@@ -100,6 +118,9 @@ export default function EmployeeDetailsPage() {
       lastName: employee.lastName,
       email: employee.email,
       phone: employee.phone || '',
+      alternativePhone: employee.alternativePhone || '',
+      address: employee.address || '',
+      dateOfBirth: employee.dateOfBirth ? new Date(employee.dateOfBirth).toISOString().split('T')[0] : '',
       profilePicture: '',
       experienceCert: '',
       idProof: '',
@@ -113,6 +134,11 @@ export default function EmployeeDetailsPage() {
       employmentType: employee.employmentType || '',
       reportingManager: employee.reportingManager || '',
       workLocation: employee.workLocation || '',
+      qualifications: employee.qualifications || [{ degree: '', institution: '', year: '' }],
+      bankName: employee.bankName || '',
+      accountNumber: employee.accountNumber || '',
+      ifscCode: employee.ifscCode || '',
+      branchName: employee.branchName || '',
       basicSalary: employee.basicSalary || 0,
       hra: employee.hra || 0,
       specialAllowance: employee.specialAllowance || 0,
@@ -390,7 +416,40 @@ export default function EmployeeDetailsPage() {
                     <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Reporting Manager</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.reportingManager || 'N/A'}</p></div>
                     <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Work Location</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.workLocation || 'N/A'}</p></div>
                     <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Hire Date</Label><p className="text-sm font-semibold text-slate-900 mt-1">{new Date(employee.hireDate).toLocaleDateString()}</p></div>
-                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Phone</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.phone || 'N/A'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Date of Birth</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.dateOfBirth ? new Date(employee.dateOfBirth).toLocaleDateString() : 'N/A'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Primary Phone</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.phone || 'N/A'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Alt. Phone</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.alternativePhone || 'N/A'}</p></div>
+                    <div className="col-span-2"><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Permanent Address</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.address || 'N/A'}</p></div>
+                    <div className="col-span-2">
+                      <Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Qualifications</Label>
+                      <div className="mt-2 space-y-2">
+                        {employee.qualifications && employee.qualifications.length > 0 ? (
+                          employee.qualifications.map((q, i) => (
+                            <div key={i} className="flex items-center gap-2 text-sm">
+                              <span className="h-1.5 w-1.5 rounded-full bg-brand-600 shrink-0"></span>
+                              <span className="font-bold text-slate-900">{q.degree}</span>
+                              <span className="text-slate-500">from</span>
+                              <span className="font-medium text-slate-700">{q.institution}</span>
+                              {q.year && <span className="text-slate-400">({q.year})</span>}
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-sm text-slate-400 italic">No qualifications specified.</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-none shadow-sm">
+                <CardHeader><CardTitle className="text-lg">Bank Account Information</CardTitle></CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Bank Name</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.bankName || 'N/A'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Account Number</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.accountNumber || 'N/A'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">IFSC Code</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.ifscCode || 'N/A'}</p></div>
+                    <div><Label className="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Branch Name</Label><p className="text-sm font-semibold text-slate-900 mt-1">{employee.branchName || 'N/A'}</p></div>
                   </div>
                 </CardContent>
               </Card>
@@ -707,6 +766,8 @@ export default function EmployeeDetailsPage() {
               <CardTitle>Edit Employee Profile</CardTitle>
               <div className="flex gap-2 overflow-x-auto thin-scrollbar pt-2">
                 <EditTabButton id="personal" label="Personal" />
+                <EditTabButton id="qualification" label="Qualification" />
+                <EditTabButton id="bank" label="Bank Details" />
                 <EditTabButton id="compensation" label="Compensation" />
                 <EditTabButton id="credentials" label="Credentials" />
                 <EditTabButton id="documents" label="Documents" />
@@ -746,15 +807,32 @@ export default function EmployeeDetailsPage() {
                         <Input id="lastName" required value={formData.lastName} onChange={(e) => setFormData({...formData, lastName: e.target.value})} />
                       </div>
                     </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input id="email" type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+                    </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="email">Email Address</Label>
-                        <Input id="email" type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="phone">Phone</Label>
+                        <Label htmlFor="phone">Primary Mobile Number</Label>
                         <Input id="phone" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
                       </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="alternativePhone">Alternative Mobile Number</Label>
+                        <Input id="alternativePhone" value={formData.alternativePhone} onChange={(e) => setFormData({...formData, alternativePhone: e.target.value})} />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="dateOfBirth">Date of Birth</Label>
+                      <Input id="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={(e) => setFormData({...formData, dateOfBirth: e.target.value})} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="address">Permanent Address</Label>
+                      <textarea 
+                        id="address"
+                        className="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:cursor-not-allowed disabled:opacity-50"
+                        value={formData.address}
+                        onChange={(e) => setFormData({...formData, address: e.target.value})}
+                      />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
@@ -784,6 +862,88 @@ export default function EmployeeDetailsPage() {
                       <div className="space-y-2">
                         <Label htmlFor="noticePeriod">Notice Period (Days)</Label>
                         <Input id="noticePeriod" type="number" value={formData.noticePeriod} onChange={(e) => setFormData({...formData, noticePeriod: parseInt(e.target.value) || 0})} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeEditTab === 'qualification' && (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <div className="flex items-center justify-between border-b pb-2">
+                      <h4 className="text-sm font-bold text-slate-700">Academic Qualifications</h4>
+                      <Button type="button" size="sm" variant="outline" className="h-7 text-[10px] font-bold border-brand-200 text-brand-600 hover:bg-brand-50" onClick={addQualification}>
+                        + Add More
+                      </Button>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      {(formData.qualifications || []).map((q, index) => (
+                        <div key={index} className="p-4 rounded-xl border border-slate-100 bg-slate-50/30 space-y-4 relative group">
+                          {formData.qualifications.length > 1 && (
+                            <button 
+                              type="button" 
+                              onClick={() => removeQualification(index)}
+                              className="absolute top-2 right-2 text-slate-300 hover:text-red-500 transition-colors"
+                            >
+                              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                          )}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label className="text-[10px] font-bold uppercase text-slate-500">Degree / Certificate</Label>
+                              <Input 
+                                placeholder="e.g. B.Tech Computer Science" 
+                                value={q.degree} 
+                                onChange={(e) => updateQualification(index, 'degree', e.target.value)}
+                                required
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-[10px] font-bold uppercase text-slate-500">Institution / University</Label>
+                              <Input 
+                                placeholder="e.g. MIT University" 
+                                value={q.institution} 
+                                onChange={(e) => updateQualification(index, 'institution', e.target.value)}
+                                required
+                              />
+                            </div>
+                          </div>
+                          <div className="w-1/3 space-y-2">
+                            <Label className="text-[10px] font-bold uppercase text-slate-500">Passing Year</Label>
+                            <Input 
+                              type="text" 
+                              placeholder="e.g. 2022" 
+                              value={q.year} 
+                              onChange={(e) => updateQualification(index, 'year', e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeEditTab === 'bank' && (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <h4 className="text-sm font-bold text-slate-700 border-b pb-2">Bank Account Details</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-bankName">Bank Name</Label>
+                        <Input id="edit-bankName" value={formData.bankName} onChange={(e) => setFormData({...formData, bankName: e.target.value})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-accountNumber">Account Number</Label>
+                        <Input id="edit-accountNumber" value={formData.accountNumber} onChange={(e) => setFormData({...formData, accountNumber: e.target.value})} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-ifscCode">IFSC Code</Label>
+                        <Input id="edit-ifscCode" value={formData.ifscCode} onChange={(e) => setFormData({...formData, ifscCode: e.target.value})} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-branchName">Branch Name</Label>
+                        <Input id="edit-branchName" value={formData.branchName} onChange={(e) => setFormData({...formData, branchName: e.target.value})} />
                       </div>
                     </div>
                   </div>
