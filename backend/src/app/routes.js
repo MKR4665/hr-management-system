@@ -3,6 +3,7 @@ const authController = require('../presentation/controllers/authController');
 const employeeController = require('../presentation/controllers/employeeController');
 const documentController = require('../presentation/controllers/documentController');
 const attendanceController = require('../presentation/controllers/attendanceController');
+const masterController = require('../presentation/controllers/masterController');
 const { validate } = require('../presentation/validators/validate');
 const { registerSchema, loginSchema, refreshSchema } = require('../presentation/validators/authValidators');
 const { createEmployeeSchema, updateEmployeeSchema } = require('../presentation/validators/employeeValidators');
@@ -37,5 +38,19 @@ router.post('/attendance', requireAuth(), attendanceController.recordAttendance)
 router.post('/attendance/bulk', requireAuth(), attendanceController.bulkRecord);
 router.get('/attendance', requireAuth(), attendanceController.getByDateRange);
 router.get('/attendance/employee/:employeeId', requireAuth(), attendanceController.getEmployeeMonthly);
+
+// Master routes
+router.get('/master/company-config', masterController.getCompanyConfig);
+router.post('/master/logo', requireAuth(), masterController.updateLogo);
+router.delete('/master/logo', requireAuth(), masterController.deleteLogo);
+router.get('/master/countries', requireAuth(), masterController.getAllCountries);
+router.post('/master/countries', requireAuth(), masterController.createCountry);
+router.delete('/master/countries/:id', requireAuth(), masterController.deleteCountry);
+router.get('/master/countries/:countryId/states', requireAuth(), masterController.getStatesByCountry);
+router.post('/master/states', requireAuth(), masterController.createState);
+router.delete('/master/states/:id', requireAuth(), masterController.deleteState);
+router.get('/master/states/:stateId/cities', requireAuth(), masterController.getCitiesByState);
+router.post('/master/cities', requireAuth(), masterController.createCity);
+router.delete('/master/cities/:id', requireAuth(), masterController.deleteCity);
 
 module.exports = router;

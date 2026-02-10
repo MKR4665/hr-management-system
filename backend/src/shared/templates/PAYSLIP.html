@@ -23,6 +23,11 @@
 <body>
     <div class="payslip">
         <div class="header">
+            {{#if companyLogo}}
+            <div class="logo">
+                <img src="{{companyLogo}}" alt="Company Logo" style="max-height: 50px; max-width: 150px;">
+            </div>
+            {{/if}}
             <div class="company-name">Mindmanthan Software Solutions</div>
         </div>
 

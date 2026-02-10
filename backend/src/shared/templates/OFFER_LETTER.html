@@ -96,6 +96,11 @@
 <body>
     <div class="container">
         <header class="header">
+            {{#if companyLogo}}
+            <div class="logo">
+                <img src="{{companyLogo}}" alt="Company Logo" style="max-height: 60px; max-width: 200px;">
+            </div>
+            {{/if}}
             <div class="company-info">
                 <h1>Mindmanthan Software Solutions</h1>
                 <p>A90, A Block, Sector 4 Noida, Uttar Pradesh 201301</p>

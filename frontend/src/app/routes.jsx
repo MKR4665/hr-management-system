@@ -10,6 +10,8 @@ import PerformancePage from '../presentation/pages/PerformancePage';
 import BenefitsPage from '../presentation/pages/BenefitsPage';
 import TrainingPage from '../presentation/pages/TrainingPage';
 import ReportsPage from '../presentation/pages/ReportsPage';
+import UploadLogoPage from '../presentation/pages/UploadLogoPage';
+import SectionPlaceholderPage from '../presentation/pages/SectionPlaceholderPage';
 
 export default function AppRoutes() {
   return (
@@ -25,6 +27,13 @@ export default function AppRoutes() {
       <Route path="/benefits" element={<BenefitsPage />} />
       <Route path="/training" element={<TrainingPage />} />
       <Route path="/reports" element={<ReportsPage />} />
+
+      {/* Master Routes */}
+      <Route path="/master/logo" element={<UploadLogoPage />} />
+      <Route path="/master/countries" element={<SectionPlaceholderPage title="Manage Countries" />} />
+      <Route path="/master/states" element={<SectionPlaceholderPage title="Manage States" />} />
+      <Route path="/master/cities" element={<SectionPlaceholderPage title="Manage Cities" />} />
+      
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );

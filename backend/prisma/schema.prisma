@@ -128,3 +128,38 @@ model RefreshToken {
 
   @@index([userId])
 }
+
+model CompanyConfig {
+  id        String   @id @default(cuid())
+  logoPath  String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Country {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  states    State[]
+  createdAt DateTime @default(now())
+}
+
+model State {
+  id        String   @id @default(cuid())
+  name      String
+  countryId String
+  country   Country  @relation(fields: [countryId], references: [id])
+  cities    City[]
+  createdAt DateTime @default(now())
+
+  @@index([countryId])
+}
+
+model City {
+  id        String   @id @default(cuid())
+  name      String
+  stateId   String
+  state     State    @relation(fields: [stateId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([stateId])
+}

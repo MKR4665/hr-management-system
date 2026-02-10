@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { cn } from '../../shared/lib/utils';
+import { masterApi } from '../../data/api/masterApi';
 
 const menuItems = [
   { label: 'Dashboard', path: '/dashboard', icon: 'grid' },
@@ -104,11 +105,32 @@ function MenuIcon({ name, className }) {
 export default function DashboardLayout({ title, subtitle, actions, children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMasterListOpen, setIsMasterListOpen] = useState(false);
+  const [logoPath, setLogoPath] = useState(null);
   const location = useLocation();
+
+  const isMasterPathActive = ['/master/logo', '/master/countries', '/master/states', '/master/cities'].includes(location.pathname);
 
   useEffect(() => {
     setIsSidebarOpen(false);
+    if (isMasterPathActive) setIsMasterListOpen(true);
+    fetchLogo();
   }, [location.pathname]);
+
+  const fetchLogo = async () => {
+    try {
+      const config = await masterApi.getCompanyConfig();
+      if (config?.logoPath) setLogoPath(config.logoPath);
+    } catch (err) {
+      console.error('Failed to fetch logo:', err);
+    }
+  };
+
+  const getImageUrl = (path) => {
+    if (!path) return null;
+    const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    return `${baseUrl}${path}`;
+  };
 
   return (
     <div className="flex min-h-screen bg-slate-50/50">
@@ -129,9 +151,13 @@ export default function DashboardLayout({ title, subtitle, actions, children }) 
       >
         <div className="flex h-16 items-center justify-between px-6 border-b border-slate-100">
           <div className={cn('flex items-center gap-3 overflow-hidden transition-all', isSidebarCollapsed && 'lg:justify-center lg:px-0')}>
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-600 text-white shadow-lg shadow-brand-200">
-              <span className="font-bold text-lg">H</span>
-            </div>
+            {logoPath ? (
+              <img src={getImageUrl(logoPath)} alt="Logo" className="h-9 w-auto object-contain" />
+            ) : (
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-600 text-white shadow-lg shadow-brand-200">
+                <span className="font-bold text-lg">H</span>
+              </div>
+            )}
             {!isSidebarCollapsed && (
               <span className="font-bold text-xl tracking-tight text-slate-900">HRM Hub</span>
             )}
@@ -176,6 +202,44 @@ export default function DashboardLayout({ title, subtitle, actions, children }) 
                 )}
               </NavLink>
             ))}
+
+            {/* Master List Module */}
+            <div className="pt-4">
+              <button
+                onClick={() => setIsMasterListOpen(!isMasterListOpen)}
+                className={cn(
+                  "w-full group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                  isMasterPathActive ? "bg-slate-50 text-brand-700" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                )}
+              >
+                <div className="flex items-center gap-3">
+                  <MenuIcon name="master" className={isMasterPathActive ? "text-brand-600" : "text-slate-400 group-hover:text-slate-600"} />
+                  {!isSidebarCollapsed && <span>Master List</span>}
+                </div>
+                {!isSidebarCollapsed && (
+                  <svg className={cn("h-4 w-4 transition-transform duration-200", isMasterListOpen && "rotate-180")} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
+              </button>
+
+              {isMasterListOpen && !isSidebarCollapsed && (
+                <div className="mt-1 ml-4 pl-4 border-l border-slate-100 space-y-1 animate-in slide-in-from-top-2 duration-200">
+                  <NavLink to="/master/logo" className={({ isActive }) => cn("block py-2 text-xs font-bold transition-colors", isActive ? "text-brand-600" : "text-slate-500 hover:text-slate-900")}>
+                    Upload Logo
+                  </NavLink>
+                  <NavLink to="/master/countries" className={({ isActive }) => cn("block py-2 text-xs font-bold transition-colors", isActive ? "text-brand-600" : "text-slate-500 hover:text-slate-900")}>
+                    Add Country
+                  </NavLink>
+                  <NavLink to="/master/states" className={({ isActive }) => cn("block py-2 text-xs font-bold transition-colors", isActive ? "text-brand-600" : "text-slate-500 hover:text-slate-900")}>
+                    Add States
+                  </NavLink>
+                  <NavLink to="/master/cities" className={({ isActive }) => cn("block py-2 text-xs font-bold transition-colors", isActive ? "text-brand-600" : "text-slate-500 hover:text-slate-900")}>
+                    Add City
+                  </NavLink>
+                </div>
+              )}
+            </div>
           </nav>
         </div>
 

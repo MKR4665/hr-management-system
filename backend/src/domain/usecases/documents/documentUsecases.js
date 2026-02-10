@@ -110,7 +110,7 @@ const generateDocument = async (employeeId, type, metadata = {}) => {
   const employee = await employeeRepo.findById(employeeId);
   if (!employee) throw new Error('Employee not found');
   
-  const html = compileTemplate(type, { 
+  const html = await compileTemplate(type, { 
     ...employee, 
     ...metadata 
   });

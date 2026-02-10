@@ -1,10 +1,11 @@
 const Handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
+const { prisma } = require('../../data/models/prismaClient');
 
 const templatesDir = path.join(__dirname, '..', 'templates');
 
-const compileTemplate = (type, data) => {
+const compileTemplate = async (type, data) => {
   const templatePath = path.join(templatesDir, `${type}.html`);
   
   if (!fs.existsSync(templatePath)) {
@@ -15,9 +16,23 @@ const compileTemplate = (type, data) => {
   const template = Handlebars.compile(templateSource);
   
   const now = new Date();
+
+  // Fetch company config for logo
+  const config = await prisma.companyConfig.findFirst();
+  let logoUrl = '';
+  if (config?.logoPath) {
+    // We need an absolute path or a base64 for html-pdf-node to render local images reliably
+    const logoFile = path.join(process.cwd(), config.logoPath);
+    if (fs.existsSync(logoFile)) {
+      const logoBase64 = fs.readFileSync(logoFile, 'base64');
+      const ext = path.extname(logoFile).replace('.', '');
+      logoUrl = `data:image/${ext};base64,${logoBase64}`;
+    }
+  }
   
   return template({
     ...data,
+    companyLogo: logoUrl,
     fullName: `${data.firstName} ${data.lastName}`,
     date: now.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
     month: now.toLocaleString('default', { month: 'long' }),
