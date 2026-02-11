@@ -30,6 +30,7 @@ router.delete('/employees/:id', requireAuth(), employeeController.deleteEmployee
 
 // Document routes
 router.post('/documents/generate', requireAuth(), documentController.generateAndDownload);
+router.post('/documents/preview', requireAuth(), documentController.getPreview);
 router.post('/documents/bulk-generate', requireAuth(), documentController.bulkGenerate);
 router.post('/documents/send-email', requireAuth(), documentController.sendBulkEmail);
 router.get('/documents/employee/:employeeId', requireAuth(), documentController.getByEmployee);

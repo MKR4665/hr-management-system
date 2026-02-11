@@ -21,19 +21,24 @@ const compileTemplate = async (type, data) => {
   const config = await prisma.companyConfig.findFirst();
   let logoUrl = '';
   if (config?.logoPath) {
-    // We need an absolute path or a base64 for html-pdf-node to render local images reliably
-    const logoFile = path.join(process.cwd(), config.logoPath);
+    // Remove leading slash if present to avoid path join issues on some systems
+    const cleanPath = config.logoPath.startsWith('/') ? config.logoPath.substring(1) : config.logoPath;
+    const logoFile = path.resolve(__dirname, '..', '..', '..', cleanPath);
+    
     if (fs.existsSync(logoFile)) {
       const logoBase64 = fs.readFileSync(logoFile, 'base64');
-      const ext = path.extname(logoFile).replace('.', '');
-      logoUrl = `data:image/${ext};base64,${logoBase64}`;
+      let ext = path.extname(logoFile).replace('.', '').toLowerCase();
+      let mimeType = `image/${ext}`;
+      if (ext === 'svg') mimeType = 'image/svg+xml';
+      logoUrl = `data:${mimeType};base64,${logoBase64}`;
     }
   }
 
   // Fetch Employee QR Code
   let qrUrl = '';
   if (data.qrCodePath) {
-    const qrFile = path.join(process.cwd(), data.qrCodePath);
+    const cleanQRPath = data.qrCodePath.startsWith('/') ? data.qrCodePath.substring(1) : data.qrCodePath;
+    const qrFile = path.resolve(__dirname, '..', '..', '..', cleanQRPath);
     if (fs.existsSync(qrFile)) {
       const qrBase64 = fs.readFileSync(qrFile, 'base64');
       qrUrl = `data:image/png;base64,${qrBase64}`;

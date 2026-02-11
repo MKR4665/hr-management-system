@@ -61,6 +61,14 @@
 <body>
     <div class="container">
         <header class="header">
+            <div style="display: flex; gap: 15px; align-items: center;">
+                {{#if companyLogo}}
+                <img src="{{companyLogo}}" alt="Logo" style="max-height: 50px; max-width: 150px;">
+                {{/if}}
+                {{#if employeeQR}}
+                <img src="{{employeeQR}}" alt="QR" style="max-height: 50px; max-width: 50px; border: 1px solid #003366;">
+                {{/if}}
+            </div>
             <h1>Mindmanthan Software Solutions</h1>
         </header>
         

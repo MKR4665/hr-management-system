@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-const UPLOADS_DIR = path.resolve(process.cwd(), 'uploads');
+const UPLOADS_DIR = path.resolve(__dirname, '..', '..', '..', 'uploads');
 
 // Ensure uploads directory exists
 if (!fs.existsSync(UPLOADS_DIR)) {
@@ -23,7 +23,19 @@ const saveBase64File = (base64Data, folder = 'misc') => {
     if (!matches || matches.length !== 3) return null;
 
     const type = matches[1];
-    const extension = type.split('/')[1] || 'bin';
+    let extension = type.split('/')[1] || 'bin';
+    
+    // Normalize extensions
+    if (extension === 'svg+xml') extension = 'svg';
+    if (extension === 'jpeg') extension = 'jpg';
+
+    // Validate allowed types
+    const allowedExtensions = ['png', 'jpg', 'svg'];
+    if (!allowedExtensions.includes(extension)) {
+      console.warn(`Blocked attempt to upload unsupported file type: ${extension}`);
+      return null;
+    }
+
     const buffer = Buffer.from(matches[2], 'base64');
     
     const targetDir = path.join(UPLOADS_DIR, folder);

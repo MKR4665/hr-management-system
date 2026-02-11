@@ -4,34 +4,120 @@
     <meta charset="UTF-8">
     <title>Appointment Letter</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.5; color: #222; margin: 0; padding: 0; font-size: 13px; }
-        .page { width: 100%; padding: 40px; box-sizing: border-box; background: #fff; }
-        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
-        .header-section { display: flex; justify-content: space-between; align-items: center; }
-        h1 { color: #003366; margin: 0; font-size: 20px; }
-        .appoint { text-align: center; color: #003366; text-transform: uppercase; margin: 10px 0; }
-        .company-detail { display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .company-info p { margin: 2px 0; font-size: 10px; color: #666; }
-        .section-title { background: #003366; color: #fff; padding: 5px 10px; font-weight: bold; margin: 15px 0 10px 0; }
-        ul { padding-left: 20px; }
-        ul li { margin-bottom: 5px; }
-        .signatures { display: flex; justify-content: space-between; margin-top: 40px; }
-        .page-break { page-break-after: always; }
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            background-color: #ffffff;
+            font-size: 16px;
+            margin: 0;
+            padding: 0;
+            color: #000;
+        }
+        .page {
+            width: 210mm;
+            height: 297mm;
+            padding: 70px 50px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            border: 4px solid #003366;
+            position: relative;
+            background: #fff;
+            overflow: hidden;
+            page-break-after: always;
+        }
+        .header-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo img {
+            height: 120px;
+            width: 120px;
+            object-fit: contain;
+        }
+        h1 {
+            color: #003366;
+            margin: 0;
+            font-size: 32px;
+        }
+        .appoint {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .company-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .company-info {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            font-size: 14px;
+        }
+        .company-info p {
+            margin: 2px 0;
+        }
+        section p {
+            text-align: justify;
+            margin-bottom: 15px;
+        }
+        .section-title {
+            font-weight: bold;
+            color: #003366;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-left: 4px solid #003366;
+            padding-left: 10px;
+        }
+        ul {
+            text-align: justify;
+            padding-left: 20px;
+        }
+        ul li {
+            margin-bottom: 8px;
+        }
+        .signatures {
+            margin-top: 40px;
+            margin-bottom: 60px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .authorization1 {
+            padding-top: 180px;
+        }
+        .authorization {
+            text-align: right;
+        }
+        .company-line {
+            margin-top: 32px;
+        }
+        .QR-Code img {
+            height: 120px;
+            width: 120px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
+    <!-- PAGE 1 -->
     <div class="page">
         <header>
             <div class="header-section">
-                <div style="display: flex; gap: 10px; align-items: center;">
+                <div class="logo">
                     {{#if companyLogo}}
-                    <img src="{{companyLogo}}" alt="Logo" style="max-height: 50px; max-width: 150px;">
-                    {{/if}}
-                    {{#if employeeQR}}
-                    <img src="{{employeeQR}}" alt="QR" style="max-height: 50px; max-width: 50px; border: 1px solid #003366;">
+                    <img src="{{companyLogo}}" alt="Logo">
                     {{/if}}
                 </div>
-                <h1>Mindmanthan Software Solutions</h1>
+                <div>
+                    <h1>Mindmanthan Software Solutions</h1>
+                </div>
             </div>
             <h3 class="appoint"><u>Appointment Letter</u></h3>
         </header>
@@ -40,18 +126,31 @@
             <div class="company-detail">
                 <div>
                     <p><strong>Date:</strong> {{date}}</p>
-                    <p>To,<br><strong>{{fullName}}</strong></p>
+                    <p>
+                        To,<br>
+                        <strong>{{fullName}}</strong><br>
+                        {{#if address}}
+                        <strong>{{address}}</strong>
+                        {{else}}
+                        <strong>[Employee Address]</strong>
+                        {{/if}}
+                    </p>
                     <p><strong>Subject:</strong> Appointment Letter</p>
                     <p>Dear <strong>{{firstName}}</strong>,</p>
                 </div>
                 <div class="company-info">
-                    <p>A90, A Block, Sector 4 Noida, UP 201301</p>
-                    <p>Email: Info@mindmanthansoftwaresolutions.com</p>
-                    <p>Phone: +91 9277267732</p>
+                    <p>A90, A Block, Sector 4 Noida, Uttar Pradesh 201301</p>
+                    <p>Info@mindmanthansoftwaresolutions.com</p>
+                    <p>+91 9277267732 | +91 7011502461</p>
                 </div>
             </div>
 
-            <p>We are pleased to appoint you as <strong>{{jobTitle}}</strong> at <strong>Mindmanthan Software Solutions</strong>, effective from <strong>{{hireDate}}</strong>.</p>
+            <p>
+                We are pleased to appoint you as <strong>{{jobTitle}}</strong> at
+                <strong>Mindmanthan Software Solution</strong>, effective from
+                <strong>{{hireDate}}</strong>, based on your successful selection
+                and discussions held earlier.
+            </p>
 
             <div class="section-title">Appointment Details</div>
             <ul>
@@ -59,34 +158,105 @@
                 <li><strong>Department:</strong> {{department}}</li>
                 <li><strong>Date of Joining:</strong> {{hireDate}}</li>
                 <li><strong>Work Location:</strong> {{workLocation}}</li>
-                <li><strong>Employment Type:</strong> {{employmentType}}</li>
-                <li><strong>Probation Period:</strong> 6 Months</li>
+                <li><strong>Employment Type:</strong> Full-Time</li>
+                <li><strong>Compensation:</strong> As discussed during the interview</li>
+                <li><strong>Working Hours:</strong> 9:30 AM to 6:30 PM, Monday to Friday</li>
+                <li><strong>Probation Period:</strong> 6 months</li>
             </ul>
 
             <div class="section-title">Terms & Conditions</div>
             <ul>
-                <li><strong>Salary & Payment Terms:</strong> At the time of joining, 15 days' salary will be kept on hold as a retention amount. Released on proper exit.</li>
-                <li><strong>Notice Period:</strong> After confirmation, either party must serve a 45 days' notice period.</li>
+                <li>
+                    <strong>Appointment & Role:</strong> Your appointment with
+                    Mindmanthan Software Solutions is based on the information provided
+                    by you during the selection process. Any false or misleading
+                    information may result in termination without notice.
+                </li>
+                <li>
+                    <strong>Probation Period:</strong> You will be on probation for a
+                    period decided by management from your date of joining. During this
+                    period, your performance, conduct, and suitability for the role
+                    will be evaluated.
+                </li>
+                <li>
+                    <strong>Working Hours & Location:</strong> You will be required to
+                    work as per company working hours and at any location assigned by
+                    the management, based on business requirements.
+                </li>
             </ul>
         </section>
-        <div class="page-break"></div>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div class="page">
         <section>
             <ul>
-                <li><strong>Confidentiality:</strong> Employee must maintain strict confidentiality of company data.</li>
-                <li><strong>Termination:</strong> Company reserves the right to terminate without notice for misconduct.</li>
+                <li>
+                    <strong>Salary & Payment Terms:</strong> At the time of joining,
+                    15 days' salary will be kept on hold as a retention amount. This
+                    amount is not a deduction and will be released on time of full and
+                    proper exit.
+                </li>
+                <li>
+                    <strong>Notice Period:</strong> After confirmation, either party
+                    must serve a 45 days' notice period. The held 15 days' salary will
+                    be released only if the employee serves the complete 45 days'
+                    notice period and completes proper handover.
+                </li>
+                <li>
+                    <strong>Early Exit/Absconding:</strong> If the employee leaves
+                    without serving the notice period or absconds, the company reserves
+                    the right to forfeit the held salary.
+                </li>
+                <li>
+                    <strong>Confidentiality & Data Security:</strong> The employee must
+                    maintain strict confidentiality of company data, systems, and
+                    client information during and after employment.
+                </li>
+                <li>
+                    <strong>Company Assets:</strong> All company assets must be returned
+                    in good condition at the time of exit. Final settlement will only
+                    be processed after clearance.
+                </li>
+                <li>
+                    <strong>Code of Conduct:</strong> The employee is expected to follow
+                    all company rules, policies, and professional ethics.
+                </li>
+                <li>
+                    <strong>Termination:</strong> The company reserves the right to
+                    terminate employment without notice in case of misconduct or
+                    policy violation.
+                </li>
+                <li>
+                    <strong>Final Settlement:</strong> Full & final settlement including
+                    the held salary will be processed only after successful completion
+                    of the notice period and clearance.
+                </li>
             </ul>
 
-            <p>I, <strong>{{fullName}}</strong>, hereby accept the appointment and agree to abide by the terms and conditions mentioned above.</p>
+            <div class="section-title">Acceptance by Employee</div>
+            <p>
+                I, <strong>{{fullName}}</strong>, hereby accept the appointment and
+                agree to abide by the terms and conditions mentioned above.
+            </p>
+        </section>
 
+        <footer>
             <div class="signatures">
-                <div>
+                <div class="authorization1">
                     <p>_____________________</p>
-                    <p><strong>Employee Signature</strong></p>
+                    <p><strong>Employee signature</strong></p>
+                    <p><strong>Date: </strong></p>
                 </div>
-                <div style="text-align: right;">
-                    <p>_____________________</p>
-                    <p><strong>Managing Director</strong></p>
-                    <p>Mindmanthan Software Solutions</p>
+                <div class="authorization">
+                    <div class="QR-Code">
+                        {{#if employeeQR}}
+                        <img src="{{employeeQR}}" alt="QR-Code">
+                        {{/if}}
+                    </div>
+                    <p class="company-line">_____________________</p>
+                    <p><strong>Managing Director (MD)</strong> </p>
+                    <p>Udyam Registration No.:<br><strong>UDYAM-UP-28-0200563</strong><br> (Company Seal )</p>
                 </div>
             </div>
         </footer>

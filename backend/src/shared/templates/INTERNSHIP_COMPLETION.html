@@ -18,6 +18,14 @@
 <body>
     <div class="container">
         <div class="header">
+            <div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-bottom: 20px;">
+                {{#if companyLogo}}
+                <img src="{{companyLogo}}" alt="Logo" style="max-height: 80px; max-width: 200px;">
+                {{/if}}
+                {{#if employeeQR}}
+                <img src="{{employeeQR}}" alt="QR" style="max-height: 80px; max-width: 80px; border: 2px solid #003366;">
+                {{/if}}
+            </div>
             <h1>Mindmanthan Software Solutions</h1>
         </div>
         

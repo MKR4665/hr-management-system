@@ -9,6 +9,7 @@ import { getEmployeeById } from '../../domain/usecases/employees/employeeUsecase
 import { documentApi } from '../../data/api/documentApi';
 import { useToast } from '../components/ui/toast';
 import { cn } from '../../shared/lib/utils';
+import DocumentPreviewModal from '../components/DocumentPreviewModal';
 
 const availableTemplates = [
   { id: 'OFFER_LETTER', label: 'Offer Letter', sub: 'Pre-employment offer of job and terms.' },
@@ -43,6 +44,10 @@ export default function EmployeeDetailsPage() {
   const [rejectionData, setRejectionData] = useState({ id: '', reason: '' });
   const [docLoading, setDocLoading] = useState(false);
   const [searchTemplate, setSearchTemplate] = useState('');
+
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
 
   const [formData, setFormData] = useState({});
 
@@ -283,13 +288,16 @@ export default function EmployeeDetailsPage() {
 
   const handleDocAction = async (type, action = 'preview') => {
     try {
-      toast(`${action === 'preview' ? 'Generating preview...' : 'Downloading...'}`, 'info');
-      const blob = await documentApi.generateAndDownload({ employeeId: id, type });
-      const url = window.URL.createObjectURL(blob);
-      
       if (action === 'preview') {
-        window.open(url, '_blank');
+        setDocLoading(true);
+        const { html } = await documentApi.getPreview({ employeeId: id, type });
+        setPreviewHtml(html);
+        setPreviewTitle(type.replace(/_/g, ' '));
+        setIsPreviewOpen(true);
       } else {
+        toast(`Downloading...`, 'info');
+        const blob = await documentApi.generateAndDownload({ employeeId: id, type });
+        const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = `${employee.firstName}_${type}.pdf`;
@@ -299,6 +307,8 @@ export default function EmployeeDetailsPage() {
       }
     } catch (err) {
       toast('Operation failed.', 'error');
+    } finally {
+      setDocLoading(false);
     }
   };
 
@@ -656,6 +666,14 @@ export default function EmployeeDetailsPage() {
           )}
         </div>
       </div>
+
+      <DocumentPreviewModal 
+        isOpen={isPreviewOpen} 
+        onClose={() => setIsPreviewOpen(false)} 
+        html={previewHtml} 
+        title={previewTitle} 
+        onDownload={() => handleDocAction(previewTitle.replace(/ /g, '_'), 'download')}
+      />
 
       {/* Bulk Document Modal */}
       {isBulkModalOpen && (

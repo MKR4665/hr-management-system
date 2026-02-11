@@ -13,6 +13,7 @@ export const documentApi = {
     if (!res.ok) throw new Error('Failed to generate document');
     return res.blob();
   },
+  getPreview: (payload) => http.post('/documents/preview', payload),
   bulkGenerate: (payload) => http.post('/documents/bulk-generate', payload),
   sendEmail: (payload) => http.post('/documents/send-email', payload),
   getByEmployee: (employeeId) => http.get(`/documents/employee/${employeeId}`),

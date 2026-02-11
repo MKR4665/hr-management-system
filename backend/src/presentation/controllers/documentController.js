@@ -14,6 +14,16 @@ const generateAndDownload = async (req, res, next) => {
   }
 };
 
+const getPreview = async (req, res, next) => {
+  try {
+    const { employeeId, type, month, year } = req.body;
+    const { html } = await documentUsecases.generateDocument(employeeId, type, { month, year });
+    res.json({ html });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const sendBulkEmail = async (req, res, next) => {
   try {
     const { employeeId, types, subject, message, month, year } = req.body;
@@ -73,6 +83,7 @@ const getMonthlyStatus = async (req, res, next) => {
 
 module.exports = {
   generateAndDownload,
+  getPreview,
   sendBulkEmail,
   bulkGenerate,
   getByEmployee,

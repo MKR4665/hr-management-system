@@ -4,7 +4,7 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
 const generateEmployeeQRCode = async (employee) => {
-  const uploadDir = path.join(process.cwd(), 'uploads', 'qrcodes');
+  const uploadDir = path.resolve(__dirname, '..', '..', '..', 'uploads', 'qrcodes');
   
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
