@@ -1,103 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Offer Letter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --primary: #003366;
             --border: #e0e0e0;
             --text: #222;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.4;
-            color: var(--text);
-            font-size: 14px;
-            margin: 0;
-            padding: 0;
+            line-height: 1.6;
+            background-color: #e0e0e0;
+            font-size: 18px;
+            counter-reset: page;
         }
+
         @page {
             size: A4;
             margin: 15mm;
         }
+
         .container {
-            width: 100%;
-            padding: 20px;
+            width: 210mm;
+            height: 297mm;
+            margin: 30px auto;
+            padding: 70px 50px;
             box-sizing: border-box;
+            overflow: hidden;
             background-color: #fff;
         }
+
         .header {
             display: flex;
             justify-content: space-between;
             background: var(--primary);
             color: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 25px 30px;
         }
-        .company-info h1 {
+
+        .logo {
+            background-color: white;
+            border-radius: 50%;
+            height: 120px;
+            width: 120px;
+        }
+
+        .logo img {
+            height: 120px;
+            width: 120px;
+        }
+
+        .header h1 {
             margin: 0;
-            font-size: 18px;
+            font-size: 22px;
         }
-        .company-info p {
-            margin: 2px 0;
-            font-size: 11px;
+
+        .header p {
+            margin: 4px 0;
+            font-size: 13px;
         }
+
         .name {
-           color: #003366;
-           text-align: center;
-           border-bottom: 2px solid #003366;
-           padding-bottom: 5px;
-           margin-top: 0;
+            color: #003366;
+            text-align: center;
+            border-bottom: 4px solid #003366;
+            padding-bottom: 10px;
         }
+
         h3 {
             color: #003366;
             border-left: 4px solid #003366;
             padding-left: 10px;
-            margin: 15px 0 10px 0;
-            font-size: 16px;
+            margin-bottom: 20px;
+
         }
-        .details-grid {
+
+        .container1 {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+            border-bottom: 1px solid rgb(236, 230, 230);
+            padding-bottom: 30px;
         }
-        .details-grid p {
-            margin: 3px 0;
+
+        .QR-code img {
+            height: 120px;
+            width: 120px;
         }
+
+        section p {
+            text-align: justify;
+        }
+
+        ul li {
+            margin: 9px 0;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
-            background-color: #fcfcfc;
+            margin-top: 15px;
+            background-color: rgb(242, 238, 238);
         }
-        table th, table td {
+
+        table th,
+        table td {
             border: 1px solid var(--border);
-            padding: 8px;
-            text-align: left;
+            padding: 10px;
         }
+
         table th {
             background: #f0f4f8;
         }
+
         .signatures {
-           display: flex;
-           justify-content: space-between;
-           margin-top: 30px;
-           padding-top: 20px;
-           border-top: 1px solid #eee;
-        }
-        .page-break {
-            page-break-after: always;
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+            border-top: 1px solid rgb(232, 222, 222);
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header class="header">
+            {{#if companyLogo}}
+            <div class="logo">
+                <!-- Placeholder for company logo -->
+                <img src="{{companyLogo}}" alt="Company Logo">
+            </div>
+            <div class="company-info">
+                <h1>Mindmanthan Software Solutions</h1>
+                <p><i class="fas fa-map-marker-alt"></i> A90,A Block,Sector 4 Noida,Uttar Pradesh 201301</p>
+                <p><i class="fas fa-envelope"></i> Email: Info@mindmanthansoftwaresolutions.com</p>
+                <p><i class="fas fa-phone"></i> Phone: +91 9277267732 | +91 7011502461</p>
+            </div>
+        </header>
+
+
+
+        <!-- <header class="header">
             <div style="display: flex; gap: 20px; align-items: center;">
-                {{#if companyLogo}}
+                
                 <div class="logo">
                     <img src="{{companyLogo}}" alt="Company Logo" style="max-height: 60px; max-width: 150px;">
                 </div>
@@ -115,39 +165,60 @@
                 <p>Email: Info@mindmanthansoftwaresolutions.com</p>
                 <p>Phone: +91 9277267732 | +91 7011502461</p>
             </div>
-        </header>
+        </header> -->
 
-        <h2 class="name">Strictly Private & Confidential Offer of Employment</h2>
-        
-        <div class="details-grid">
-            <div>
-                <p><strong>PREPARED FOR:</strong> {{fullName}}</p>
-                <p><strong>POSITION:</strong> {{jobTitle}}</p>
-                <p><strong>DATE OF ISSUE:</strong> {{date}}</p>
-                <p><strong>DOCUMENT ID:</strong> MM/HR/{{year}}/{{id}}</p>
+
+
+
+        <section class="offer-details">
+            <h2 class="name">Strictly Private & Confidential Offer of Employment</h2>
+            <div class="container1">
+                <div>
+                    <p><strong>PREPARED FOR:</strong> {{fullName}}</p>
+                    <p><strong>POSITION:</strong> {{jobTitle}}</p>
+                    <p><strong>DATE OF ISSUE:</strong> {{date}}</p>
+                    <p><strong>DOCUMENT ID:</strong> MM/HR/{{year}}/{{id}}</p>
+                </div>
+                {{#if employeeQR}}
+                <div class="QR-code">
+                    <img src="{{employeeQR}}" alt="Verification QR">
+                    <p style="font-size: 8px; margin: 0; color: #fff; text-align: center;">Verification QR</p>
+                    {{/if}}
+                </div>
             </div>
-        </div>
+        </section>
 
-        <section>
+        <section class="welcome-mission">
             <h3>Welcome & Role Mission</h3>
             <p>Dear {{firstName}},</p>
             <p>Welcome to the churning of ideas.</p>
-            <p>On behalf of Mindmanthan, we are delighted to formally extend this offer of employment for the position of <strong>{{jobTitle}}</strong>. We were thoroughly impressed by your background, expertise, and the potential value you bring to our organization.</p>
+            <p>On behalf of Mind Manthan, we are delighted to formally extend this offer of employment for the position
+                of {{jobTitle}}. We were thoroughly impressed by your background, expertise, and the potential value you
+                bring to our organization.</p>
+            <p>Executive Welcome: Your expertise and background stood out during our selection process. We believe your
+                contributions will be pivotal in driving our mission forward. We don't just offer jobs; we offer a
+                platform to build a legacy.</p>
+            <p>Core Role Mission: As our {{jobTitle}}, your primary mission is to [Insert 1-sentence mission, e.g.,
+    </div>
+    <!-- page 2 -->
+    <div class="container">
+        spearhead strategic growth and streamline operational efficiency . You will be an architect of change
+        within the organization.</p>
         </section>
 
-        <section>
-            <h3>Employment Details</h3>
+        <section class="employment-details">
+            <h3> Employment Details</h3>
             <table>
                 <tr>
                     <td><strong>Job Title:</strong></td>
                     <td>{{jobTitle}}</td>
                 </tr>
                 <tr>
-                    <td><strong>Job Grade:</strong></td>
+                    <td><strong>Job Grade / Band / Level:</strong></td>
                     <td>{{jobGrade}}</td>
                 </tr>
                 <tr>
-                    <td><strong>Department:</strong></td>
+                    <td><strong>Department / Business Unit:</strong></td>
                     <td>{{department}}</td>
                 </tr>
                 <tr>
@@ -168,6 +239,37 @@
                 </tr>
             </table>
         </section>
+
+
+
+
+
+        <section class="employment-terms">
+            <h3>Employment Terms</h3>
+            <p><strong>Reporting Structure:</strong> You will report directly to <strong>[Manager Name/Title]</strong> .
+                Your performance
+                will be evaluated based on the objectives set during your quarterly reviews.</p>
+            <p><strong>Job Duties:</strong></p>
+            <ul>
+                <li>[Duty 1] Strategic planning and execution</li>
+                <li>[Duty 2] Stakeholder management and reporting</li>
+                <li>[Duty 3] Process optimization and team collaboration</li>
+            </ul>
+            <p><strong>Probationary Period:</strong> Your employment is subject to a six (6) month probation period.
+                This duration allows both parties to assess cultural fit and technical alignment. Successful completion
+                will be confirmed in writing.</p>
+    </div>
+    <!-- page 3 -->
+    <div class="container">
+        <p><strong>Place of Work:</strong> Your primary location of work will be the Mind Manthan Corporate Office
+            at [Office Address]. Occasional travel may be required as per business exigencies.</p>
+        </section>
+
+
+
+
+
+
 
         <div class="page-break"></div>
 
@@ -214,8 +316,10 @@
 
         <section>
             <h3>Variable Pay & KPIs</h3>
-            <p><strong>Performance Bonus:</strong> You are eligible for an annual performance-linked incentive of up to {{performanceBonus}}% of your Gross Salary.</p>
-            <p><strong>Notice Period:</strong> Following confirmation, either party may terminate the employment by providing {{noticePeriod}} days written notice.</p>
+            <p><strong>Performance Bonus:</strong> You are eligible for an annual performance-linked incentive of up to
+                {{performanceBonus}}% of your Gross Salary.</p>
+            <p><strong>Notice Period:</strong> Following confirmation, either party may terminate the employment by
+                providing {{noticePeriod}} days written notice.</p>
         </section>
 
         <footer>
@@ -234,4 +338,5 @@
         </footer>
     </div>
 </body>
+
 </html>

@@ -32,17 +32,6 @@ export default function DocumentPreviewModal({ isOpen, onClose, html, title, onD
           </div>
         </CardContent>
       </Card>
-      
-      <style jsx global>{`
-        .preview-content .page {
-          margin: 0 !important;
-          box-shadow: none !important;
-          width: 100% !important;
-        }
-        .preview-content .page:not(:first-child) {
-          margin-top: 20px !important;
-        }
-      `}</style>
     </div>
   );
 }

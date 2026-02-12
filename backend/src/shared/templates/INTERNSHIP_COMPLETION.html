@@ -1,61 +1,407 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Internship Certificate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #222; margin: 0; padding: 0; }
-        .container { width: 100%; padding: 50px; box-sizing: border-box; text-align: center; border: 10px solid #003366; }
-        .header img { height: 80px; }
-        h1 { color: #003366; font-size: 32px; margin: 20px 0; }
-        .certificate-title { font-size: 24px; text-transform: uppercase; border-bottom: 2px solid #003366; display: inline-block; padding-bottom: 5px; margin-bottom: 30px; }
-        .recipient { font-size: 28px; font-weight: bold; color: #003366; margin: 20px 0; }
-        .content { font-size: 16px; margin: 30px auto; max-width: 800px; text-align: justify; }
-        .signatures { display: flex; justify-content: space-between; margin-top: 60px; padding: 0 40px; }
-        .footer-info { margin-top: 40px; font-size: 12px; color: #666; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            counter-reset: page;
+        }
+
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        .Wrraper {
+            width: 210mm;
+            height: 297mm;
+            margin: auto;
+            background: #fff;
+            padding: 70px 50px;
+            box-sizing: border-box;
+            border: 4px solid #003366;
+            overflow: hidden;
+        }
+
+        .logo2 {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .div2 h1 {
+            text-align: center;
+            color: #003366;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .div2 h2 {
+            text-align: center;
+            font-size: 18px;
+            font-weight: normal;
+            margin-bottom: 40px;
+        }
+
+        .presented {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .name {
+            text-align: center;
+            font-size: 40px;
+            font-family: 'Great Vibes' cursive;
+            margin: 20px 0;
+        }
+
+        .content {
+            text-align: center;
+            font-size: 16px;
+            width: 70%;
+            margin: 0 auto 60px;
+            line-height: 1.6;
+            margin-bottom: 70px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 70px;
+        }
+
+        .line {
+            width: 200px;
+            border-top: 1px solid #333;
+            text-align: center;
+            padding-top: 8px;
+            font-size: 14px;
+        }
+
+        .Company {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px 0;
+            line-height: 1.5;
+            text-align: center;
+
+        }
+
+        .Company img {
+            width: 120px;
+            height: 120px;
+        }
+
+
+        .container {
+            width: 210mm;
+            height: 297mm;
+            margin: auto;
+            background: #fff;
+            padding: 40px 50px;
+            box-sizing: border-box;
+            border: 4px solid #003366;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header img {
+            width: 150px;
+            height: 150px;
+        }
+
+        h1{
+            text-align: center;
+            color: #003366;
+            font-size: 32px;
+            font-weight: 700;
+        }
+        h2 {
+            text-align: center;
+            color: #003366;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .certificate {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .certificate1 {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        .certificate2 {
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .signatures {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .QR-Code {
+            display: flex;
+            justify-content: center;
+        }
+
+        .QR-Code img {
+            width: 120px;
+            height: 120px;
+        }
+
+
+        .wrapper2 {
+            width: 210mm;
+            height: 297mm;
+            margin: 30px auto;
+            background: #fff;
+            padding: 40px 50px;
+            box-sizing: border-box;
+            border-top: 4px solid #003366;
+            border-bottom: 4px solid #003366;
+            border-left: 4px solid #003366;
+            border-right: 4px solid#003366;
+            overflow: hidden;
+
+        }
+
+        .header1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .header1 img {
+            width: 150px;
+            height: 150px;
+        }
+
+        h1,
+        h2 {
+            color: #003366;
+            margin-bottom: 20px;
+        }
+
+        .content1 {
+            text-align: center;
+            /* font-size: 16px; */
+            width: 70%;
+            margin: 0 auto 60px;
+            line-height: 1.6;
+            margin-bottom: 70px;
+            margin-top: 10px;
+        }
+
+        #appreciate {
+            text-align: center;
+        }
+
+        .regards {
+            text-align: left;
+            font-size: 16px;
+            margin: 0 auto 150px;
+            line-height: 1.6;
+            margin-top: 20px;
+            margin-bottom: 80px;
+        }
+
+        .regards1 {
+            font-size: 16px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 90px;
+        }
+
+        .footer-class {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 30%;
+        }
+
+        .footer-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo img {
+            width: 150px;
+            height: 150px;
+            opacity: 0.3;
+        }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-bottom: 20px;">
-                {{#if companyLogo}}
-                <img src="{{companyLogo}}" alt="Logo" style="max-height: 80px; max-width: 200px;">
-                {{/if}}
-                {{#if employeeQR}}
-                <img src="{{employeeQR}}" alt="QR" style="max-height: 80px; max-width: 80px; border: 2px solid #003366;">
-                {{/if}}
-            </div>
-            <h1>Mindmanthan Software Solutions</h1>
-        </div>
-        
-        <div class="certificate-title">Internship Completion Certificate</div>
-        
-        <p>This is to certify that</p>
-        <div class="recipient">{{fullName}}</div>
-        <p>Employee ID: {{id}}</p>
 
+    <div class="Wrraper">
+        <div class="logo2">
+            {{#if companyLogo}}
+            <img src="{{companyLogo}}" alt="Logo">
+            {{/if}}
+        </div>
+        <div class="div2">
+            <h1>CERTIFICATE</h1>
+            <h2>OF APPRECIATION</h2>
+        </div>
+        <div class="presented">_______PRESENTED TO_______</div>
+        <div class="name">{{fullName}}</div>
         <div class="content">
-            <p>has successfully completed his/her internship with <strong>MindManthan Software Solutions</strong> as a <strong>{{jobTitle}}</strong> from <strong>{{hireDate}}</strong> to <strong>{{date}}</strong>. During the internship period, he/she demonstrated sincerity, discipline, and a strong willingness to learn. He/she actively worked on assigned tasks and projects, and his/her conduct and performance were found to be satisfactory throughout the training period.</p>
-            <p>We appreciate his/her efforts and wish him/her every success in future academic and professional endeavors.</p>
+            This certificate is proudly presented in recognition of outstanding
+            performance, dedication, and valuable contribution.
         </div>
+        <div class="footer">
+            <div class="line">DATE</div>
+            <div class="line">SIGNATURE</div>
+        </div>
+        <div class="Company">
+            {{#if employeeQR}}
+            <img src="{{employeeQR}}" alt="QR">
+            {{/if}}
+            <p><strong>Mindmanthan Software Solutions</strong></p>
+            <p><b>Ideas To Reality</b></p>
+        </div>
+    </div>
 
-        <div class="signatures">
-            <div style="text-align: left;">
-                <p>_____________________</p>
+
+    <div class="container">
+        <header>
+            <div class="header">
+                {{#if companyLogo}}
+                <img src="{{companyLogo}}" alt="Logo">
+                {{/if}}
+                <h1>Mindmanthan Software Solutions</h1>
+            </div>
+        </header>
+
+        <section>
+            <div class="certificate">
+                <h2>Internship Completion Certificate</h2>
+                <p>Proudly presented to</p>
+                <h2>{{fullName}}</h2>
+                <p>Emp ID: <strong>{{id}}</strong></p>
+                <p>______________________________________________________________________</p>
+            </div>
+            <div class="certificate1">
+                <p>This is to certify that <strong>Mr./Ms. {{fullName}}</strong> has successfully completed his/her
+                    internship with <strong>MindManthan Software Solutions</strong>
+                    as a <strong>{{jobTitle}}</strong>
+                    from<strong>{{hireDate}}</strong> to <strong>{{date}}</strong>.During the internship period,
+                    he/she demonstrated sincerity, discipline, and a strong willingness to learn. He/she actively
+                    worked on assigned tasks and projects, and his/her conduct and performance were found to be
+                    satisfactory throughout the training period.</p>
+                <p>We appreciate his/her efforts and wish him/her every success in future academic and professional
+                    endeavors.</p>
+            </div>
+            <div class="certificate2">
+                <p> <strong>Date:</strong></p>
+                <p>Place: [A90,A Block,Sector 4 Noida,Uttar Pradesh 201301]</p>
+                <p>MindManthan Software Solutions</p>
+            </div>
+        </section>
+
+        <footer>
+            <div class="signatures">
+                <div class="authorization">
+                    <p><strong>Kartik Khare</strong></p>
+                    <p>Managing Director (MD)</p>
+                    <p>Udyam Registration No.:<br><strong>UDYAM-UP-28-0200563</strong><br> (Company Seal)</p>
+                </div>
+                <div class="QR-Code">
+                    {{#if employeeQR}}
+                    <img src="{{employeeQR}}" alt="QR">
+                    {{/if}}
+                </div>
+                <div class="authorization1">
+                    <p><strong>Prabhat Paswan</strong></p>
+                    <p>Chief Executive Officer (CEO)</p>
+
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="wrapper2">
+        <header>
+            <div class="header1">
+                {{#if companyLogo}}
+                <img src="{{companyLogo}}" alt="Logo">
+                {{/if}}
+                <h1>Mindmanthan Software Solutions</h1>
+
+            </div>
+        </header>
+        <h2 id="appreciate">Appreciation Letter</h2>
+        <div class="Content1">
+            <p><i>We appreciate the dedication and efforts shown during the internship period.
+
+                    This experience has provided practical exposure and professional learning essential for career
+                    growth.
+                    We wish great success in all future endeavors.</i></p>
+        </div>
+        <!-- signature section -->
+        <div class="regards">
+            <p><strong>Best Regards</strong></p>
+            <p>From Mindmanthan Software Solutions</p>
+        </div>
+        <div class="regards1">
+            <div>
                 <p><strong>Kartik Khare</strong></p>
                 <p>Managing Director (MD)</p>
+
             </div>
-            <div style="text-align: right;">
-                <p>_____________________</p>
+            <div>
                 <p><strong>Prabhat Paswan</strong></p>
                 <p>Chief Executive Officer (CEO)</p>
             </div>
         </div>
+        <footer class="footer1">
+            <div class="footer-class">
 
-        <div class="footer-info">
-            <p>Date: {{date}} | Noida, Uttar Pradesh</p>
-        </div>
+                <div class="company-info">
+                    <p><i class="fas fa-map-marker-alt"></i> A90,A Block,Sector 4 Noida,Uttar Pradesh 201301</p>
+                    <p><i class="fas fa-envelope"></i> Email: Info@mindmanthansoftwaresolutions.com</p>
+                    <p><i class="fas fa-phone"></i> Phone: +91 9277267732 | +91 7011502461</p>
+                </div>
+                <div class="footer-logo">
+                    {{#if companyLogo}}
+                    <img src="{{companyLogo}}" alt="Logo">
+                    {{/if}}
+                </div>
+
+            </div>
+
+        </footer>
     </div>
 </body>
+
 </html>

@@ -1,72 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joining Letter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.4; color: #222; margin: 0; padding: 0; font-size: 13px; }
-        .page { width: 100%; padding: 40px; box-sizing: border-box; background: #fff; }
-        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
-        h1 { color: #003366; margin: 0; font-size: 20px; }
-        .title { text-align: center; color: #003366; text-transform: uppercase; margin: 10px 0; }
-        .emp-info { display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .signatures { display: flex; justify-content: space-between; margin-top: 50px; }
-        .company-info { margin-top: 50px; font-size: 10px; color: #666; border-top: 1px solid #eee; padding-top: 10px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* line-height: 1.4; */
+            background-color: #f8f9fa;
+            font-size: 16px;
+
+            counter-reset: page;
+        }
+
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            margin: auto;
+            padding: 30px 50px;
+            box-sizing: border-box;
+            border: 4px solid #003366;
+            overflow: hidden;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 120px;
+            width: 120px;
+        }
+
+        h1 {
+            color: #003366;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .head-name {
+            font-weight: 700;
+            font-size: 18px;
+            text-align: center;
+            text-decoration: none;
+            margin-block: 20px;
+        }
+
+        section p {
+            text-align: justify;
+            margin-bottom: 10px;
+        }
+
+        .signatures {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bottom-line{
+            margin-block: 30px;
+        }
+
+        .QR-Code img {
+            height: 120px;
+            width: 120px;
+        }
+
+        .company-info {
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
 </head>
+
 <body>
     <div class="page">
         <header>
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 10px;">
-                {{#if companyLogo}}
-                <img src="{{companyLogo}}" alt="Logo" style="max-height: 50px; max-width: 150px;">
-                {{/if}}
-                {{#if employeeQR}}
-                <img src="{{employeeQR}}" alt="QR" style="max-height: 50px; max-width: 50px; border: 1px solid #003366;">
-                {{/if}}
+            <div class="header-section">
+                <div class="logo">
+                    {{#if companyLogo}}
+                    <img src="{{companyLogo}}" alt="mind manthan logo">
+                    {{/if}}
+                </div>
+                <div>
+                    <h1>Mindmanthan Software Solutions</h1>
+                </div>
             </div>
-            <h1>Mindmanthan Software Solutions</h1>
-            <h3 class="title"><u>Joining Letter</u></h3>
+            <h2 class="head-name"><u>Joining Letter</u></h2>
+            <h3 class="head-name"><u>To Whomsoever It May Concern,</u></h3>
         </header>
 
-        <section>
-            <div class="emp-info">
-                <div>
-                    <p>Date: {{date}}</p>
-                    <p>To,<br><strong>The HR Manager</strong><br>Mindmanthan Software Solutions</p>
-                </div>
-                <div>
-                    <p>From: <strong>{{fullName}}</strong></p>
-                    <p>Designation: {{jobTitle}}</p>
-                </div>
-            </div>
 
-            <p><strong>Subject: Letter of Joining</strong></p>
-            <p>Dear Sir/Madam,</p>
-            <p>I am pleased to report for duty today, <strong>{{hireDate}}</strong>, as <strong>{{jobTitle}}</strong> at <strong>Mindmanthan Software Solutions</strong>, in accordance with the Appointment Letter dated <strong>{{date}}</strong>.</p>
-            
-            <p>I hereby accept all the terms and conditions mentioned in my appointment letter and company policies. I assure you of my best services and dedication towards the organization.</p>
-            
-            <p>I have submitted all the necessary documents for your records.</p>
+        <!-- header close here -->
+        <section>
+            <p>This is to formally confirm that <strong> Mr./Ms. {{fullName}}</strong> has joined <strong>Mindmanthan
+                    Software Solutions</strong> as a <strong> {{jobTitle}}</strong> in the <strong>
+                    {{department}}</strong> on <strong>{{hireDate}}.</strong> </p>
+            <p>At the time of joining, Mr./Ms. {{fullName}} has successfully completed all joining formalities and
+                submitted the required documents including identity proof, educational certificates, experience
+                documents <strong>(if applicable), </strong> and other records as per the company’s onboarding process.
+            </p>
+            <p> As part of his/her employment, <strong> Mr./Ms. {{fullName}} </strong> will be responsible for carrying
+                out the duties and responsibilities assigned by the management from time to time and will report to
+                [Reporting Manager Name / Designation]. He/She is expected to perform his/her role with professionalism,
+                integrity, dedication, and in the best interest of the organization.</p>
+            <p>During the course of employment, <strong> Mr./Ms. {{fullName}}</strong> will be governed by the rules,
+                regulations, policies, and procedures of Mindmanthan Software Solutions, including but not limited to
+                working hours, leave policy, code of conduct, confidentiality, information security, and disciplinary
+                policies, as applicable and amended from time to time.</p>
+            <p>The employee is required to maintain strict confidentiality with respect to company data, client
+                information, intellectual property, internal processes, and any sensitive information obtained during
+                the tenure of employment. Any breach of confidentiality or misconduct may invite disciplinary action as
+                per company policy.</p>
+            <p>We extend a warm welcome to <strong> Mr./Ms. {{fullName}}</strong> and look forward to a mutually
+                beneficial and successful professional association. We wish him/her great success and growth with
+                <strong>Mindmanthan Software Solutions.</strong></p>
         </section>
+
 
         <footer>
             <div class="signatures">
-                <div>
-                    <p>_____________________</p>
-                    <p><strong>{{fullName}}</strong></p>
-                    <p>Employee Signature</p>
+                <div class="authorization1">
+                    <p><strong>Kartik Khare</strong></p>
+                    <p>Managing Director (MD)</p>
                 </div>
-                <div style="text-align: right;">
-                    <p>_____________________</p>
-                    <p><strong>HR Department</strong></p>
-                    <p>Received By</p>
+                <div class="QR-Code">
+                    {{#if employeeQR}}
+                    <img src="{{employeeQR}}" alt="QR-Code">
+                    {{/if}}
+                </div>
+                <div class="authorization">
+                    <p><strong>Prabhat Paswan</strong></p>
+                    <p>Chief Executive Officer (CEO)</p>
+                    <!-- <p>Udyam Registration No.:<br><strong>UDYAM-UP-28-0200563</strong> <BR>(Company Seal)</p> -->
                 </div>
             </div>
+            <div class="bottom-line">
+                <hr>
+           </div>
             <div class="company-info">
-                <p>A90, Noida, UP 201301 | Info@mindmanthansoftwaresolutions.com</p>
+                <div>
+                    <p><i class="fas fa-envelope"></i> hr@mindmanthansoftwaresolutions.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9277267732 | +91 7011502461</p>
+                </div>
+                <div>
+                    <p><i class="fas fa-envelope"></i> Info@mindmanthansoftwaresolutions.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> A90,A Block,Sector 4 Noida,Uttar Pradesh 201301</p>
+                </div>
             </div>
         </footer>
     </div>
 </body>
+
 </html>

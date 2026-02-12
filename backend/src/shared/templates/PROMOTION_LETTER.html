@@ -2,78 +2,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Promotion Letter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.4; color: #222; margin: 0; padding: 0; font-size: 13px; }
-        .page { width: 100%; padding: 40px; box-sizing: border-box; background: #fff; }
-        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
-        h1 { color: #003366; margin: 0; font-size: 20px; }
-        .title { text-align: center; color: #003366; text-transform: uppercase; margin: 10px 0; }
-        .emp-info { display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .designation-box { background: #f0f4f8; border: 1px solid #003366; padding: 15px; margin: 20px 0; border-radius: 8px; }
-        .signatures { display: flex; justify-content: space-between; margin-top: 50px; }
-        .company-info { margin-top: 50px; font-size: 10px; color: #666; border-top: 1px solid #eee; padding-top: 10px; }
+        body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* line-height: 1.3; */
+    background-color: #f8f9fa;
+    font-size: 16px;
+    counter-reset: page;
+}
+
+@page {
+    size: A4;
+    margin: 15mm;
+}
+
+.main-container {
+    width: 210mm;
+    height: 297mm;
+    margin: auto;
+    padding: 30px 50px;
+    box-sizing: border-box;
+    border: 4px solid #003366;
+    overflow: hidden;
+}
+
+.header-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    height: 120px;
+    width: 120px;
+}
+h1{
+    color: #003366;
+    font-size: 32px;
+    font-weight: 700;
+}
+.Promotion{
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    margin-block: 20px;
+}
+section p{
+    margin-bottom: 10px;
+    text-align: justify;
+}
+.emp-info{
+    display: flex;
+    justify-content: space-between;
+}
+.Designation{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0 20px;
+    padding-block: 20px;
+
+}
+
+.signatures{
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.QR-Code img{
+    width: 120px;
+    height: 120px;
+}
+.bottom-line{
+    margin-block: 30px;
+}
+.company-info{
+    display: flex;
+    justify-content: space-between;
+}
+
+
     </style>
 </head>
 <body>
-    <div class="page">
+    <div class="main-container">
+
+        <!-- header start here -->
         <header>
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 10px;">
-                {{#if companyLogo}}
-                <img src="{{companyLogo}}" alt="Logo" style="max-height: 50px; max-width: 150px;">
+            <div class="header-section">
+                <div class="logo">
+                    {{#if companyLogo}}
+                <img src="{{companyLogo}}" alt="Logo">
                 {{/if}}
-                {{#if employeeQR}}
-                <img src="{{employeeQR}}" alt="QR" style="max-height: 50px; max-width: 50px; border: 1px solid #003366;">
-                {{/if}}
+                </div>
+                <div>
+                    <h1>Mindmanthan Software Solutions</h1>
+                </div>
             </div>
-            <h1>Mindmanthan Software Solutions</h1>
-            <h3 class="title"><u>Promotion Letter</u></h3>
+            <h3 class="Promotion"><u>PROMOTION LETTER</u></h3>
         </header>
+        <!-- header close here -->
+
 
         <section>
             <div class="emp-info">
                 <div>
-                    <p>Date: {{date}}</p>
-                    <p>To,<br><strong>{{fullName}}</strong></p>
+                    <p><strong>Date: </strong>{{date}}</p>
+                    <p> To,</p>
+                    <p> Mr./Ms. {{fullName}}</p>
                 </div>
                 <div>
-                    <p>Employee ID: {{id}}</p>
-                    <p>Current Designation: {{jobTitle}}</p>
-                    <p>Department: {{department}}</p>
+                    <p><strong>Employee ID: </strong>{{id}}</p>
+                    <p><strong>Current Designation: </strong>{{jobTitle}}</p>
+                    <p><strong>Department: </strong>{{department}}</p>
                 </div>
             </div>
-
-            <p><strong>Dear {{firstName}},</strong></p>
-            <p>We are pleased to inform you that, in recognition of your consistent performance, dedication, and valuable contribution, the management of <strong>MindManthan Software Solutions</strong> has decided to promote you.</p>
-            
-            <p>With effect from <strong>{{date}}</strong>, you are hereby promoted to the position of:</p>
-            
-            <div class="designation-box">
-                <p><strong>New Designation:</strong> {{jobTitle}} (Senior)</p>
-                <p><strong>Department:</strong> {{department}}</p>
-                <p><strong>Reporting To:</strong> {{reportingManager}}</p>
+            <p>Dear Mr./Ms. <strong> {{firstName}},</strong> </p>
+            <p>We are pleased to inform you that, in recognition of your consistent performance, dedication, and
+                valuable contribution, the management of <strong> MindManthan Software Solutions</strong> has decided to
+                promote you.</p>
+            <p>With effect from<strong> {{date}}, </strong>you are hereby promoted to the position of:</p>
+            <strong><p>Promoted Designation</p></strong>
+            <div class="Designation">
+                   <p><strong>New Designation:</strong> {{jobTitle}} (Senior)</p>
+                    <p><strong>Department:</strong> {{department}}</p>
+                    <p><strong>Reporting To:</strong> {{reportingManager}}</p>
+                
             </div>
-
-            <p>Your revised roles and responsibilities will be communicated separately. We congratulate you on your promotion and look forward to your continued contribution to the growth and success of MindManthan Software Solutions.</p>
+            <p>Your revised roles and responsibilities will be communicated separately and you are expected to perform
+                your duties with increased responsibility, leadership, and professionalism.</p>
+            <p>If applicable, your revised compensation and benefits will be communicated through a separate Salary
+                Revision Letter.</p>
+            <p>All other terms and conditions of your employment, as mentioned in your Appointment Letter and company
+                policies, shall remain unchanged.</p>
+            <p>We <strong>congratulate </strong> you on your promotion and look forward to your continued contribution to
+                the growth and success of<strong> MindManthan Software Solutions.</strong></p>
         </section>
 
         <footer>
-            <div class="signatures">
-                <div>
-                    <p>_____________________</p>
-                    <p><strong>Kartik Khare</strong></p>
-                    <p>Managing Director (MD)</p>
+                <div class="signatures">
+                    <div class="authorization1">
+                        <p><strong>Kartik Khare</strong></p>
+                        <p>Managing Director (MD)</p>
+                    </div>
+                    <div class="QR-Code">
+                        {{#if employeeQR}}
+                <img src="{{employeeQR}}" alt="QR">
+                {{/if}}
+                    </div>
+                    <div class="authorization">
+                        <p><strong>Prabhat Paswan</strong></p>
+                        <p>Chief Executive Officer (CEO)</p>
+                        <!-- <p>Udyam Registration No.:<br><strong>UDYAM-UP-28-0200563</strong> <BR>(Company Seal)</p> -->
+                    </div>
                 </div>
-                <div style="text-align: right;">
-                    <p>_____________________</p>
-                    <p><strong>Prabhat Paswan</strong></p>
-                    <p>Chief Executive Officer (CEO)</p>
+                <div class="bottom-line">
+                    <hr>
                 </div>
-            </div>
-            <div class="company-info">
-                <p>A90, Noida, UP 201301 | Info@mindmanthansoftwaresolutions.com</p>
-            </div>
-        </footer>
-    </div>
+                <div class="company-info">
+                    <div>
+                        <p><i class="fas fa-envelope"></i> hr@mindmanthansoftwaresolutions.com</p>
+                        <p><i class="fas fa-phone"></i> +91 9277267732 | +91 7011502461</p>
+                    </div>
+                    <div>
+                        <p><i class="fas fa-envelope"></i> Info@mindmanthansoftwaresolutions.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> A90,A Block,Sector 4 Noida,Uttar Pradesh 201301</p>
+                    </div>
+                </div>
+            </footer>
 </body>
 </html>

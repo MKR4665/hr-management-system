@@ -1,68 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relieving Letter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.4; color: #222; margin: 0; padding: 0; font-size: 13px; }
-        .page { width: 100%; padding: 40px; box-sizing: border-box; background: #fff; }
-        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
-        h1 { color: #003366; margin: 0; font-size: 20px; }
-        .title { text-align: center; color: #003366; text-transform: uppercase; margin: 10px 0; }
-        .emp-info { display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .signatures { display: flex; justify-content: space-between; margin-top: 50px; }
-        .company-info { margin-top: 50px; font-size: 10px; color: #666; border-top: 1px solid #eee; padding-top: 10px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            font-size: 16px;
+
+            counter-reset: page;
+        }
+
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            margin: auto;
+            padding: 30px 50px;
+            box-sizing: border-box;
+            border: 4px solid #003366;
+            overflow: hidden;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 120px;
+            width: 120px;
+        }
+
+        h1 {
+            color: #003366;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .head-name {
+            font-weight: 700;
+            font-size: 18px;
+            text-align: center;
+            margin-block: 20px;
+        }
+
+        section p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .signatures {
+            margin-bottom: 60px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .authorization1 {
+            padding-top: 180px;
+        }
+
+        .company-line {
+            margin-top: 32px;
+        }
+
+        .company-info {
+            display: flex;
+            justify-content: space-between;
+        }
+        .bottom-line{
+            margin-block: 30px;
+        }
+
+        .QR-Code img {
+            height: 150px;
+            width: 150px;
+
+        }
     </style>
 </head>
+
 <body>
     <div class="page">
+
+
+
+        <!-- header start here -->
         <header>
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 10px;">
-                {{#if companyLogo}}
-                <img src="{{companyLogo}}" alt="Logo" style="max-height: 50px; max-width: 150px;">
-                {{/if}}
-                {{#if employeeQR}}
-                <img src="{{employeeQR}}" alt="QR" style="max-height: 50px; max-width: 50px; border: 1px solid #003366;">
-                {{/if}}
+            <div class="header-section">
+                <div class="logo">
+                    {{#if companyLogo}}
+                    <img src="{{companyLogo}}" alt="Logo">
+                    {{/if}}
+                </div>
+                <div>
+                    <h1>Mindmanthan Software Solutions</h1>
+                </div>
             </div>
-            <h1>Mindmanthan Software Solutions</h1>
-            <h3 class="title"><u>Relieving Letter</u></h3>
+            <h2 class="head-name"><u>Relieving Letter</u></h2>
+            <h3 class="head-name"><u>To Whomsoever It May Concern,</u></h3>
         </header>
+        <!-- header close here -->
 
         <section>
-            <div class="emp-info">
-                <div>
-                    <p>Date: {{date}}</p>
-                    <p>To,<br><strong>{{fullName}}</strong></p>
-                </div>
-                <div>
-                    <p>Employee ID: {{id}}</p>
-                </div>
-            </div>
-
-            <p><strong>Dear {{firstName}},</strong></p>
-            <p>This is with reference to your resignation dated <strong>{{date}}</strong>. We would like to inform you that your resignation has been accepted and you are relieved from the services of <strong>MindManthan Software Solutions</strong> effective from the close of business hours on <strong>{{date}}</strong>.</p>
-            
-            <p>We confirm that you have completed all handover formalities and returned all company assets. We thank you for your contributions during your tenure as <strong>{{jobTitle}}</strong> and wish you the very best in your future endeavors.</p>
+            <p>This is to certify that <strong> Mr./Ms. {{fullName}} </strong>was employed with <strong> Mindmanthan
+                    Software Solutions</strong> as a <strong>{{jobTitle}}</strong> from <strong>{{hireDate}}</strong> to
+                <strong>{{date}}.</strong> </p>
+            <p>During his/her tenure with the organization, he/she discharged the assigned duties and responsibilities
+                sincerely and to the satisfaction of the management.</p>
+            <p>We confirm that <strong>Mr./Ms. {{fullName}} </strong> has been relieved from his/her duties effective
+                <strong> {{date}}</strong> after completion of all formalities. We wish him/her all the best for future
+                endeavors.</p>
         </section>
+
 
         <footer>
             <div class="signatures">
-                <div>
+                <div class="authorization1">
                     <p>_____________________</p>
-                    <p><strong>Kartik Khare</strong></p>
-                    <p>Managing Director (MD)</p>
+                    <p><strong>Employee signature</strong></p>
+                    <p><strong>Date: {{date}}</strong></p>
                 </div>
-                <div style="text-align: right;">
-                    <p>_____________________</p>
-                    <p><strong>Prabhat Paswan</strong></p>
-                    <p>Chief Executive Officer (CEO)</p>
+                <div class="authorization">
+                    <div class="QR-Code">
+                        {{#if employeeQR}}
+                        <img src="{{employeeQR}}" alt="QR">
+                        {{/if}}
+                    </div>
+                    <!-- <p>For Mindmanthan Software Solution</p> -->
+                    <p class="company-line">_____________________</p>
+                    <p><strong>Managing Director (MD)</strong> </p>
+                    <p>Udyam Registration No.:<br><strong>UDYAM-UP-28-0200563</strong><br> (Company Seal)</p>
                 </div>
             </div>
+            <div class="bottom-line">
+                <hr>
+            </div>
             <div class="company-info">
-                <p>A90, Noida, UP 201301 | Info@mindmanthansoftwaresolutions.com</p>
+                <div>
+                    <p><i class="fas fa-envelope"></i> hr@mindmanthansoftwaresolutions.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9277267732 | +91 7011502461</p>
+                </div>
+                <div>
+                    <p><i class="fas fa-envelope"></i> Info@mindmanthansoftwaresolutions.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> A90,A Block,Sector 4 Noida,Uttar Pradesh 201301</p>
+                </div>
             </div>
         </footer>
     </div>
 </body>
+
 </html>

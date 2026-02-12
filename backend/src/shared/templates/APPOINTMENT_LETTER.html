@@ -10,7 +10,7 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.4;
+            /* line-height: 1.4; */
             background-color: #ffffff;
             font-size: 16px;
             margin: 0;
@@ -20,7 +20,7 @@
         .page {
             width: 210mm;
             height: 297mm;
-            padding: 70px 50px;
+            padding: 30px 50px;
             margin: 0 auto;
             box-sizing: border-box;
             border: 4px solid #003366;
@@ -41,28 +41,28 @@
         }
         h1 {
             color: #003366;
-            margin: 0;
             font-size: 32px;
+            font-weight: 700;
         }
         .appoint {
+            font-weight: 700;
+            font-size: 18px;
             text-align: center;
-            margin-top: 10px;
-            margin-bottom: 20px;
+            margin-block: 20px;
         }
         .company-detail {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
+            line-height: 1;
+            
+            
         }
         .company-info {
             display: flex;
             flex-direction: column;
             text-align: right;
+            line-height: 0.5;
             font-size: 14px;
-        }
-        .company-info p {
-            margin: 2px 0;
         }
         section p {
             text-align: justify;
@@ -77,13 +77,17 @@
             padding-left: 10px;
         }
         ul {
+            display: visible;
+            list-style-type: disc;
             text-align: justify;
-            padding-left: 20px;
+            line-height: 1.3;
+            margin-left: 40px;
         }
         ul li {
             margin-bottom: 8px;
         }
         .signatures {
+            width: 100%;
             margin-top: 40px;
             margin-bottom: 60px;
             display: flex;
@@ -124,18 +128,12 @@
 
         <section>
             <div class="company-detail">
-                <div>
+                <div style="line-height: 0.5;">
                     <p><strong>Date:</strong> {{date}}</p>
-                    <p>
-                        To,<br>
-                        <strong>{{fullName}}</strong><br>
-                        {{#if address}}
-                        <strong>{{address}}</strong>
-                        {{else}}
-                        <strong>[Employee Address]</strong>
-                        {{/if}}
+                    <p>To,<br><br>
+                        <strong>{{fullName}}</strong>
                     </p>
-                    <p><strong>Subject:</strong> Appointment Letter</p>
+                    <p><strong>Subject:</strong> Appointment Letter</p><br>
                     <p>Dear <strong>{{firstName}}</strong>,</p>
                 </div>
                 <div class="company-info">

@@ -1,78 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NDA & Data Security</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.4; color: #222; margin: 0; padding: 0; font-size: 12px; }
-        .page { width: 100%; padding: 30px; box-sizing: border-box; background: #fff; }
-        header { border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; text-align: center; }
-        h1 { color: #003366; margin: 0; font-size: 18px; }
-        h2 { color: #003366; text-transform: uppercase; font-size: 14px; margin: 10px 0; }
-        .emp-info { margin-bottom: 20px; }
-        .list-item { padding-left: 20px; }
-        .list-item li { margin-bottom: 8px; text-align: justify; }
-        .signatures { display: flex; justify-content: space-between; margin-top: 30px; }
-        .company-info { margin-top: 30px; font-size: 10px; color: #666; border-top: 1px solid #eee; padding-top: 10px; display: flex; justify-content: space-between; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            background-color: #f8f9fa;
+            font-size: 16px;
+
+            counter-reset: page;
+        }
+
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            margin: auto;
+            padding: 30px 50px;
+            box-sizing: border-box;
+            border: 4px solid #003366;
+            overflow: hidden;
+        }
+
+
+        .header-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 120px;
+            width: 120px;
+        }
+
+        h1 {
+            color: #003366;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .appoint {
+            font-weight: 700;
+            font-size: 18px;
+            text-align: center;
+            text-decoration: none;
+            margin-block: 20px;
+        }
+
+        section p {
+            text-align: justify;
+        }
+
+        ul li {
+            text-align: justify;
+            list-style-type: disc;
+            margin-left: 40px;
+            margin-block: 20px;
+        }
+
+        .bottom-line{
+            margin-block: 40px;
+        }
+
+        .signatures {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .QR-Code img {
+            height: 120px;
+            width: 120px;
+        }
+
+        .company-info {
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
 </head>
+
 <body>
     <div class="page">
+
         <header>
-            <div style="display: flex; justify-content: center; gap: 15px; align-items: center; margin-bottom: 10px;">
-                {{#if companyLogo}}
-                <img src="{{companyLogo}}" alt="Logo" style="max-height: 50px; max-width: 150px;">
-                {{/if}}
-                {{#if employeeQR}}
-                <img src="{{employeeQR}}" alt="QR" style="max-height: 50px; max-width: 50px; border: 1px solid #003366;">
-                {{/if}}
+            <div class="header-section">
+                <div class="logo">
+                    {{#if companyLogo}}
+                    <img src="{{companyLogo}}" alt="Logo">
+                    {{/if}}
+                </div>
+                <div>
+                    <h1>Mindmanthan Software Solutions</h1>
+                </div>
             </div>
-            <h1>Mindmanthan Software Solutions</h1>
-            <h2><u>IT & Data Security Acceptance Letter (NDA)</u></h2>
+            <h3 class="appoint"><u>NON-DISCLOSURE AGREEMENT</u></h3>
         </header>
+        <!-- header close here -->
+        <!-- section start here -->
 
         <section>
-            <p>Date: {{date}}</p>
-            <div class="emp-info">
-                <p><strong>Employee Name:</strong> {{fullName}}</p>
-                <p><strong>Employee ID:</strong> {{id}}</p>
-                <p><strong>Designation:</strong> {{jobTitle}}</p>
-            </div>
+            <p> <strong>Non-Disclosure Agreement</strong> (“Agreement”) is entered into on<strong> {{date}}</strong> by
+                and
+                between: </p>
+            <p><strong>MindManthan Software Solutions,</strong> having its registered office at {{#if
+                address}}<strong>{{address}}</strong>{{else}}<strong>[Employee Address]</strong>
+                {{/if}},
+                hereinafter
+                referred to as the “Company”,</p>
+            <strong style="display:inline-block; padding-block:  20px;">AND</strong>
+            <p><strong>Mr./Ms. {{fullName}},</strong> residing at<b> {{#if
+                    address}}<strong>{{address}}</strong>{{else}}<strong>[Employee Address]</strong>
+                    {{/if}},</b> hereinafter referred to as the
+                “Employee/Recipient”.</p>
+            <p>The Company and the Employee shall collectively be referred to as the “Parties”.</p>
+            <ul>
+                <li><strong>PURPOSE OF AGREEMENT</strong>
 
-            <p>I, <strong>{{fullName}}</strong>, hereby acknowledge and agree to abide by the IT & Data Security Policies of <strong>MindManthan Software Solutions</strong> during and after my employment.</p>
+                    The Employee acknowledges that during the course of employment, association, or engagement with the
+                    Company, he/she will have access to confidential, proprietary, technical, commercial, and sensitive
+                    information.
+                    This Agreement is executed to protect such information from unauthorized disclosure, misuse, or
+                    exploitation.
+                </li>
+                <li><strong>DEFINITION OF CONFIDENTIAL INFORMATION</strong>
 
-            <ul class="list-item">
-                <li><strong>Confidential Information:</strong> All company-related information including but not limited to source code, software architecture, internal tools, databases, and client data are strictly confidential.</li>
-                <li><strong>System & Access:</strong> I shall use company-provided systems and credentials only for official purposes.</li>
-                <li><strong>Data Protection:</strong> I will not copy, leak, or misuse any company data without written authorization.</li>
-                <li><strong>Intellectual Property:</strong> Any work created during my employment remains the sole property of MindManthan Software Solutions.</li>
-                <li><strong>Violation:</strong> Any violation may result in disciplinary action or legal proceedings.</li>
+                    “Confidential Information” includes but is not limited to:
+
+                    Source code, software logic, algorithms, APIs
+
+                    Internal systems, tools, dashboards, workflows
+
+                    Client data, project details, credentials
+
+                    Databases, architecture diagrams, documentation
+
+                    Business plans, pricing models, proposals
+
+                    Trade secrets, processes, know-how
+
+                    Employee data, HR records
+
+                    Any information marked or understood as confidential
+
+                    Any data accessed verbally, digitally, or physically
+
+
+                    Confidential Information includes information whether disclosed before or after signing this
+                    Agreement.</li>
+                <li><strong>OBLIGATIONS OF THE EMPLOYEE</strong>
+
+                    The Employee agrees that he/she shall:
+
+                    a Keep all Confidential Information strictly confidential
+                    b Use Confidential Information only for official company work
+                    c Not disclose information to any third party without written permission
+                    d Not copy, reproduce, sell, publish, or misuse any data
+                    e Not use confidential knowledge for personal or competitive benefit</li>
+                <li><strong>ACCESS CONTROL & SECURITY</strong>
+
+                    The Employee agrees to:
+
+                    Protect all login credentials and access rights
+
+                    Not bypass or attempt to breach company security systems
+
+                    Follow all IT, data security, and internal access policies
+
+                    Immediately report any data breach or unauthorized access
+                </li>
+                <li><strong>INTELLECTUAL PROPERTY RIGHTS</strong>
+
+                    All work products including but not limited to:
+
+                    Code, scripts, designs
+
+                    Software modules, documentation
+
+                    Databases, inventions, ideas
+
+
+                    created during employment shall be the sole intellectual property of MindManthan Software Solutions,
+                    regardless of the device or location used.
+
+                    The Employee waives all ownership claims.
+                </li>
             </ul>
-
-            <p>I confirm that I have read and voluntarily accept all the above terms.</p>
-
-            <div class="signatures">
-                <div>
-                    <p>_____________________</p>
-                    <p><strong>Employee Signature</strong></p>
-                </div>
-                <div style="text-align: right;">
-                    <p>_____________________</p>
-                    <p><strong>Managing Director</strong></p>
-                    <p>Mindmanthan Software Solutions</p>
-                </div>
-            </div>
-
-            <div class="company-info">
-                <div>
-                    <p>Email: hr@mindmanthansoftwaresolutions.com</p>
-                    <p>Phone: +91 9277267732</p>
-                </div>
-                <div style="text-align: right;">
-                    <p>Address: A90, Noida, UP 201301</p>
-                </div>
-            </div>
         </section>
     </div>
+
+    <div class="page">
+        <section class="page2">
+            <ul>
+                <li><strong>RESTRICTION ON COPYING & STORAGE</strong>
+
+                    The Employee shall not:
+
+                    Store company data on personal devices
+
+                    Upload data to unauthorized cloud services
+
+                    Transfer data via email, USB, or external tools
+
+
+                    unless explicitly authorized in writing.</li>
+                <li><strong>NON-DISCLOSURE DURING & AFTER EMPLOYMENT</strong>
+
+                    This NDA shall remain effective:
+
+                    During the period of employment
+
+                    After resignation, termination, or completion of engagement, without time limitation</li>
+                <li><strong>RETURN OF COMPANY PROPERTY</strong>
+
+                    Upon exit or termination, the Employee shall:
+
+                    Return all company assets
+
+                    Permanently delete all company data
+
+                    Confirm no data retention in any form
+                </li>
+                <li><strong>BREACH & CONSEQUENCES</strong>
+                    Any breach of this Agreement shall result in:
+                    Immediate disciplinary action
+                    Termination of employment
+
+                    Legal action (civil & criminal)
+
+                    Claim for damages, losses, and injunction
+
+
+                    The Company reserves the right to pursue remedies under applicable Indian laws including IT Act,
+                    2000.</li>
+                <li><strong>NO LICENSE OR OWNERSHIP</strong>
+
+                    Nothing in this Agreement grants the Employee any license, ownership, or rights over Company data or
+                    intellectual property.</li>
+                <li><strong>SEVERABILITY</strong>
+
+                    If any provision of this Agreement is held invalid, the remaining provisions shall continue in full
+                    force.</li>
+                <li><strong>GOVERNING LAW & JURISDICTION</strong>
+
+                    This Agreement shall be governed by and construed in accordance with the laws of India, and courts
+                    of ____ (City/State) shall have exclusive jurisdiction.</li>
+                <li><strong>ENTIRE AGREEMENT</strong>
+
+                    This Agreement constitutes the complete understanding between the Parties and supersedes all prior
+                    agreements or understandings related to confidentiality.</li>
+                <li><strong>ACCEPTANCE</strong>
+
+                    By signing below, the Employee confirms that he/she has read, understood, and agrees to abide by
+                    this NDA voluntarily. </li>
+            </ul>
+        </section>
+
+
+        <footer class="footer">
+            <div class="signatures">
+                <div class="authorization1">
+                    <p><strong>Kartik Khare</strong></p>
+                    <p>Managing Director (MD)</p>
+                </div>
+                <div class="QR-Code">
+                    {{#if employeeQR}}
+                    <img src="{{employeeQR}}" alt="QR">
+                    {{/if}}
+                </div>
+                <div class="authorization">
+                    <p><strong>Prabhat Paswan</strong></p>
+                    <p>Chief Executive Officer (CEO)</p>
+                    <!-- <p>Udyam Registration No.:<br><strong>UDYAM-UP-28-0200563</strong> <BR>(Company Seal)</p> -->
+                </div>
+            </div>
+            <div class="bottom-line">
+                <hr>
+            </div>
+            <div class="company-info">
+                <div>
+                    <p><i class="fas fa-envelope"></i> hr@mindmanthansoftwaresolutions.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9277267732 | +91 7011502461</p>
+                </div>
+                <div>
+                    <p><i class="fas fa-envelope"></i> Info@mindmanthansoftwaresolutions.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> A90,A Block,Sector 4 Noida,Uttar Pradesh 201301</p>
+                </div>
+            </div>
+        </footer>
+    </div>
 </body>
+
 </html>

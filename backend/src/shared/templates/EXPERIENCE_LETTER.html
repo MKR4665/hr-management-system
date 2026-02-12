@@ -1,112 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Experience Letter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            line-height: 1.6;
-            color: #222;
-            margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            background-color: #f8f9fa;
+            font-size: 16px;
+            counter-reset: page;
         }
+
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
         .container {
-            width: 100%;
-            padding: 40px;
+            width: 210mm;
+            height: 297mm;
+            margin: auto;
+            padding: 30px 50px;
             box-sizing: border-box;
+            border: 4px solid #003366;
+            overflow: hidden;
         }
+
         .header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            border-bottom: 2px solid #003366;
-            padding-bottom: 10px;
-            margin-bottom: 30px;
         }
-        .header h1 {
+
+        .logo img {
+            height: 120px;
+            width: 120px;
+        }
+
+        h1 {
             color: #003366;
-            margin: 0;
-            font-size: 24px;
+            font-size: 32px;
+            font-weight: 700;
         }
+
         h2 {
             text-align: center;
-            text-transform: uppercase;
             color: #003366;
-            margin-bottom: 40px;
+            color: #003366;
+            font-size: 18px;
+            font-weight: 700;
         }
-        section {
-            text-align: justify;
-        }
+
         h3 {
+            font-size: 18px;
+            font-weight: 700;
             text-align: center;
             margin-bottom: 30px;
         }
-        .signatures {
-           display: flex;
-           justify-content: space-between;
-           margin-top: 100px;
+
+        section p {
+            margin-bottom: 10px;
+            text-align: justify;
         }
-        .company-info {
-            margin-top: 50px;
-            font-size: 11px;
-            color: #666;
+
+        .signatures {
+            margin-bottom: 60px;
             display: flex;
             justify-content: space-between;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
+        }
+
+        .authorization1 {
+            padding-top: 180px;
+        }
+
+        .company-line {
+            margin-top: 32px;
+        }
+
+        .company-info {
+            display: flex;
+            justify-content: space-between;
+        }
+        .bottom-line{
+            margin-block: 30px;
+        }
+
+        .QR-Code img {
+            height: 150px;
+            width: 150px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
+
+
         <header class="header">
-            <div style="display: flex; gap: 15px; align-items: center;">
+            <div class="logo">
                 {{#if companyLogo}}
-                <img src="{{companyLogo}}" alt="Logo" style="max-height: 50px; max-width: 150px;">
-                {{/if}}
-                {{#if employeeQR}}
-                <img src="{{employeeQR}}" alt="QR" style="max-height: 50px; max-width: 50px; border: 1px solid #003366;">
+                <img src="{{companyLogo}}" alt="Logo">
                 {{/if}}
             </div>
-            <h1>Mindmanthan Software Solutions</h1>
+            <div>
+                <h1>Mindmanthan Software Solutions</h1>
+            </div>
         </header>
-        
         <h2>Experience Letter</h2>
+
 
         <section>
             <h3><u>To Whomsoever It May Concern</u></h3>
-            <p>This is to certify that <strong>{{fullName}}</strong>, Employee ID <strong>{{id}}</strong>, was employed with <strong>MindManthan Software Solutions</strong> as <strong>{{jobTitle}}</strong> from <strong>{{hireDate}}</strong> to <strong>{{date}}</strong>.</p>
-            
-            <p>During his/her tenure with our organization, the employee was responsible for assigned duties and responsibilities and demonstrated professional conduct, dedication, and commitment towards work. He/She contributed positively to the team and carried out responsibilities as per company standards.</p>
-            
-            <p>His/Her conduct and performance during the employment period were found to be satisfactory.</p>
-            
+            <p>This is to certify that <strong>Mr./Ms. {{fullName}}</strong>, Employee ID <strong>{{id}}</strong>, was employed with
+                <strong>
+                    MindManthan Software Solutions </strong> as from {{hireDate}} to {{date}}.</p>
+            <p>During his/her tenure with our organization, the employee was responsible for assigned duties and
+                responsibilities and demonstrated professional conduct, dedication, and commitment towards work. He/She
+                contributed positively to the team and carried out responsibilities as per company standards.
+                His/Her conduct and performance during the employment period were found to be satisfactory / good /
+                excellent.</p>
             <p>We wish him/her success in future career endeavors.</p>
+            <footer>
+                <div class="signatures">
+                    <div class="authorization1">
+                        <p>_____________________</p>
+                        <p><strong>Employee signature</strong></p>
+                        <p><strong>Date: </strong></p>
+                    </div>
 
-            <div class="signatures">
-                <div>
-                    <p>_____________________</p>
-                    <p><strong>Employee Signature</strong></p>
+                    <div class="authorization">
+                        <div class="QR-Code">
+                            {{#if employeeQR}}
+                            <img src="{{employeeQR}}" alt="QR">
+                            {{/if}}
+                        </div>
+                        <!-- <p>For Mindmanthan Software Solution</p> -->
+                        <p class="company-line">_____________________</p>
+                        <p><strong>Managing Director (MD)</strong> </p>
+                        <p>Udyam Registration No.:<br><strong>UDYAM-UP-28-0200563</strong> <BR>(Company Seal)</p>
+                    </div>
                 </div>
-                
-                <div style="text-align: right;">
-                    <p>_____________________</p>
-                    <p><strong>Managing Director</strong></p>
-                    <p>Mindmanthan Software Solutions</p>
+                <div class="bottom-line">
+                    <hr>
                 </div>
-            </div>
-
-            <div class="company-info">
-                <div>
-                    <p>Email: hr@mindmanthansoftwaresolutions.com</p>
-                    <p>Phone: +91 9277267732</p>
+                <div class="company-info">
+                    <div>
+                        <p><i class="fas fa-envelope"></i> hr@mindmanthansoftwaresolutions.com</p>
+                        <p><i class="fas fa-phone"></i> +91 9277267732 | +91 7011502461</p>
+                    </div>
+                    <div>
+                        <p><i class="fas fa-envelope"></i> Info@mindmanthansoftwaresolutions.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> A90,A Block,Sector 4 Noida,Uttar Pradesh 201301</p>
+                    </div>
                 </div>
-                <div style="text-align: right;">
-                    <p>Address: A90, A Block, Sector 4 Noida, Uttar Pradesh 201301</p>
-                </div>
-            </div>
+            </footer>
         </section>
     </div>
 </body>
+
 </html>
