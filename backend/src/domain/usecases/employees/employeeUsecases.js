@@ -5,21 +5,40 @@ const { saveBase64File } = require('../../../shared/helpers/fileStorage');
 const { hashPassword } = require('../../../shared/helpers/hash');
 const { generateEmployeeQRCode } = require('../../../shared/helpers/qrCode');
 const { prisma } = require('../../../data/models/prismaClient');
+const { generateNextEmployeeId } = require('../../../shared/helpers/employeeIdGenerator');
 
 const employeeRepo = new EmployeeRepositoryPrisma();
 const userRepo = new UserRepositoryPrisma();
+
+const calculateSalaryBreakdown = (gross) => {
+  const g = parseFloat(gross) || 0;
+  return {
+    basicSalary: Math.round(g * 0.4),
+    hra: Math.round(g * 0.2),
+    specialAllowance: Math.round(g * 0.3),
+    conveyanceAllowance: Math.round(g * 0.1),
+    grossSalary: g
+  };
+};
 
 const getAllEmployees = async () => {
   return employeeRepo.findAll();
 };
 
 const getEmployeeById = async (id) => {
-  const employee = await employeeRepo.findById(id);
+  let employee = await employeeRepo.findById(id);
   if (!employee) {
     const err = new Error('Employee not found');
     err.status = 404;
     throw err;
   }
+
+  // If employeeId is missing (for older records), generate and save it
+  if (!employee.employeeId) {
+    const employeeId = await generateNextEmployeeId();
+    employee = await employeeRepo.update(id, { employeeId });
+  }
+
   return employee;
 };
 
@@ -31,6 +50,9 @@ const createEmployee = async (data) => {
     throw err;
   }
 
+  // Generate Custom Employee ID (EMM0001...)
+  const employeeId = await generateNextEmployeeId();
+
   // Handle Files
   const uploads = {};
   if (data.profilePicture) uploads.profilePicturePath = saveBase64File(data.profilePicture, 'profiles');
@@ -38,7 +60,8 @@ const createEmployee = async (data) => {
   if (data.idProof) uploads.idProofPath = saveBase64File(data.idProof, 'ids');
   if (data.educationCert) uploads.educationCertPath = saveBase64File(data.educationCert, 'education');
 
-  const finalData = { ...data, ...uploads };
+  const salaryData = data.grossSalary ? calculateSalaryBreakdown(data.grossSalary) : {};
+  const finalData = { ...data, ...uploads, ...salaryData, employeeId };
 
   // Clean up raw data before saving to DB
   delete finalData.profilePicture;
@@ -98,7 +121,8 @@ const updateEmployee = async (id, data) => {
   if (data.idProof) uploads.idProofPath = saveBase64File(data.idProof, 'ids');
   if (data.educationCert) uploads.educationCertPath = saveBase64File(data.educationCert, 'education');
 
-  const finalData = { ...data, ...uploads };
+  const salaryData = data.grossSalary ? calculateSalaryBreakdown(data.grossSalary) : {};
+  const finalData = { ...data, ...uploads, ...salaryData };
 
   delete finalData.profilePicture;
   delete finalData.experienceCert;

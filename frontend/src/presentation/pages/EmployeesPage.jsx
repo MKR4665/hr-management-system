@@ -182,6 +182,18 @@ export default function EmployeesPage() {
     setEditingEmployee(null);
   };
 
+  const handleGrossSalaryChange = (value) => {
+    const gross = parseFloat(value) || 0;
+    setFormData({
+      ...formData,
+      grossSalary: gross,
+      basicSalary: Math.round(gross * 0.4),
+      hra: Math.round(gross * 0.2),
+      specialAllowance: Math.round(gross * 0.3),
+      conveyanceAllowance: Math.round(gross * 0.1)
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -305,7 +317,7 @@ export default function EmployeesPage() {
                           )}
                           <div>
                             <p className="text-sm font-bold text-slate-900 group-hover/link:text-brand-600 transition-colors">{emp.firstName} {emp.lastName}</p>
-                            <p className="text-xs text-slate-500">{emp.email}</p>
+                            <p className="text-xs text-slate-500">{emp.employeeId || 'N/A'} • {emp.email}</p>
                           </div>
                         </Link>
                       </td>
@@ -593,7 +605,7 @@ export default function EmployeesPage() {
                     <div className="grid grid-cols-2 gap-4 border-t pt-4">
                       <div className="space-y-2">
                         <Label className="text-brand-600 font-black">Gross Total Salary</Label>
-                        <Input id="grossSalary" className="border-brand-200 bg-brand-50/30" type="number" value={formData.grossSalary} onChange={(e) => setFormData({...formData, grossSalary: parseFloat(e.target.value) || 0})} />
+                        <Input id="grossSalary" className="border-brand-200 bg-brand-50/30" type="number" value={formData.grossSalary} onChange={(e) => handleGrossSalaryChange(e.target.value)} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="performanceBonus">Annual Bonus %</Label>
